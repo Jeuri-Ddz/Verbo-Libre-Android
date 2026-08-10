@@ -1,0 +1,21 @@
+# ESTADO DEL PROYECTO: Verbo Libre (Android Nativo)
+
+## Fase Actual: FINALIZADA RENOMBRADO Y MULTI-TRADUCCIÓN
+
+## Lo que se ha hecho:
+1.  **Renombrado Integral:**
+    - App rebautizada como "Verbo Libre" en strings, pantallas y menús.
+2.  **Soporte Multi-traducción:**
+    - Esquema Room v5: Nueva tabla 'translations' y campo 'translation_id' en versículos.
+    - Integración de 'bible_multi.db' (asset) y persistencia interna en 'verbo_libre.db'.
+    - Selector dinámico en el TopAppBar del lector (DropdownMenu).
+    - Persistencia de selección usando DataStore Preferences.
+3.  **Refinamientos UI:**
+    - Versículos en disputa (VBL) se muestran en cursiva gris.
+    - Cabecera compacta con la traducción activa visible en el Inicio.
+4.  **Preservación de Datos:**
+    - Preparado para migrar 'bookmarks' de la versión anterior.
+
+## Próximo Paso:
+- Búsqueda avanzada por palabras clave (Fase 5).
+- Funcionalidad de Compartir Versículos (Fase 6).
