@@ -6,9 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.mi.bibliarv1960.data.local.dao.NoteDao
 import com.mi.bibliarv1960.data.local.dao.UserDataDao
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.BookmarkEntity
+import com.mi.bibliarv1960.data.local.entities.NoteEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,13 +18,15 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         BookmarkEntity::class, 
-        BookmarkCategoryEntity::class
+        BookmarkCategoryEntity::class,
+        NoteEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class UserDataDatabase : RoomDatabase() {
     abstract fun userDataDao(): UserDataDao
+    abstract fun noteDao(): NoteDao
 
     companion object {
         @Volatile
@@ -33,8 +37,9 @@ abstract class UserDataDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     UserDataDatabase::class.java,
-                    "user_data_v1.db",
+                    "user_data_v2.db",
                 )
+                    .fallbackToDestructiveMigration()
                     // No createFromAsset here as it's user-generated
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {

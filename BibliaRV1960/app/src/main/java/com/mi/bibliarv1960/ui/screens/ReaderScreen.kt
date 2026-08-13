@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -63,11 +64,15 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.graphics.toColorInt
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.VerseEntity
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
+import com.mi.bibliarv1960.ui.notes.NotesViewModel
+import com.mi.bibliarv1960.ui.notes.NoteEditorSheet
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -75,6 +80,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Composable
 fun ReaderScreen(
     viewModel: BibleViewModel,
+    notesViewModel: NotesViewModel,
     targetVerse: Int? = null,
     onBack: () -> Unit,
     onOpenDrawer: () -> Unit,
@@ -91,6 +97,9 @@ fun ReaderScreen(
     val isPaused by viewModel.isPaused.collectAsState()
     val playbackSpeed by viewModel.playbackSpeed.collectAsState()
     val currentSpeakingVerse by viewModel.currentSpeakingVerse.collectAsState()
+    val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
+
+    val GoldColor = Color(0xFFB9915A)
 
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -478,6 +487,9 @@ fun ReaderScreen(
                 textAlign = TextAlign.Center
             )
 
+            fun buildVerseKey(translationId: String, bookId: Int, chapter: Int, verseNumber: Int): String =
+                "${translationId}_${bookId}_${chapter}_${verseNumber}"
+
             val annotatedString = buildAnnotatedString {
                 verses.forEach { verse ->
                     pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
@@ -485,7 +497,9 @@ fun ReaderScreen(
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = if (notedVerseKeys.contains(
+                                buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
+                            )) GoldColor else MaterialTheme.colorScheme.primary,
                             fontSize = (fontSize * 0.7f).sp,
                             baselineShift = BaselineShift.Superscript
                         )
@@ -593,25 +607,29 @@ fun ReaderScreen(
                     }
                 }
 
-                @Suppress("DEPRECATION")
-                ClickableText(
-                    text = annotatedString,
-                    modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        lineHeight = (fontSize * 1.8f).sp
-                    ),
-                    onTextLayout = { textLayoutResult = it }
-                ) { offset ->
-                    annotatedString.getStringAnnotations(tag = "VERSE", start = offset, end = offset)
-                        .firstOrNull()?.let { annotation ->
-                            val verseNum = annotation.item.toInt()
-                            verses.find { it.verse == verseNum }?.let { verse ->
-                                // Capture the tap position relative to the text block
-                                val rect = textLayoutResult?.getBoundingBox(offset) ?: Rect.Zero
-                                tappedVerseOffset = Offset(rect.left + rect.width / 2f, rect.top)
-                                showColorPickerByVerse = verse
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    @Suppress("DEPRECATION")
+                    ClickableText(
+                        text = annotatedString,
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            lineHeight = (fontSize * 1.8f).sp
+                        ),
+                        onTextLayout = { textLayoutResult = it }
+                    ) { offset ->
+                        annotatedString.getStringAnnotations(tag = "VERSE", start = offset, end = offset)
+                            .firstOrNull()?.let { annotation ->
+                                val verseNum = annotation.item.toInt()
+                                verses.find { it.verse == verseNum }?.let { verse ->
+                                    // Capture the tap position relative to the text block
+                                    val rect = textLayoutResult?.getBoundingBox(offset) ?: Rect.Zero
+                                    tappedVerseOffset = Offset(rect.left + rect.width / 2f, rect.top)
+                                    showColorPickerByVerse = verse
+                                }
                             }
-                        }
+                    }
                 }
 
                 showColorPickerByVerse?.let { verse ->
@@ -619,6 +637,11 @@ fun ReaderScreen(
                         (it.bookId == verse.book_id) && (it.chapter == verse.chapter) && (it.verse == verse.verse) 
                     }
                     
+                    val verseKey = remember(verse) {
+                        "${selectedTranslationId}_${verse.book_id}_${verse.chapter}_${verse.verse}"
+                    }
+                    val hasNote = verseKey in notedVerseKeys
+
                     Popup(
                         popupPositionProvider = object : PopupPositionProvider {
                             override fun calculatePosition(
@@ -699,6 +722,24 @@ fun ReaderScreen(
 
                                 IconButton(
                                     onClick = {
+                                        notesViewModel.openEditor(
+                                            verseKey = verseKey,
+                                            bookId = verse.book_id,
+                                            chapter = verse.chapter,
+                                            verseNumber = verse.verse
+                                        )
+                                        showColorPickerByVerse = null
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.EditNote,
+                                        contentDescription = if (hasNote) "Editar nota" else "Añadir nota",
+                                        tint = if (hasNote) Color(0xFFB9915A) else MaterialTheme.colorScheme.primary
+                                    )
+                                }
+
+                                IconButton(
+                                    onClick = {
                                         val abbr = translations.find { it.id == selectedTranslationId }?.abbreviation ?: ""
                                         val shareText = "\"${verse.text}\"\n— $bookName ${verse.chapter}:${verse.verse} ($abbr)\n\nCompartido desde Verbo Libre"
                                         val sendIntent = Intent().apply {
@@ -720,6 +761,20 @@ fun ReaderScreen(
                             }
                         }
                     }
+                }
+
+                val editorState by notesViewModel.editorState.collectAsState()
+                editorState?.let { state ->
+                    val verse = verses.find { it.verse == state.verseNumber }
+                    NoteEditorSheet(
+                        state = state,
+                        verseText = verse?.text.orEmpty(),
+                        reference = "$bookName ${state.chapter}:${state.verseNumber}",
+                        onTextChange = notesViewModel::updateDraftText,
+                        onSave = notesViewModel::saveCurrentNote,
+                        onDelete = notesViewModel::deleteCurrentNote,
+                        onDismiss = notesViewModel::closeEditor
+                    )
                 }
             }
         }

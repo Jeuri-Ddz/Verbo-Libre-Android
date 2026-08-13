@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mi.bibliarv1960.data.repository.BibleRepository
+import com.mi.bibliarv1960.data.repository.NoteRepository
 import com.mi.bibliarv1960.data.local.entities.*
 import com.mi.bibliarv1960.data.preferences.DataStoreManager
+import com.mi.bibliarv1960.ui.notes.NotesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -478,13 +480,20 @@ class BibleViewModel(
 
 class BibleViewModelFactory(
     private val repository: BibleRepository,
+    private val noteRepository: NoteRepository,
     private val dataStoreManager: DataStoreManager,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BibleViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return BibleViewModel(repository, dataStoreManager) as T
+        return when {
+            modelClass.isAssignableFrom(BibleViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                BibleViewModel(repository, dataStoreManager) as T
+            }
+            modelClass.isAssignableFrom(NotesViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                NotesViewModel(noteRepository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

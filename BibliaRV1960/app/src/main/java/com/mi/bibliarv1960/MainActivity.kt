@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +31,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mi.bibliarv1960.ui.notes.AllNotesScreen
+import com.mi.bibliarv1960.ui.notes.NotesViewModel
 import com.mi.bibliarv1960.ui.navigation.Screen
 import com.mi.bibliarv1960.ui.screens.*
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
@@ -42,7 +45,12 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: BibleViewModel by viewModels {
         val app = application as BibleApplication
-        BibleViewModelFactory(app.repository, app.dataStoreManager)
+        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
+    }
+
+    private val notesViewModel: NotesViewModel by viewModels {
+        val app = application as BibleApplication
+        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -167,6 +175,17 @@ class MainActivity : ComponentActivity() {
                             )
 
                             NavigationDrawerItem(
+                                icon = { Icon(Icons.Outlined.EditNote, contentDescription = null) },
+                                label = { Text("Mis Notas") },
+                                selected = false,
+                                onClick = {
+                                    scope.launch { drawerState.close() }
+                                    safeNavigate("all_notes")
+                                },
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+
+                            NavigationDrawerItem(
                                 icon = { Icon(Icons.Outlined.Explore, contentDescription = null) },
                                 label = { Text("Propósito") },
                                 selected = false,
@@ -270,6 +289,7 @@ class MainActivity : ComponentActivity() {
 
                             ReaderScreen(
                                 viewModel = viewModel,
+                                notesViewModel = notesViewModel,
                                 targetVerse = if (verse != -1) verse else null,
                                 onBack = { safePopBack() },
                                 onOpenDrawer = {
@@ -283,6 +303,15 @@ class MainActivity : ComponentActivity() {
                                 onOpenDrawer = { scope.launch { drawerState.open() } },
                                 onBookmarkClick = { bId, ch, v ->
                                     safeNavigate(Screen.Reader.createRoute(bId, ch, v))
+                                }
+                            )
+                        }
+                        composable("all_notes") {
+                            val notes by notesViewModel.allNotes.collectAsState()
+                            AllNotesScreen(
+                                notes = notes,
+                                onNoteClick = { note ->
+                                    safeNavigate(Screen.Reader.createRoute(note.bookId, note.chapter, note.verseNumber))
                                 }
                             )
                         }
