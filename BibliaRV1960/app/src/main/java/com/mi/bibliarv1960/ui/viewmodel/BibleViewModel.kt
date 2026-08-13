@@ -135,7 +135,7 @@ class BibleViewModel(
             }
 
             val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            
+
             // 1. Sorteo de Contenido Devocional
             repository.allDevotionals.collect { devotionals ->
                 if (devotionals.isNotEmpty()) {

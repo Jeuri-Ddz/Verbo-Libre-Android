@@ -73,12 +73,13 @@ fun NoteEditorSheet(
     onDelete: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val GoldColor = Color(0xFFB9915A)
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = CreamColor
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
@@ -88,15 +89,15 @@ fun NoteEditorSheet(
         ) {
             Text(
                 text = reference,
+                style = MaterialTheme.typography.titleLarge,
                 fontFamily = FontFamily.Serif,
-                fontSize = 18.sp,
-                color = NavyColor
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = verseText,
-                fontSize = 14.sp,
-                color = NavyColor.copy(alpha = 0.7f),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 maxLines = 3
             )
 
@@ -109,14 +110,16 @@ fun NoteEditorSheet(
                 onValueChange = onTextChange,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 120.dp),
+                    .heightIn(min = 120.dp, max = 220.dp),
                 placeholder = { Text("Escribe tu reflexión o notas de estudio...") },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = GoldColor,
-                    unfocusedBorderColor = NavyColor.copy(alpha = 0.2f)
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 )
             )
 
@@ -135,9 +138,9 @@ fun NoteEditorSheet(
                 }
                 Button(
                     onClick = onSave,
-                    colors = ButtonDefaults.buttonColors(containerColor = NavyColor)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Guardar", color = CreamColor)
+                    Text("Guardar", color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }

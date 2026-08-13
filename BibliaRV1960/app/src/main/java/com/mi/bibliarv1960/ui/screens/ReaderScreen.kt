@@ -66,6 +66,11 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.graphics.toColorInt
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.style.TextDecoration
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.VerseEntity
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
@@ -100,6 +105,7 @@ fun ReaderScreen(
     val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
 
     val GoldColor = Color(0xFFB9915A)
+    val noteIndicatorColor = MaterialTheme.colorScheme.primary
 
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -494,12 +500,13 @@ fun ReaderScreen(
                 verses.forEach { verse ->
                     pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
                     
+                    val verseKey = buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
+                    val hasNote = notedVerseKeys.contains(verseKey)
+
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.Bold,
-                            color = if (notedVerseKeys.contains(
-                                buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
-                            )) GoldColor else MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = (fontSize * 0.7f).sp,
                             baselineShift = BaselineShift.Superscript
                         )
@@ -511,14 +518,37 @@ fun ReaderScreen(
                         style = SpanStyle(
                             fontSize = fontSize.sp,
                             color = if (isDisputed) Color.Gray else MaterialTheme.colorScheme.onBackground,
-                            fontStyle = if (isDisputed) FontStyle.Italic else null
+                            fontStyle = if (isDisputed) FontStyle.Italic else null,
+                            textDecoration = null
                         )
                     ) {
                         append("${verse.text} ")
                     }
+                    if (hasNote) {
+                        pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
+                        appendInlineContent("note_icon", "[nota]")
+                        pop()
+                    }
                     pop()
                 }
             }
+
+            val inlineContent = mapOf(
+                "note_icon" to InlineTextContent(
+                    Placeholder(
+                        width = (fontSize * 1.6f).sp,
+                        height = (fontSize * 1.6f).sp,
+                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.EditNote,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            )
 
             Box(
                 modifier = Modifier
@@ -562,6 +592,41 @@ fun ReaderScreen(
                                 }
                             }
                         }
+
+                    // --- SUBRAYADO DE NOTAS (Doble línea Navy/Primary) ---
+                    verses.forEach { verse ->
+                        val vKey = buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
+                        if (notedVerseKeys.contains(vKey)) {
+                            val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
+                            val range = annotations.find { it.item == verse.verse.toString() }
+                            
+                            if (range != null) {
+                                val firstLine = layout.getLineForOffset(range.start)
+                                val lastLine = layout.getLineForOffset(range.end)
+                                val lineThickness = 1.dp.toPx()
+                                val spacing = 1.dp.toPx()
+                                
+                                for (lineIndex in firstLine..lastLine) {
+                                    val left = if (lineIndex == firstLine) layout.getHorizontalPosition(range.start, true) else layout.getLineLeft(lineIndex)
+                                    val right = if (lineIndex == lastLine) layout.getHorizontalPosition(range.end, true) else layout.getLineRight(lineIndex)
+                                    val bottom = layout.getLineBottom(lineIndex) - 2.dp.toPx() // Ajuste para no chocar con la siguiente línea
+                                    
+                                    // Línea superior del doble subrayado
+                                    drawRect(
+                                        color = noteIndicatorColor,
+                                        topLeft = Offset(left, bottom - lineThickness * 2 - spacing),
+                                        size = Size(right - left, lineThickness)
+                                    )
+                                    // Línea inferior del doble subrayado
+                                    drawRect(
+                                        color = noteIndicatorColor,
+                                        topLeft = Offset(left, bottom - lineThickness),
+                                        size = Size(right - left, lineThickness)
+                                    )
+                                }
+                            }
+                        }
+                    }
 
                     currentSpeakingVerse?.let { sVerse ->
                         val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
@@ -610,26 +675,50 @@ fun ReaderScreen(
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    @Suppress("DEPRECATION")
-                    ClickableText(
+                    Text(
                         text = annotatedString,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .pointerInput(Unit) {
+                                detectTapGestures { offset ->
+                                    textLayoutResult?.let { layout ->
+                                        val charOffset = layout.getOffsetForPosition(offset)
+                                        
+                                        // 1. Clic en el icono de nota (Acción directa)
+                                        annotatedString.getStringAnnotations(tag = "NOTE_ACTION", start = charOffset, end = charOffset)
+                                            .firstOrNull()?.let { annotation ->
+                                                val vKey = annotation.item
+                                                val parts = vKey.split("_")
+                                                if (parts.size == 4) {
+                                                    notesViewModel.openEditor(
+                                                        verseKey = vKey,
+                                                        bookId = parts[1].toInt(),
+                                                        chapter = parts[2].toInt(),
+                                                        verseNumber = parts[3].toInt()
+                                                    )
+                                                    return@detectTapGestures
+                                                }
+                                            }
+
+                                        // 2. Clic en el versículo (Marcadores)
+                                        annotatedString.getStringAnnotations(tag = "VERSE", start = charOffset, end = charOffset)
+                                            .firstOrNull()?.let { annotation ->
+                                                val verseNum = annotation.item.toInt()
+                                                verses.find { it.verse == verseNum }?.let { verse ->
+                                                    val rect = layout.getBoundingBox(charOffset)
+                                                    tappedVerseOffset = Offset(rect.left + rect.width / 2f, rect.top)
+                                                    showColorPickerByVerse = verse
+                                                }
+                                            }
+                                    }
+                                }
+                            },
                         style = MaterialTheme.typography.bodyLarge.copy(
                             lineHeight = (fontSize * 1.8f).sp
                         ),
+                        inlineContent = inlineContent,
                         onTextLayout = { textLayoutResult = it }
-                    ) { offset ->
-                        annotatedString.getStringAnnotations(tag = "VERSE", start = offset, end = offset)
-                            .firstOrNull()?.let { annotation ->
-                                val verseNum = annotation.item.toInt()
-                                verses.find { it.verse == verseNum }?.let { verse ->
-                                    // Capture the tap position relative to the text block
-                                    val rect = textLayoutResult?.getBoundingBox(offset) ?: Rect.Zero
-                                    tappedVerseOffset = Offset(rect.left + rect.width / 2f, rect.top)
-                                    showColorPickerByVerse = verse
-                                }
-                            }
-                    }
+                    )
                 }
 
                 showColorPickerByVerse?.let { verse ->

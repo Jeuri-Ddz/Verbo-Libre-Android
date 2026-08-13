@@ -37,6 +37,7 @@ fun AllNotesScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val GoldColor = Color(0xFFB9915A)
     var query by remember { mutableStateOf("") }
 
     val filtered = remember(notes, query) {
@@ -50,9 +51,10 @@ fun AllNotesScreen(
                 title = { 
                     Text(
                         "Mis notas", 
+                        style = MaterialTheme.typography.titleLarge,
                         fontFamily = FontFamily.Serif, 
                         fontWeight = FontWeight.Bold, 
-                        color = NavyColor
+                        color = MaterialTheme.colorScheme.onBackground
                     ) 
                 },
                 navigationIcon = {
@@ -60,24 +62,24 @@ fun AllNotesScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack, 
                             contentDescription = "Atrás", 
-                            tint = NavyColor
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = CreamColor
+                    containerColor = MaterialTheme.colorScheme.background
                 ),
                 windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
             )
         },
-        containerColor = CreamColor,
+        containerColor = MaterialTheme.colorScheme.background,
         contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
     ) { innerPadding ->
         Column(
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(CreamColor)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             OutlinedTextField(
                 value = query,
@@ -91,9 +93,11 @@ fun AllNotesScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = GoldColor,
-                    unfocusedBorderColor = NavyColor.copy(alpha = 0.1f),
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 )
             )
 
@@ -101,7 +105,7 @@ fun AllNotesScreen(
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
                         text = if (query.isBlank()) "Aún no has escrito notas" else "Sin resultados",
-                        color = NavyColor.copy(alpha = 0.5f),
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                         fontFamily = FontFamily.Serif
                     )
                 }
@@ -131,7 +135,7 @@ private fun NoteListItem(note: NoteEntity, bookName: String, onClick: () -> Unit
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -143,15 +147,16 @@ private fun NoteListItem(note: NoteEntity, bookName: String, onClick: () -> Unit
             ) {
                 Text(
                     text = "$bookName ${note.chapter}:${note.verseNumber}",
+                    style = MaterialTheme.typography.titleMedium,
                     fontFamily = FontFamily.Serif,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
-                    color = NavyColor
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = dateFormat.format(Date(note.updatedAt)).lowercase(),
                     fontSize = 12.sp,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -159,7 +164,7 @@ private fun NoteListItem(note: NoteEntity, bookName: String, onClick: () -> Unit
                 text = note.text,
                 fontSize = 14.sp,
                 lineHeight = 22.sp,
-                color = NavyColor.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                 maxLines = 3
             )
         }
