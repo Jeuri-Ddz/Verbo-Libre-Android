@@ -308,11 +308,14 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("all_notes") {
                             val notes by notesViewModel.allNotes.collectAsState()
+                            val allBooks by viewModel.allBooks.collectAsState()
                             AllNotesScreen(
                                 notes = notes,
+                                books = allBooks,
                                 onNoteClick = { note ->
                                     safeNavigate(Screen.Reader.createRoute(note.bookId, note.chapter, note.verseNumber))
-                                }
+                                },
+                                onBack = { safePopBack() }
                             )
                         }
                         composable(Screen.Purpose.route) {
