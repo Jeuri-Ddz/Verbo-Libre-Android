@@ -79,6 +79,7 @@ import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import com.mi.bibliarv1960.ui.notes.NotesViewModel
 import com.mi.bibliarv1960.ui.notes.NoteEditorSheet
 import kotlinx.coroutines.delay
+import kotlin.math.sqrt
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -679,28 +680,49 @@ fun ReaderScreen(
                         text = annotatedString,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .pointerInput(Unit) {
+                            .pointerInput(annotatedString, textLayoutResult, verses) {
                                 detectTapGestures { offset ->
                                     textLayoutResult?.let { layout ->
                                         val charOffset = layout.getOffsetForPosition(offset)
                                         
-                                        // 1. Clic en el icono de nota (Acción directa)
-                                        annotatedString.getStringAnnotations(tag = "NOTE_ACTION", start = charOffset, end = charOffset)
-                                            .firstOrNull()?.let { annotation ->
-                                                val vKey = annotation.item
-                                                val parts = vKey.split("_")
-                                                if (parts.size == 4) {
-                                                    notesViewModel.openEditor(
-                                                        verseKey = vKey,
-                                                        bookId = parts[1].toInt(),
-                                                        chapter = parts[2].toInt(),
-                                                        verseNumber = parts[3].toInt()
-                                                    )
-                                                    return@detectTapGestures
-                                                }
-                                            }
+                                        // 1. Buscamos primero por proximidad al icono de nota (Hit Slop de 24dp)
+                                        // Esto resuelve el problema de que el Rect del versículo "secuestre" el toque cerca del icono.
+                                        val hitSlopPx = with(density) { 24.dp.toPx() }
+                                        val noteAnnotations = annotatedString.getStringAnnotations(tag = "NOTE_ACTION", start = 0, end = annotatedString.length)
+                                        
+                                        var closestNote: String? = null
+                                        var minDistance = Float.MAX_VALUE
 
-                                        // 2. Clic en el versículo (Marcadores)
+                                        noteAnnotations.forEach { annotation ->
+                                            val rect = layout.getBoundingBox(annotation.start)
+                                            val centerX = rect.left + rect.width / 2f
+                                            val centerY = rect.top + rect.height / 2f
+                                            
+                                            val dx = offset.x - centerX
+                                            val dy = offset.y - centerY
+                                            val distance = sqrt(dx * dx + dy * dy)
+                                            
+                                            if (distance <= hitSlopPx && distance < minDistance) {
+                                                minDistance = distance
+                                                closestNote = annotation.item
+                                            }
+                                        }
+
+                                        // 2. Si hay una nota cerca (Hit Slop), siempre tiene prioridad
+                                        if (closestNote != null) {
+                                            val noteParts = closestNote!!.split("_")
+                                            if (noteParts.size == 4) {
+                                                notesViewModel.openEditor(
+                                                    verseKey = closestNote!!,
+                                                    bookId = noteParts[1].toInt(),
+                                                    chapter = noteParts[2].toInt(),
+                                                    verseNumber = noteParts[3].toInt()
+                                                )
+                                                return@detectTapGestures
+                                            }
+                                        }
+
+                                        // 3. Si no hay nota, verificamos si se tocó el texto de un versículo (Marcadores)
                                         annotatedString.getStringAnnotations(tag = "VERSE", start = charOffset, end = charOffset)
                                             .firstOrNull()?.let { annotation ->
                                                 val verseNum = annotation.item.toInt()
