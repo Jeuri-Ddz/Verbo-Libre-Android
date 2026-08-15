@@ -2,14 +2,12 @@ package com.mi.bibliarv1960.data.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(
-    tableName = "devotionals",
-    indices = [Index(value = ["book_id", "chapter", "verse"], unique = true)]
+    tableName = "devotionals"
 )
 @Serializable
 data class DevotionalEntity(

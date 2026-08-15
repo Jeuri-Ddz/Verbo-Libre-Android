@@ -47,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,12 @@ fun BookmarksScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Marcadores", fontWeight = FontWeight.Bold) },
+                title = { 
+                    Text(
+                        "Marcadores", 
+                        style = MaterialTheme.typography.titleLarge
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onOpenDrawer) {
                         Icon(
@@ -360,4 +366,29 @@ fun AddCategoryDialog(
             }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun BookmarksScreenPreview() {
+    MaterialTheme {
+        // Mocking ViewModel is hard, but we can wrap the UI if it was decoupled.
+        // Since it's not, I'll just show a simplified version or just tell the user.
+        // Actually, let's just show the TopAppBar to see the font.
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { 
+                        Text(
+                            "Marcadores", 
+                            style = MaterialTheme.typography.titleLarge
+                        ) 
+                    }
+                )
+            }
+        ) { padding ->
+            Box(Modifier.padding(padding))
+        }
+    }
 }

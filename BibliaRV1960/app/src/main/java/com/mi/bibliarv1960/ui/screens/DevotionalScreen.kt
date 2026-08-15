@@ -157,17 +157,22 @@ fun DevotionalScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                devotional?.let { dev ->
-                    DevotionalCard(
-                        topic = dev.topic,
-                        verseText = dev.verseText,
-                        reference = dev.reference,
-                        reflection = dev.reflection,
-                        modifier = Modifier.fillMaxWidth(0.95f)
-                    )
+                BoxWithConstraints(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    val maxCardHeight = maxHeight
+                    devotional?.let { dev ->
+                        DevotionalCard(
+                            topic = dev.topic,
+                            verseText = dev.verseText,
+                            reference = dev.reference,
+                            reflection = dev.reflection,
+                            modifier = Modifier
+                                .fillMaxWidth(0.95f)
+                                .heightIn(max = maxCardHeight)
+                        )
+                    }
                 }
             }
 
@@ -176,9 +181,9 @@ fun DevotionalScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 devotional?.let { dev ->
                     LinoButton(
@@ -199,14 +204,14 @@ fun DevotionalScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(22.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Verbo Libre",
                     fontFamily = FontFamily.Serif,
                     fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.5f),
                     modifier = Modifier
-                        .padding(bottom = 24.dp)
+                        .padding(bottom = 12.dp)
                         .clickable { viewModel.nextDevotionalPreview() }
                 )
             }

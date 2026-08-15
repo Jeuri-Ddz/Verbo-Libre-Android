@@ -18,15 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Paleta reutilizada del proyecto (navy/gold/cream), ver DevotionalCard.kt.
- * IA: si estos valores ya existen centralizados en un Theme.kt, usa esas
- * referencias en vez de estos literales.
- */
-private val NavyColor = Color(0xFF2E4A66)
-private val GoldColor = Color(0xFFB9915A)
-private val CreamColor = Color(0xFFFBFAF6)
-
-/**
  * Ícono pequeño junto a un versículo. Relleno (sólido) si ya tiene nota,
  * contorno si no. Tocarlo abre el editor.
  */
@@ -44,13 +35,13 @@ fun VerseNoteIndicator(
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .background(GoldColor, CircleShape)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape)
             )
         } else {
             Icon(
                 imageVector = Icons.Outlined.EditNote,
                 contentDescription = "Añadir nota",
-                tint = NavyColor.copy(alpha = 0.35f),
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -68,12 +59,12 @@ fun NoteEditorSheet(
     state: NoteEditorState,
     verseText: String,
     reference: String, // ej: "Juan 3:16"
+    translationName: String? = null,
     onTextChange: (String) -> Unit,
     onSave: () -> Unit,
     onDelete: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    val GoldColor = Color(0xFFB9915A)
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
@@ -87,12 +78,29 @@ fun NoteEditorSheet(
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 24.dp)
         ) {
-            Text(
-                text = reference,
-                style = MaterialTheme.typography.titleLarge,
-                fontFamily = FontFamily.Serif,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = reference,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = FontFamily.Serif,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (translationName != null) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Surface(
+                        color = MaterialTheme.colorScheme.secondary,
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp)
+                    ) {
+                        Text(
+                            text = translationName,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            fontSize = 11.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
+                }
+            }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = verseText,
@@ -102,7 +110,7 @@ fun NoteEditorSheet(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = GoldColor.copy(alpha = 0.3f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
@@ -111,13 +119,13 @@ fun NoteEditorSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 120.dp, max = 220.dp),
-                placeholder = { Text("Escribe tu reflexión o notas de estudio...") },
+                placeholder = { Text("Escribe tu reflexión o notas de estudio...", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = GoldColor,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 )
@@ -144,5 +152,29 @@ fun NoteEditorSheet(
                 }
             }
         }
+    }
+}
+
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun NoteEditorSheetPreview() {
+    MaterialTheme {
+        NoteEditorSheet(
+            state = NoteEditorState(
+                verseKey = "rv1960_1_1_1",
+                bookId = 1,
+                chapter = 1,
+                verseNumber = 1,
+                text = "Esta es una nota de prueba.",
+                isNew = false
+            ),
+            verseText = "En el principio creó Dios los cielos y la tierra.",
+            reference = "Génesis 1:1",
+            translationName = "RV1960",
+            onTextChange = {},
+            onSave = {},
+            onDelete = {},
+            onDismiss = {}
+        )
     }
 }

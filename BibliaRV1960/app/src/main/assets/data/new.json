@@ -1,0 +1,4075 @@
+[
+  {
+    "id": 1,
+    "book_id": 19,
+    "chapter": 23,
+    "verse": 1,
+    "reference": "Salmos 23:1",
+    "verse_text": "Jehová es mi pastor; nada me faltará.",
+    "topic": "Provisión",
+    "reflection": "Cuando la incertidumbre económica o el miedo al futuro aprietan, la mente busca garantías inmediatas. Descansar en el cuidado divino calma la ansiedad de no saber qué pasará mañana."
+  },
+  {
+    "id": 2,
+    "book_id": 40,
+    "chapter": 11,
+    "verse": 28,
+    "reference": "Mateo 11:28",
+    "verse_text": "Venid á mí todos los que estáis trabajados y cargados, y yo os haré descansar.",
+    "topic": "Descanso",
+    "reflection": "Llevar sobre los hombros el peso de las expectativas ajenas agota más que el trabajo físico. Acercarte a Dios exige soltar el orgullo de querer resolverlo todo con tus propias fuerzas."
+  },
+  {
+    "id": 3,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 5,
+    "reference": "Proverbios 3:5",
+    "verse_text": "Fíate de Jehová de todo tu corazón, Y no te apoyes en tu propia prudencia.",
+    "topic": "Confianza Plena",
+    "reflection": "Frente a dilemas donde la lógica humana parece acorralarte, confiar implica dar un paso sin ver todo el camino. Reconocer tus límites abre la puerta a una dirección superior y serena."
+  },
+  {
+    "id": 4,
+    "book_id": 19,
+    "chapter": 46,
+    "verse": 10,
+    "reference": "Salmos 46:10",
+    "verse_text": "Estad quietos, y conoced que yo soy Dios: Seré exaltado entre las gentes, engrandecido seré en la tierra.",
+    "topic": "Calma",
+    "reflection": "Cuando la urgencia por resolverlo todo te llene de frenesí, haz una pausa. Soltar el control no es rendirse, sino reconocer que Dios opera mejor donde tus manos dejan de forzar las cosas."
+  },
+  {
+    "id": 5,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 31,
+    "reference": "Isaías 40:31",
+    "verse_text": "Mas los que esperan á Jehová tendrán nuevas fuerzas; levantarán las alas como águilas.",
+    "topic": "Renovación",
+    "reflection": "El cansancio acumulado por semanas difíciles puede hacerte dudar de tu capacidad para seguir. La verdadera fortaleza no nace del agotamiento propio, sino de la espera paciente en Dios."
+  },
+  {
+    "id": 6,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 28,
+    "reference": "Romanos 8:28",
+    "verse_text": "Y sabemos que á los que á Dios aman, todas las cosas les ayudan á bien.",
+    "topic": "Propósito Redentor",
+    "reflection": "Un contratiempo inesperado o un plan frustrado suelen sentirse como un fracaso rotundo. Mirar la vida desde la fe te permite entender que incluso lo amargo moldea un bien más profundo."
+  },
+  {
+    "id": 7,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 6,
+    "reference": "Filipenses 4:6",
+    "verse_text": "Por nada estéis afanosos; sino sean notorias vuestras peticiones delante de Dios en toda oración y ruego.",
+    "topic": "Paz Mental",
+    "reflection": "Dar vueltas a un problema durante la noche solo alimenta la inquietud y quita el sueño. Expresar con libertad tus temores en oración transfiere esa angustia a quien cuida de ti."
+  },
+  {
+    "id": 8,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 13,
+    "reference": "Filipenses 4:13",
+    "verse_text": "Todo lo puedo en Cristo que me fortalece.",
+    "topic": "Fortaleza Diaria",
+    "reflection": "Enfrentar tareas complejas o asumir nuevas responsabilidades despierta a menudo la inseguridad. Recordar el sustento divino no te exime del esfuerzo, pero te da valor para avanzar."
+  },
+  {
+    "id": 9,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 105,
+    "reference": "Salmos 119:105",
+    "verse_text": "Lámpara es á mis pies tu palabra, Y lumbrera á mi camino.",
+    "topic": "Guía",
+    "reflection": "Buscar orientación en medio de opiniones contradictorias produce confusión e indecisión. La verdad de la Biblia ilumina el siguiente paso inmediato, aunque el futuro lejano aún no sea visible."
+  },
+  {
+    "id": 10,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 3,
+    "reference": "Proverbios 16:3",
+    "verse_text": "Encomienda á Jehová tus obras, Y tus pensamientos serán afirmados.",
+    "topic": "Dirección",
+    "reflection": "Planificar proyectos sin considerar la voluntad divina suele desembocar en frustración y tensión. Entregar tus metas desde el inicio brinda claridad mental y ordena tus prioridades."
+  },
+  {
+    "id": 11,
+    "book_id": 24,
+    "chapter": 29,
+    "verse": 11,
+    "reference": "Jeremías 29:11",
+    "verse_text": "Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal.",
+    "topic": "Esperanza Viva",
+    "reflection": "Sostenerse firme cuando las circunstancias parecen desfavorables exige mirar más allá de lo visible. La intención de Dios para tu vida busca edificar tu paz, no destruir tu camino."
+  },
+  {
+    "id": 12,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 1,
+    "reference": "Salmos 27:1",
+    "verse_text": "Jehová es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de my vida: ¿de quién he de atemorizarme?",
+    "topic": "Valentía",
+    "reflection": "El temor a la confrontación o al rechazo personal puede paralizarte en decisiones cruciales. Apoyar tu seguridad en el poder de Dios disipa la sombra que proyectan las amenazas externas."
+  },
+  {
+    "id": 13,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 8,
+    "reference": "Salmos 34:8",
+    "verse_text": "Gustad, y ved que es bueno Jehová: Dichoso el hombre que confía en él.",
+    "topic": "Experiencia Personal",
+    "reflection": "Escuchar testimonios ajenos motiva, pero nada reemplaza experimentar la bondad divina en tu propia vida. Acercarte con un corazón dispuesto transforma el conocimiento teórico en vivencia real."
+  },
+  {
+    "id": 14,
+    "book_id": 48,
+    "chapter": 6,
+    "verse": 9,
+    "reference": "Gálatas 6:9",
+    "verse_text": "No nos cansemos, pues, de hacer bien; que á su tiempo segaremos, si no hubiéremos desmayado.",
+    "topic": "Perseverancia",
+    "reflection": "Hacer lo correcto sin recibir reconocimiento inmediato genera desgaste y tentación de desistir. Mantener la constancia en el bien produce frutos duraderos que se manifiestan al tiempo debido."
+  },
+  {
+    "id": 15,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 5,
+    "reference": "Santiago 1:5",
+    "verse_text": "Y si alguno de vosotros tiene falta de sabiduría, pídala á Dios, el cual da á todos abundantemente.",
+    "topic": "Sabiduría",
+    "reflection": "Tomar decisiones importantes en momentos de desconcierto exige más que impulso o intuición. Pedir la luz de Dios te otorga discernimiento para actuar con prudencia y sin remordimientos."
+  },
+  {
+    "id": 16,
+    "book_id": 43,
+    "chapter": 14,
+    "verse": 27,
+    "reference": "Juan 14:27",
+    "verse_text": "La paz os dejo, mi paz os doy: yo no os la doy como el mundo la da. No se turbe vuestro corazón, ni tenga miedo.",
+    "topic": "Paz Verdadera",
+    "reflection": "Buscar la tranquilidad en el control externo resulta frágil cuando las circunstancias cambian. La paz que Cristo ofrece sostiene el alma incluso en medio de las tempestades más intensas."
+  },
+  {
+    "id": 17,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 33,
+    "reference": "Mateo 6:33",
+    "verse_text": "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.",
+    "topic": "Prioridades",
+    "reflection": "El afán por cubrir múltiples demandas diarias desplaza con frecuencia lo verdaderamente esencial. Ordenar la vida priorizando la presencia divina devuelve el equilibrio a cada tarea restante."
+  },
+  {
+    "id": 18,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 2,
+    "reference": "Salmos 121:2",
+    "verse_text": "Mi socorro viene de Jehová, Que hizo los cielos y la tierra.",
+    "topic": "Auxilio",
+    "reflection": "Cuando las dificultades superan tus recursos humanos, la desesperación intenta dominar la mente. Mirar al Creador fortalece la convicción de que nunca estás desamparado en la prueba."
+  },
+  {
+    "id": 19,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 1,
+    "reference": "Salmos 103:1",
+    "verse_text": "Bendice, alma mía, á Jehová, Y bendiga todo mi ser su santo nombre.",
+    "topic": "Gratitud del Alma",
+    "reflection": "La rutina puede hacer que pases por alto los constantes beneficios que recibes cada día. Hacer una pausa para agradecer consciente y de corazón renueva el gozo y sana la queja habitual."
+  },
+  {
+    "id": 20,
+    "book_id": 20,
+    "chapter": 4,
+    "verse": 23,
+    "reference": "Proverbios 4:23",
+    "verse_text": "Sobre toda cosa guardada guarda tu corazón; Porque de él mana la vida.",
+    "topic": "Cuidado Interior",
+    "reflection": "Exponerte sin filtro a resentimientos, chismes o envidias termina por contaminar tus actitudes. Proteger tus pensamientos de influencias nocivas preserva la pureza y la paz de tus acciones."
+  },
+  {
+    "id": 21,
+    "book_id": 52,
+    "chapter": 5,
+    "verse": 18,
+    "reference": "1 Tesalonicenses 5:18",
+    "verse_text": "Dad gracias en todo; porque esta es la voluntad de Dios para con vosotros en Cristo Jesús.",
+    "topic": "Gratitud Continua",
+    "reflection": "Reconocer motivos de agradecimiento en días complejos requiere un cambio voluntario de perspectiva. Cultivar la gratitud en todo momento transforma la queja en una actitud de fe consciente."
+  },
+  {
+    "id": 22,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 4,
+    "reference": "Salmos 37:4",
+    "verse_text": "Deléitate asimismo en Jehová, Y él te concederá las peticiones de tu corazón.",
+    "topic": "Deleite Espiritual",
+    "reflection": "Cuando buscas la presencia de Dios por quién es y no por lo que te da, tus anhelos se transforman. Hallar gozo en él alinea los deseos íntimos de tu alma con un propósito verdadero."
+  },
+  {
+    "id": 23,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 10,
+    "reference": "Proverbios 18:10",
+    "verse_text": "Torre fuerte es el nombre de Jehová: A él correrá el justo, y será levantado.",
+    "topic": "Refugio Seguro",
+    "reflection": "Ante noticias desalentadoras o presiones inesperadas, la tentación es apoyarse en soluciones humanas frágiles. Acudir a Dios como baluarte otorga una firmeza que las crisis no pueden derribar."
+  },
+  {
+    "id": 24,
+    "book_id": 49,
+    "chapter": 4,
+    "verse": 32,
+    "reference": "Efesios 4:32",
+    "verse_text": "Antes sed los unos con los otros benignos, misericordiosos, perdonándoos los unos á los otros.",
+    "topic": "Perdón Mutuo",
+    "reflection": "Guardar ofensas pasadas amarga el trato cotidiano y desgasta las relaciones con quienes amas. Extender el perdón que tú mismo has recibido libera tu corazón del peso del rencor."
+  },
+  {
+    "id": 25,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 3,
+    "reference": "Isaías 26:3",
+    "verse_text": "Tú le guardarás en completa paz, cuyo pensamiento en ti persevera; porque en ti ha confiado.",
+    "topic": "Firmeza Mental",
+    "reflection": "Permitir que la mente se llene de escenarios catastróficos destruye la tranquilidad del día a día. Enfocar los pensamientos en la fidelidad divina produce un sosiego inexpugnable."
+  },
+  {
+    "id": 26,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 19,
+    "reference": "Santiago 1:19",
+    "verse_text": "Por esto, mis amados hermanos, todo hombre sea pronto para oir, tardío para hablar, tardío para airarse;",
+    "topic": "Escucha",
+    "reflection": "Cuando una discusión acalorada amenaza con arruinar una relación, la prisa por defender la posición propia bloquea el entendimiento. Silenciar el impulso de responder de inmediato abre espacio a la paciencia."
+  },
+  {
+    "id": 27,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 14,
+    "reference": "Mateo 5:14",
+    "verse_text": "Vosotros sois la luz del mundo: una ciudad asentada sobre un monte no se puede esconder.",
+    "topic": "Testimonio",
+    "reflection": "Enfrentar la presión social ocultando tus convicciones atenúa la fuerza de tu ejemplo. Mantenerte íntegro en las decisiones diarias es una luz constante que orienta y anima a quienes te rodean a actuar con rectitud."
+  },
+  {
+    "id": 28,
+    "book_id": 45,
+    "chapter": 12,
+    "verse": 12,
+    "reference": "Romanos 12:12",
+    "verse_text": "Gozosos en la esperanza; sufridos en la tribulación; constantes en la oración;",
+    "topic": "Perseverancia",
+    "reflection": "Atravesar una etapa de incertidumbre prolongada desgasta el ánimo y tienta a rendirse. Recordar que las dificultades son temporales y mantener un diálogo sincero con Dios fortalece la paciencia para sostener la marcha."
+  },
+  {
+    "id": 29,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 19,
+    "reference": "Filipenses 4:19",
+    "verse_text": "Mi Dios, pues, suplirá todo lo que os falta conforme á sus riquezas en gloria en Cristo Jesús.",
+    "topic": "Sustento",
+    "reflection": "La preocupación por las facturas o el presupuesto familiar suele opacar la tranquilidad diaria. Aprender a trabajar con esmero mientras confías en que la provisión divina nunca falla alivia la carga del mañana."
+  },
+  {
+    "id": 30,
+    "book_id": 19,
+    "chapter": 16,
+    "verse": 8,
+    "reference": "Salmos 16:8",
+    "verse_text": "A Jehová he puesto siempre delante de mí: porque está á mi diestra, no seré conmovido.",
+    "topic": "Estabilidad",
+    "reflection": "Sentir que el entorno se desmorona ante imprevistos genera vértigo e inestabilidad emocional. Mantener la mirada en Dios como prioridad constante otorga un ancla firme para no ceder ante el pánico ni la desesperación."
+  },
+  {
+    "id": 31,
+    "book_id": 25,
+    "chapter": 3,
+    "verse": 25,
+    "reference": "Lamentaciones 3:25",
+    "verse_text": "Bueno es Jehová á los que en él esperan, al alma que le buscare.",
+    "topic": "Espera",
+    "reflection": "Afrontar tiempos de espera prolongada sin ver avances tangibles desgasta la paciencia humana. Buscar activamente a Dios en la oración durante el silencio renueva la certeza de que su bondad actúa aun entre bastidores."
+  },
+  {
+    "id": 32,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 5,
+    "reference": "Salmos 37:5",
+    "verse_text": "Encomienda á Jehová tu camino, Y espera en él; y él hará.",
+    "topic": "Entrega",
+    "reflection": "Intentar controlar cada detalle del futuro genera una tensión constante en los proyectos. Soltar las expectativas rígidas y confiar el rumbo a Dios aporta la tranquilidad necesaria para avanzar con serenidad."
+  },
+  {
+    "id": 33,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 114,
+    "reference": "Salmos 119:114",
+    "verse_text": "Mi escondedero y mi escudo eres tú: En tu palabra he esperado.",
+    "topic": "Refugio Seguro",
+    "reflection": "Cuando las críticas injustas o los conflictos laborales sacuden tu seguridad emocional, buscar aislamiento solo aumenta el dolor. Hallar cobijo en las promesas bíblicas restaura tu paz y te resguarda del desgaste."
+  },
+  {
+    "id": 34,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 6,
+    "reference": "Proverbios 3:6",
+    "verse_text": "Reconócelo en todos tus caminos, Y él enderezará tus veredas.",
+    "topic": "Orientación",
+    "reflection": "Enfrentar encrucijadas cotidianas suele producir indecisión y temor a equivocarse. Consultar a Dios en cada decisión ordinaria aclara las prioridades y abre sendas de sabiduría donde antes había bloqueo."
+  },
+  {
+    "id": 35,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 14,
+    "reference": "Colosenses 3:14",
+    "verse_text": "Y sobre todas estas cosas vestíos de caridad, la cual es el vínculo de la perfección.",
+    "topic": "Unión",
+    "reflection": "La fricción diaria y las pequeñas ofensas en la convivencia erosionan los lazos afectivos. Poner el amor consciente por encima de las diferencias actúa como el pegamento que sostiene y fortalece cualquier relación."
+  },
+  {
+    "id": 36,
+    "book_id": 62,
+    "chapter": 1,
+    "verse": 9,
+    "reference": "1 Juan 1:9",
+    "verse_text": "Si confesamos nuestros pecados, él es fiel y justo para que nos perdone nuestros pecados, y nos limpie de toda maldad.",
+    "topic": "Perdón Divino",
+    "reflection": "Cargar con la culpa de errores pasados genera una pesadez interior que frena la vida. Admitir las fallas ante Dios abre la puerta a un perdón que renueva la conciencia y devuelve la paz."
+  },
+  {
+    "id": 37,
+    "book_id": 49,
+    "chapter": 4,
+    "verse": 2,
+    "reference": "Efesios 4:2",
+    "verse_text": "Con toda humildad y mansedumbre, con paciencia soportándoos los unos á los otros en amor;",
+    "topic": "Convivencia",
+    "reflection": "El estrés y las prisas diarias suelen acortar el margen de paciencia hacia los defectos ajenos. Practicar la empatía consciente y la mansedumbre evita conflictos innecesarios y cultiva un entorno de verdadero respeto."
+  },
+  {
+    "id": 38,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 4,
+    "reference": "Isaías 26:4",
+    "verse_text": "Confiad en Jehová perpetuamente; porque en el Señor Jehová está la fortaleza de los siglos.",
+    "topic": "Firmeza Inconmovible",
+    "reflection": "Basar la seguridad personal en la estabilidad económica o profesional deja al alma expuesta a cualquier cambio impredecible. Apoyarse en la fortaleza inconmovible de Dios sostiene tu interior firme ante la tormenta."
+  },
+  {
+    "id": 39,
+    "book_id": 19,
+    "chapter": 31,
+    "verse": 24,
+    "reference": "Salmos 31:24",
+    "verse_text": "Esforzaos todos vosotros los que esperáis en Jehová, Y tome aliento vuestro corazón.",
+    "topic": "Ánimo",
+    "reflection": "El desánimo surge de manera sutil cuando los proyectos no avanzan al ritmo deseado. Recordar que la esperanza puesta en Dios no defrauda inyecta la fuerza necesaria para renovar el entusiasmo y no claudicar."
+  },
+  {
+    "id": 40,
+    "book_id": 58,
+    "chapter": 10,
+    "verse": 23,
+    "reference": "Hebreos 10:23",
+    "verse_text": "Mantengamos firme la profesión de nuestra fe sin doblarnos; que fiel es el que prometió:",
+    "topic": "Fidelidad",
+    "reflection": "Frente a la presión del entorno por amoldarse a valores cambiantes, mantener la fe exige convicción. Recordar el carácter fiel de Dios da sustento al espíritu para permanecer firme sin negociar la integridad personal."
+  },
+  {
+    "id": 41,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 2,
+    "reference": "Salmos 103:2",
+    "verse_text": "Bendice, alma mía, á Jehová, Y no olvides ninguno de sus beneficios.",
+    "topic": "Memoria Agradecida",
+    "reflection": "Habituarse a las bendiciones cotidianas hace que pasen inadvertidas ante las dificultades inmediatas. Hacer una pausa deliberada para recordar los favores recibidos transforma la insatisfacción en profunda gratitud."
+  },
+  {
+    "id": 42,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 1,
+    "reference": "Proverbios 15:1",
+    "verse_text": "La blanda respuesta quita la ira: Mas la palabra áspera hace subir el furor.",
+    "topic": "Manejo de la Ira",
+    "reflection": "Responder con aspereza ante un reclamo o un tono agresivo solo eleva la tensión de una discusión. Elegir palabras serenas desactiva el conflicto y demuestra un dominio propio que edifica en lugar de destruir."
+  },
+  {
+    "id": 43,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 11,
+    "reference": "Salmos 119:11",
+    "verse_text": "En mi corazón he guardado tus dichos, Para no pecar contra ti.",
+    "topic": "Guía Interior",
+    "reflection": "Atravesar situaciones donde las decisiones morales no son obvias genera confusión interior. Meditar con frecuencia en la verdad bíblica graba principios firmes en la mente, sirviendo de brújula al tomar decisiones."
+  },
+  {
+    "id": 44,
+    "book_id": 48,
+    "chapter": 6,
+    "verse": 10,
+    "reference": "Gálatas 6:10",
+    "verse_text": "Así que, según tengamos oportunidad, hagamos bien á todos, y mayormente á los de la familia de la fe.",
+    "topic": "Generosidad Activa",
+    "reflection": "La rutina acelerada con frecuencia nos vuelve indiferentes ante la necesidad ajena. Aprovechar las oportunidades diarias para realizar actos sencillos de bondad enriquece a quien da tanto como a quien recibe."
+  },
+  {
+    "id": 45,
+    "book_id": 52,
+    "chapter": 5,
+    "verse": 11,
+    "reference": "1 Tesalonicenses 5:11",
+    "verse_text": "Por lo cual, consolaos los unos á los otros, y edificaos los unos á los otros, así como lo hacéis.",
+    "topic": "Edificación Mutua",
+    "reflection": "Escuchar críticas destructivas en el entorno laboral o familiar desgasta la confianza de cualquiera. Ofrecer palabras sinceras de aliento y valoración mutua fortalece la autoestima y construye lazos verdaderos."
+  },
+  {
+    "id": 46,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 165,
+    "reference": "Salmos 119:165",
+    "verse_text": "Mucha paz tienen los que aman tu ley; Y no hay para ellos tropiezo.",
+    "topic": "Paz Profunda",
+    "reflection": "Cuando las opiniones contradictorias y el desorden social provocan zozobra, la mente busca un referente claro. Amar e interiorizar la verdad bíblica otorga una calma profunda que impide desplomarse ante la turbulencia."
+  },
+  {
+    "id": 47,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 24,
+    "reference": "Proverbios 18:24",
+    "verse_text": "El hombre que tiene amigos, ha de mostrarse amigo: Y amigo hay más conjunto que el hermano.",
+    "topic": "Amistad Leal",
+    "reflection": "Experimentar la soledad en momentos difíciles hace valorar el valor inestimable de la lealtad. Cultivar relaciones auténticas mediante la presencia y el apoyo mutuo crea vínculos más fuertes que la distancia."
+  },
+  {
+    "id": 48,
+    "book_id": 43,
+    "chapter": 15,
+    "verse": 12,
+    "reference": "Juan 15:12",
+    "verse_text": "Este es mi mandamiento: Que os améis los unos á los otros, como yo os he amado.",
+    "topic": "Amor Fraternal",
+    "reflection": "Exigir comprensión a los demás mientras guardamos rencor dificulta las relaciones humanas. Tomar como referente el amor paciente de Cristo nos impulsa a perdonar y tratar a los demás con consideración real."
+  },
+  {
+    "id": 49,
+    "book_id": 58,
+    "chapter": 10,
+    "verse": 35,
+    "reference": "Hebreos 10:35",
+    "verse_text": "No perdáis pues vuestra confianza, que tiene grande remuneración de galardón.",
+    "topic": "Firmeza",
+    "reflection": "Cuando los frutos tardan en aparecer y el agotamiento sugiere abandonar un proyecto valioso, ceder es tentador. Mantener la fe firme asegura que la constancia silenciosa dará recompensas duraderas a su debido tiempo."
+  },
+  {
+    "id": 50,
+    "book_id": 24,
+    "chapter": 17,
+    "verse": 7,
+    "reference": "Jeremías 17:7",
+    "verse_text": "Bendito el varón que se fía en Jehová, y cuya confianza es Jehová.",
+    "topic": "Confianza Plena",
+    "reflection": "Depender únicamente de las circunstancias externas genera inseguridad cuando los recursos tambalean. Cimentar las decisiones y esperanzas en la fidelidad divina aporta la estabilidad que permanece frente a las crisis."
+  },
+  {
+    "id": 51,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 116,
+    "reference": "Salmos 119:116",
+    "verse_text": "Susténtame conforme á tu palabra, y viviré: Y no me avergüences de mi esperanza.",
+    "topic": "Sostén constante",
+    "reflection": "El temor a que las fuerzas fallen antes de alcanzar una meta genera desgaste. Confiar en la sustentación divina brinda el respaldo necesario para perseverar firmemente sin ceder ante la desanimación."
+  },
+  {
+    "id": 52,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 14,
+    "reference": "Salmos 27:14",
+    "verse_text": "Aguarda á Jehová; Esfuérzate, y aliéntese tu corazón: Sí, aguarda á Jehová.",
+    "topic": "Paciencia firme",
+    "reflection": "La impaciencia al esperar una respuesta importante genera ansiedad. Mantener la firmeza mientras esperas el momento oportuno fortalece el carácter y otorga la serenidad necesaria para tomar decisiones sabias."
+  },
+  {
+    "id": 53,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 29,
+    "reference": "Isaías 40:29",
+    "verse_text": "El da esfuerzo al cansado, y multiplica las fuerzas al que no tiene ningunas.",
+    "topic": "Renovación de fuerzas",
+    "reflection": "Soportar semanas de agotamiento físico y mental debilita la motivación. Buscar el descanso en Dios renueva la fuerza interior para continuar afrontando los compromisos cotidianos con claridad y serenidad."
+  },
+  {
+    "id": 54,
+    "book_id": 19,
+    "chapter": 147,
+    "verse": 3,
+    "reference": "Salmos 147:3",
+    "verse_text": "El sana á los quebrantados de corazón, Y liga sus dolores.",
+    "topic": "Restauración interior",
+    "reflection": "Cargar con el dolor de una herida emocional dificulta disfrutar el presente. Permitir que la restauración divina actúe en el corazón alivia la amargura y abre espacio para una paz auténtica y duradera."
+  },
+  {
+    "id": 55,
+    "book_id": 19,
+    "chapter": 56,
+    "verse": 3,
+    "reference": "Salmos 56:3",
+    "verse_text": "En el día que temo, Yo en ti confío.",
+    "topic": "Confianza en la angustia",
+    "reflection": "Sentir incertidumbre antes de tomar una decisión importante vulnera la seguridad personal. Elegir la confianza en Dios en medio de la duda transforma la zozobra en una paz serena para avanzar."
+  },
+  {
+    "id": 56,
+    "book_id": 20,
+    "chapter": 21,
+    "verse": 23,
+    "reference": "Proverbios 21:23",
+    "verse_text": "El que guarda su boca y su lengua, Su alma guarda de angustias.",
+    "topic": "Prudencia al hablar",
+    "reflection": "Reaccionar con palabras apresuradas durante una discusión suele provocar remordimientos y enredos innecesarios. Guardar la boca con serenidad protege tus relaciones y preserva la tranquilidad del espíritu."
+  },
+  {
+    "id": 57,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 130,
+    "reference": "Salmos 119:130",
+    "verse_text": "Peh. La exposición de tus palabras ilumina; Hace entender á los simples.",
+    "topic": "Claridad de criterio",
+    "reflection": "Navegar entre infinidad de opiniones contradictorias sobre un dilema ético llena la mente de duda. Acudir a la verdad bíblica imparte un entendimiento claro que aclara el panorama y facilita elegir el bien."
+  },
+  {
+    "id": 58,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 15,
+    "reference": "Colosenses 3:15",
+    "verse_text": "Y la paz de Dios gobierne en vuestros corazones, á la cual asimismo sois llamados en un cuerpo; y sed agradecidos.",
+    "topic": "Paz gobernante",
+    "reflection": "Permitir que el estrés controle tus reacciones genera tensión permanente en tus relaciones. Dejar que la paz divina dirija las emociones modera los impulsos y permite resolver tensiones con serenidad."
+  },
+  {
+    "id": 59,
+    "book_id": 53,
+    "chapter": 3,
+    "verse": 3,
+    "reference": "2 Tesalonicenses 3:3",
+    "verse_text": "Mas fiel es el Señor, que os confirmará y guardará del mal.",
+    "topic": "Fidelidad divina",
+    "reflection": "Experimentar la deslealtad o el cambio de actitud de personas cercanas hiere la confianza. Reafirmar la certidumbre en la fidelidad invariable de Dios restaura la firmeza interior ante cualquier decepción."
+  },
+  {
+    "id": 60,
+    "book_id": 19,
+    "chapter": 86,
+    "verse": 11,
+    "reference": "Salmos 86:11",
+    "verse_text": "Enséñame, oh Jehová, tu camino; caminaré yo en tu verdad: Consolida mi corazón para que tema tu nombre.",
+    "topic": "Integridad de corazón",
+    "reflection": "La tentación de tomar atajos cuestionables ante un apuro personal pone a prueba tu firmeza moral. Pedir dirección para actuar con integridad alinea tus convicciones y te otorga una conciencia serena."
+  },
+  {
+    "id": 61,
+    "book_id": 60,
+    "chapter": 1,
+    "verse": 13,
+    "reference": "1 Pedro 1:13",
+    "verse_text": "Por lo cual, teniendo ceñidos los lomos de vuestro entendimiento, sed sobrios, y esperad perfectamente en la gracia.",
+    "topic": "Enfoque mental",
+    "reflection": "Dejarse llevar por pensamientos derrotistas distorsiona la realidad y resta dinamismo. Mantener la mente enfocada y centrada en la esperanza permite afrontar los retos cotidianos con plena claridad."
+  },
+  {
+    "id": 62,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 111,
+    "reference": "Salmos 119:111",
+    "verse_text": "Por heredad he tomado tus testimonios para siempre; Porque son el gozo de mi corazón.",
+    "topic": "Gozo constante",
+    "reflection": "Buscar la alegría solo en la aprobación ajena o en lo material produce una satisfacción pasajera. Valorar la verdad divina como un tesoro personal brinda un gozo profundo que no depende del entorno."
+  },
+  {
+    "id": 63,
+    "book_id": 19,
+    "chapter": 16,
+    "verse": 11,
+    "reference": "Salmos 16:11",
+    "verse_text": "Me mostrarás la senda de la vida: Hartura de gozos hay con tu presencia; Delicias en tu diestra para siempre.",
+    "topic": "Senda de vida",
+    "reflection": "Sentir que caminas sin un rumbo claro genera desorientación y apatía en tus tareas diarias. Buscar la presencia de Dios revela la ruta adecuada y llena el alma de un contento que supera todo vacío."
+  },
+  {
+    "id": 64,
+    "book_id": 19,
+    "chapter": 62,
+    "verse": 5,
+    "reference": "Salmos 62:5",
+    "verse_text": "Alma mía, en Dios solamente reposa; Porque de él es mi esperanza.",
+    "topic": "Reposo del alma",
+    "reflection": "Cuando las presiones saturan tus pensamientos, la mente lucha por conciliar el descanso. Aquietar el espíritu sabiendo que tu expectativa está en Dios restaura la paz e imparte un verdadero reposo nocturno."
+  },
+  {
+    "id": 65,
+    "book_id": 19,
+    "chapter": 33,
+    "verse": 20,
+    "reference": "Salmos 33:20",
+    "verse_text": "Nuestra alma esperó á Jehová: Nuestra ayuda y nuestro escudo es él.",
+    "topic": "Protección cercana",
+    "reflection": "Sentirse desprotegido frente a contingencias inesperadas crea una constante sensación de vulnerabilidad. Reconocer el amparo divino como un escudo real calma la preocupación y fortalece la confianza diaria."
+  },
+  {
+    "id": 66,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 20,
+    "reference": "Proverbios 16:20",
+    "verse_text": "El entendido en la palabra hallará el bien: Y el que confía en Jehová es bienaventurado.",
+    "topic": "Bienaventuranza",
+    "reflection": "Tomar decisiones impulsivas sin reflexionar en sus consecuencias suele acarrear pesares. Prestar atención a la sabiduría divina y depositar la confianza en Dios asegura un caminar dichoso y con propósito."
+  },
+  {
+    "id": 67,
+    "book_id": 23,
+    "chapter": 30,
+    "verse": 15,
+    "reference": "Isaías 30:15",
+    "verse_text": "En descanso y en reposo seréis salvos; en quietud y en confianza será vuestra fortaleza.",
+    "topic": "Quietud interior",
+    "reflection": "Intentar resolver problemas complejos con agitación e hiperactividad solo incrementa la confusión. Guardar serenidad y confiar internamente renueva la claridad mental para actuar con eficacia."
+  },
+  {
+    "id": 68,
+    "book_id": 36,
+    "chapter": 3,
+    "verse": 17,
+    "reference": "Sofonías 3:17",
+    "verse_text": "Jehová es en medio de ti, poderoso, él salvará; se gozará sobre ti con alegría, callará de amor.",
+    "topic": "Amor restaurador",
+    "reflection": "El sentimiento de no ser suficiente o de haber fallado repetidamente socava la propia estima. Recordar que Dios habita en medio de ti con un amor incondicional disipa la culpa y renueva la valía personal."
+  },
+  {
+    "id": 69,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 143,
+    "reference": "Salmos 119:143",
+    "verse_text": "Aflicción y angustia me hallaron: Mas tus mandamientos fueron mis delicias.",
+    "topic": "Delicia en la prueba",
+    "reflection": "Cuando los aprietos y la angustia te alcanzan en la jornada diaria, el ánimo decae con facilidad. Encontrar consuelo en la verdad de Dios transforma el dolor en un aprendizaje de profunda madurez espiritual."
+  },
+  {
+    "id": 70,
+    "book_id": 49,
+    "chapter": 3,
+    "verse": 20,
+    "reference": "Efesios 3:20",
+    "verse_text": "Y á Aquél que es poderoso para hacer todas las cosas mucho más abundantemente de lo que pedimos ó entendemos,",
+    "topic": "Poder sobreabundante",
+    "reflection": "Limitar la expectativa de un cambio a tus propias capacidades estrecha la visión del futuro. Reconocer la dimensión del poder divino amplía la perspectiva y sostiene la fe ante desafíos imposibles."
+  },
+  {
+    "id": 71,
+    "book_id": 58,
+    "chapter": 13,
+    "verse": 8,
+    "reference": "Hebreos 13:8",
+    "verse_text": "Jesucristo es el mismo ayer, y hoy, y por los siglos.",
+    "topic": "Inmutabilidad",
+    "reflection": "La inestabilidad del entorno social y económico genera constante incertidumbre sobre lo que vendrá. Apoyarse en la inmutabilidad de Jesucristo brinda un ancla firme e inamovible frente a los cambios del mundo."
+  },
+  {
+    "id": 72,
+    "book_id": 62,
+    "chapter": 5,
+    "verse": 14,
+    "reference": "1 Juan 5:14",
+    "verse_text": "Y esta es la confianza que tenemos en él, que si pidiéremos alguna cosa conforme á su voluntad, él nos oye:",
+    "topic": "Confianza en la oración",
+    "reflection": "Dudar de si tus peticiones son escuchadas provoca desánimo al momento de orar. Saber que Dios atiende cuando buscas su voluntad brinda la seguridad de que ninguna oración sincera cae en saco roto."
+  },
+  {
+    "id": 73,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 107,
+    "reference": "Salmos 119:107",
+    "verse_text": "Afligido estoy en gran manera: Vivifícame, oh Jehová, conforme á tu palabra.",
+    "topic": "Vivificación en la aflicción",
+    "reflection": "Atravesar por momentos de profunda tristeza quita las ganas de emprender la rutina diaria. Acudir a las promesas divinas imparte una fuerza renovadora que devuelve el aliento al espíritu abatido."
+  },
+  {
+    "id": 74,
+    "book_id": 19,
+    "chapter": 100,
+    "verse": 4,
+    "reference": "Salmos 100:4",
+    "verse_text": "Entrad por sus puertas con reconocimiento, Por sus atrios con alabanza: Alabadle, bendecid su nombre.",
+    "topic": "Gratitud constante",
+    "reflection": "Fijar la atención únicamente en las carencias del día fomenta la queja y el descontento. Acercarse a Dios con reconocimiento transforma la perspectiva y permite valorar las bendiciones cotidianas."
+  },
+  {
+    "id": 75,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 50,
+    "reference": "Salmos 119:50",
+    "verse_text": "Este es mi consuelo en mi aflicción; Porque tu dicho me ha vivificado.",
+    "topic": "Consuelo eficaz",
+    "reflection": "Buscar consuelo en evasiones pasajeras deja un vacío al terminar el día. Dejar que la verdad bíblica penetre en el alma reconforta el espíritu con una esperanza viva y perdurable."
+  },
+  {
+    "id": 76,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 4,
+    "reference": "Salmos 34:4",
+    "verse_text": "Busqué á Jehová, y él me oyó, Y libróme de todos mis temores.",
+    "topic": "Temor y liberación",
+    "reflection": "Sentir que el miedo paraliza tus pasos ante un futuro incierto ahoga cualquier iniciativa. Expresar ese pánico en oración abre paso a un alivio que disipa las sombras del terror."
+  },
+  {
+    "id": 77,
+    "book_id": 20,
+    "chapter": 12,
+    "verse": 25,
+    "reference": "Proverbios 12:25",
+    "verse_text": "La solicitud en el corazón del hombre lo abate; Mas la buena palabra lo alegra.",
+    "topic": "Ánimo oportuno",
+    "reflection": "Cargar en solitario con preocupaciones agobiantes desgasta la alegría y nubla el pensamiento. Escuchar una palabra oportuna de aliento devuelve el vigor y renueva la perspectiva diaria."
+  },
+  {
+    "id": 78,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 3,
+    "reference": "Salmos 37:3",
+    "verse_text": "Confía en Jehová, y haz el bien; Y habitarás en la tierra, y te apacentarás de la verdad.",
+    "topic": "Estabilidad práctica",
+    "reflection": "Cuando la tentación de buscar atajos deshonestos surge ante la escasez, ceder parece fácil. Actuar con rectitud y confiar en el sustento diario arraiga tu estabilidad en bases sólidas."
+  },
+  {
+    "id": 79,
+    "book_id": 19,
+    "chapter": 9,
+    "verse": 9,
+    "reference": "Salmos 9:9",
+    "verse_text": "Y será Jehová refugio al pobre, Refugio para el tiempo de angustia.",
+    "topic": "Refugio en la angustia",
+    "reflection": "Experimentar vulnerabilidad económica o emocional deja una profunda sensación de desamparo. Encontrar amparo en la presencia divina asegura una defensa firme frente a los golpes rudos."
+  },
+  {
+    "id": 80,
+    "book_id": 20,
+    "chapter": 13,
+    "verse": 12,
+    "reference": "Proverbios 13:12",
+    "verse_text": "La esperanza que se demora es tormento del corazón; Mas árbol de vida es el deseo cumplido.",
+    "topic": "Esperanza paciente",
+    "reflection": "Ver que los proyectos se retrasan indefinidamente produce un desaliento que carcome la paciencia. Sostener la expectativa con fe transforma la pesada espera en un aliento de vida renovada."
+  },
+  {
+    "id": 81,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 34,
+    "reference": "Mateo 6:34",
+    "verse_text": "Así que, no os afanéis por el día de mañana; porque el día de mañana traerá su afán. Basta al día su mal.",
+    "topic": "Presente sereno",
+    "reflection": "Anticipar problemas futuros que quizás nunca ocurran desgasta las energías del presente. Concentrar tus esfuerzos en resolver lo inmediato alivia la mente de cargas innecesarias."
+  },
+  {
+    "id": 82,
+    "book_id": 19,
+    "chapter": 55,
+    "verse": 22,
+    "reference": "Salmos 55:22",
+    "verse_text": "Echa sobre Jehová tu carga, y él te sustentará; No dejará para siempre caído al justo.",
+    "topic": "Descarga emocional",
+    "reflection": "Cargar en silencio con responsabilidades abrumadoras asfixia la paz interior y agota el ánimo. Depositar ese peso en manos de Dios devuelve la capacidad de respirar con tranquilidad."
+  },
+  {
+    "id": 83,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 76,
+    "reference": "Salmos 119:76",
+    "verse_text": "Sea ahora tu misericordia para consolarme, Conforme á tu palabra á tu siervo.",
+    "topic": "Consuelo misericordioso",
+    "reflection": "Afrontar reproches o momentos de culpa personal hunde el ánimo en el desánimo profundo. Apelar a la misericordia divina restaura la autoestima espiritual y levanta el espíritu decaído."
+  },
+  {
+    "id": 84,
+    "book_id": 20,
+    "chapter": 14,
+    "verse": 30,
+    "reference": "Proverbios 14:30",
+    "verse_text": "El corazón apacible es vida de la carne; Mas la envidia es carcoma de los huesos.",
+    "topic": "Salud interior",
+    "reflection": "Comparar constantemente tus logros con los ajenos siembra un resentimiento sordo que daña tu salud. Cultivar la satisfacción con lo propio armoniza tus emociones y libera tu mente."
+  },
+  {
+    "id": 85,
+    "book_id": 19,
+    "chapter": 125,
+    "verse": 1,
+    "reference": "Salmos 125:1",
+    "verse_text": "Los que confían en Jehová son como el monte de Sión, que no se mueve, sino que permanece para siempre.",
+    "topic": "Firmeza inquebrantable",
+    "reflection": "Sentir que los cambios imprevistos sacuden tu estabilidad genera un profundo vértigo cotidiano. Apoyar tu seguridad en valores eternos otorga una firmeza que ninguna crisis puede derribar."
+  },
+  {
+    "id": 86,
+    "book_id": 19,
+    "chapter": 4,
+    "verse": 8,
+    "reference": "Salmos 4:8",
+    "verse_text": "En paz me acostaré, y asimismo dormiré; Porque tú solo, Jehová, me haces habitar confiado.",
+    "topic": "Descanso nocturno",
+    "reflection": "Repasar errores del día al caer la noche espanta el sueño y alimenta la inquietud mental. Entregar el control al Creador permite relajar las tensiones y conciliar un sueño reparador."
+  },
+  {
+    "id": 87,
+    "book_id": 23,
+    "chapter": 43,
+    "verse": 2,
+    "reference": "Isaías 43:2",
+    "verse_text": "Quando pasares por las aguas, yo seré contigo; y si por los ríos, no te anegarán.",
+    "topic": "Protección en pruebas",
+    "reflection": "Atravesar situaciones financieras o familiares que amenazan con desbordarte genera pánico. Saber que no estás solo en medio del desastre inyecta el valor necesario para seguir adelante."
+  },
+  {
+    "id": 88,
+    "book_id": 19,
+    "chapter": 18,
+    "verse": 30,
+    "reference": "Salmos 18:30",
+    "verse_text": "Dios, perfecto su camino: Es palabra de Jehová purificada: Escudo es a todos los que en él confían.",
+    "topic": "Camino perfecto",
+    "reflection": "Descubrir fallas en los planes trazados produce decepción y dudas sobre qué camino seguir. Confiar en la rectitud de los planes divinos aporta una certidumbre que alivia la frustración."
+  },
+  {
+    "id": 89,
+    "book_id": 34,
+    "chapter": 1,
+    "verse": 7,
+    "reference": "Nahúm 1:7",
+    "verse_text": "Bueno es Jehová para fortaleza en el día de la angustia; y conoce a los que en él confían.",
+    "topic": "Bondad oportuna",
+    "reflection": "Sentir que tus esfuerzos pasan desapercibidos en momentos críticos desalienta profundamente. Recordar que Dios reconoce y respalda a quienes confían en él renueva tus fuerzas íntimas."
+  },
+  {
+    "id": 90,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 9,
+    "reference": "Proverbios 16:9",
+    "verse_text": "El corazón del hombre piensa su camino: Mas Jehová endereza sus pasos.",
+    "topic": "Dirección soberana",
+    "reflection": "Trazar planes detallados que luego se frustran por imprevistos genera frustración y enojo. Aceptar que una guía superior encausa los pasos otorga paz frente a los cambios inevitables."
+  },
+  {
+    "id": 91,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 23,
+    "reference": "Salmos 37:23",
+    "verse_text": "Por Jehová son ordenados los pasos del hombre, y él encamina su vía.",
+    "topic": "Caminar seguro",
+    "reflection": "Avanzar por terrenos laborales desconocidos despierta inseguridad sobre el acierto de tus decisiones. Saber que tus pasos cuentan con dirección superior aporta la confianza para avanzar."
+  },
+  {
+    "id": 92,
+    "book_id": 19,
+    "chapter": 40,
+    "verse": 1,
+    "reference": "Salmos 40:1",
+    "verse_text": "Pacientemente esperé a Jehová, Y se inclinó a mí, y oyó mi clamor.",
+    "topic": "Respuesta oportuna",
+    "reflection": "Soportar un silencio prolongado ante una petición urgente desespera al espíritu humano. Mantener la calma en la espera confirma que el clamor sincero siempre encuentra un oído atento."
+  },
+  {
+    "id": 93,
+    "book_id": 19,
+    "chapter": 73,
+    "verse": 26,
+    "reference": "Salmos 73:26",
+    "verse_text": "Mi carne y mi corazón desfallecen: Mas la roca de mi corazón y mi porción es Dios para siempre.",
+    "topic": "Fortaleza interior",
+    "reflection": "Experimentar un agotamiento físico y emocional extremo hace dudar de la capacidad de resistencia. Apoyarse en la fortaleza divina rescata al espíritu del colapso y sostiene la vida."
+  },
+  {
+    "id": 94,
+    "book_id": 20,
+    "chapter": 17,
+    "verse": 22,
+    "reference": "Proverbios 17:22",
+    "verse_text": "El corazón alegre es buena medicina: Mas el espíritu triste seca los huesos.",
+    "topic": "Alegría restauradora",
+    "reflection": "Permitir que la queja constante domine el día deteriora el bienestar físico y mental. Cultivar un talante alegre y agradecido revitaliza el cuerpo y despeja la pesadez del entorno."
+  },
+  {
+    "id": 95,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 162,
+    "reference": "Salmos 119:162",
+    "verse_text": "Gózome yo en tu palabra, Como el que halla muchos despojos.",
+    "topic": "Tesoro espiritual",
+    "reflection": "Buscar satisfacción únicamente en bienes materiales deja un vacío recurrente al final de la jornada. Hallar deleite en la verdad bíblica enriquece el alma con un tesoro duradero y real."
+  },
+  {
+    "id": 96,
+    "book_id": 19,
+    "chapter": 145,
+    "verse": 18,
+    "reference": "Salmos 145:18",
+    "verse_text": "Cercano está Jehová a todos los que le invocan, A todos los que le invocan de veras.",
+    "topic": "Cercanía divina",
+    "reflection": "Sentir que la soledad te rodea en momentos de crisis produce una profunda desesperanza. Descubrir que la presencia de Dios está al alcance de una oración sincera devuelve el consuelo."
+  },
+  {
+    "id": 97,
+    "book_id": 20,
+    "chapter": 19,
+    "verse": 21,
+    "reference": "Proverbios 19:21",
+    "verse_text": "Muchos pensamientos hay en el corazón del hombre; Mas el consejo de Jehová permanecerá.",
+    "topic": "Propósito firme",
+    "reflection": "Cambiar constantemente de planes por temor al fracaso desordena las prioridades cotidianas. Alinear tus proyectos con principios duraderos otorga estabilidad frente a cualquier imprevisto."
+  },
+  {
+    "id": 98,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 1,
+    "reference": "Salmos 121:1",
+    "verse_text": "Alzaré mis ojos a los montes, ¿De dónde vendrá mi socorro?",
+    "topic": "Mirada elevada",
+    "reflection": "Fijar la atención exclusivamente en la magnitud de los problemas ahoga toda salida posible. Elevar la perspectiva hacia horizontes superiores reconecta el alma con una fuente de ayuda."
+  },
+  {
+    "id": 99,
+    "book_id": 23,
+    "chapter": 32,
+    "verse": 17,
+    "reference": "Isaías 32:17",
+    "verse_text": "Y el efecto de la justicia será paz; y la labor de la justicia, reposo y seguridad para siempre.",
+    "topic": "Fruto de rectitud",
+    "reflection": "Actuar de forma correcta bajo presión puede parecer desventajoso en el momento inmediato. Sostener la integridad trae a la larga una paz interior profunda y una seguridad inquebrantable."
+  },
+  {
+    "id": 100,
+    "book_id": 19,
+    "chapter": 23,
+    "verse": 6,
+    "reference": "Salmos 23:6",
+    "verse_text": "Ciertamente el bien y la misericordia me seguirán todos los días de mi vida: Y en la casa de Jehová moraré por largos días.",
+    "topic": "Bondad persistente",
+    "reflection": "Temer que el futuro inmediato esté desprovisto de respaldo genera ansiedad constante. Recordar que la bondad y el cuidado divino acompañan cada jornada disipa los temores del mañana."
+  },
+  {
+    "id": 101,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 28,
+    "reference": "Salmos 119:28",
+    "verse_text": "Deslícese mi alma de desmayo: Susténtame según tu palabra.",
+    "topic": "Fortaleza en el desmayo",
+    "reflection": "Cuando el desaliento te paraliza y cumplir con las obligaciones diarias parece imposible, aferrarse a una promesa firme devuelve el impulso necesario para continuar el camino."
+  },
+  {
+    "id": 102,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 7,
+    "reference": "Proverbios 3:7",
+    "verse_text": "No seas sabio en tu propia opinión: Teme a Jehová, y apártate del mal.",
+    "topic": "Humildad y prudencia",
+    "reflection": "Creer que lo sabes todo y rechazar cualquier consejo ajeno suele llevarte a cometer errores graves. Reconocer tus propias debilidades abre la puerta a una guía sabia y segura."
+  },
+  {
+    "id": 103,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 6,
+    "reference": "Salmos 34:6",
+    "verse_text": "Este pobre clamó, y oyóle Jehová, Y libróle de todas sus angustias.",
+    "topic": "Clamor y rescate",
+    "reflection": "Sentirte completamente desbordado por los problemas ahoga tu esperanza en medio de la rutina. Expresar ese ahogo en oración sincera moviliza una ayuda que disipa la angustia."
+  },
+  {
+    "id": 104,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 117,
+    "reference": "Salmos 119:117",
+    "verse_text": "Sústentame, y seré salvo, Y holgaréme siempre en tus estatutos.",
+    "topic": "Sostén y gozo",
+    "reflection": "Afrontar tareas que superan tus capacidades actuales genera un estrés constante y agobiante. Apoyar tu labor diaria en un respaldo superior devuelve la tranquilidad y el agrado por vivir."
+  },
+  {
+    "id": 105,
+    "book_id": 20,
+    "chapter": 12,
+    "verse": 18,
+    "reference": "Proverbios 12:18",
+    "verse_text": "Hay quienes hablan como hiriendo con espada; Mas la lengua de los sabios es medicina.",
+    "topic": "Poder de la palabra",
+    "reflection": "Un comentario imprudente o hiriente en el trabajo puede arruinar el ambiente y lastimar profundamente. Elegir palabras constructivas sana heridas y fomenta un clima de respeto mutuo."
+  },
+  {
+    "id": 106,
+    "book_id": 19,
+    "chapter": 28,
+    "verse": 8,
+    "reference": "Salmos 28:8",
+    "verse_text": "Jehová es la fortaleza de ellos, Y el refugio salvador de su ungido.",
+    "topic": "Fortaleza y refugio",
+    "reflection": "Cuando sientes que tus defensas físicas y emocionales colapsan ante las exigencias del día, buscar un amparo firme te devuelve la capacidad de resistir y superar el momento difícil."
+  },
+  {
+    "id": 107,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 4,
+    "reference": "Proverbios 15:4",
+    "verse_text": "La lengua apacible es árbol de vida; Mas la perversidad de ella es quebrantamiento de espíritu.",
+    "topic": "Medicina verbal",
+    "reflection": "Una discusión familiar subida de tono deja una sensación de agotamiento y tristeza profunda. Responder con gentileza desactiva la hostilidad y restaura la armonía en el hogar."
+  },
+  {
+    "id": 108,
+    "book_id": 19,
+    "chapter": 31,
+    "verse": 3,
+    "reference": "Salmos 31:3",
+    "verse_text": "Porque tú eres mi roca y mi castillo; Por tu nombre me guiarás y me criarás.",
+    "topic": "Guía y defensa",
+    "reflection": "Avanzar por un terreno laboral desconocido y hostil genera una intensa sensación de vulnerabilidad. Confiar en una dirección superior disipa el miedo y asegura un camino protegido."
+  },
+  {
+    "id": 109,
+    "book_id": 23,
+    "chapter": 41,
+    "verse": 13,
+    "reference": "Isaías 41:13",
+    "verse_text": "Porque yo Jehová soy tu Dios, que fortalezco tu mano, que te digo: No temas, yo te ayudé.",
+    "topic": "Sostén divino",
+    "reflection": "Sentir que tus capacidades no dan abasto ante una tarea compleja paraliza tus iniciativas. Saber que recibes respaldo invisible infunde el valor necesario para asumir nuevos retos."
+  },
+  {
+    "id": 110,
+    "book_id": 19,
+    "chapter": 46,
+    "verse": 1,
+    "reference": "Salmos 46:1",
+    "verse_text": "Dios es nuestro amparo y fortaleza, Nuestro pronto auxilio en las tribulaciones.",
+    "topic": "Auxilio oportuno",
+    "reflection": "Cuando una emergencia imprevista sacude tu estabilidad, la desesperación intenta dominar tus actos. Recordar que cuentas con ayuda inmediata calma la mente y ordena las prioridades."
+  },
+  {
+    "id": 111,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 32,
+    "reference": "Proverbios 16:32",
+    "verse_text": "Mejor es el que tarde se aira que el fuerte; y el que se enseñorea de su espíritu, que el que toma la ciudad.",
+    "topic": "Dominio propio",
+    "reflection": "Explotar en cólera ante una provocación cotidiana daña tus vínculos y deja un amargo remordimiento. Ejercer control sobre tus impulsos demuestra una madurez que evita grandes conflictos."
+  },
+  {
+    "id": 112,
+    "book_id": 19,
+    "chapter": 57,
+    "verse": 1,
+    "reference": "Salmos 57:1",
+    "verse_text": "Ten misericordia de mi, oh Dios, ten misericordia de mi; porque en ti ha confiado mi alma.",
+    "topic": "Confianza en la prueba",
+    "reflection": "Atravesar una temporada donde las críticas y la presión externa te cercan agota tus defensas. Refugiarte en la gracia divina devuelve el equilibrio emocional y disipa el temor."
+  },
+  {
+    "id": 113,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 7,
+    "reference": "Filipenses 4:7",
+    "verse_text": "Y la paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros pensamientos en Cristo Jesús.",
+    "topic": "Paz sobrenatural",
+    "reflection": "Analizar mil veces un problema sin hallar salida lógica produce un desgaste mental agobiante. Experimentar una calma inexplicable disuelve la confusión y despeja el panorama."
+  },
+  {
+    "id": 114,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 145,
+    "reference": "Salmos 119:145",
+    "verse_text": "Clamé con todo mi corazón; respóndeme, Jehová, y guardaré tus estatutos.",
+    "topic": "Clamor sincero",
+    "reflection": "Guardar silencio ante una pena profunda alimenta la soledad y entorpece cualquier intento de superación. Expresar tu dolor con honestidad abre la puerta a una respuesta restauradora."
+  },
+  {
+    "id": 115,
+    "book_id": 20,
+    "chapter": 17,
+    "verse": 3,
+    "reference": "Proverbios 17:3",
+    "verse_text": "El crisol para la plata, y la hornaza para el oro; pero Jehová prueba los corazones.",
+    "topic": "Prueba y carácter",
+    "reflection": "Sentir que atraviesas pruebas difíciles y desgastantes hace cuestionar el propósito de tanto sufrimiento. Comprender que estas situaciones purifican tu carácter otorga sentido al proceso."
+  },
+  {
+    "id": 116,
+    "book_id": 19,
+    "chapter": 91,
+    "verse": 2,
+    "reference": "Salmos 91:2",
+    "verse_text": "Diré yo á Jehová: Esperanza mía, y castillo mío; Mi Dios, en él confiaré.",
+    "topic": "Esperanza firme",
+    "reflection": "Cuando el panorama laboral y personal se vuelve incierto, buscar seguridades humanas resulta insuficiente. Declarar tu confianza en un refugio eterno restaura la estabilidad interior."
+  },
+  {
+    "id": 117,
+    "book_id": 19,
+    "chapter": 62,
+    "verse": 8,
+    "reference": "Salmos 62:8",
+    "verse_text": "Esperad en él en todo tiempo, oh pueblo; derramad delante de él vuestro corazón: Dios es nuestro refugio.",
+    "topic": "Desahogo espiritual",
+    "reflection": "Guardar resentimientos o temores en secreto ahoga tu energía y deteriora tu bienestar diario. Compartir sinceramente lo que hay en tu interior con Dios aligera la pesada carga."
+  },
+  {
+    "id": 118,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 21,
+    "reference": "Proverbios 18:21",
+    "verse_text": "La muerte y la vida están en poder de la lengua; y el que la ama comerá de sus frutos.",
+    "topic": "Consecuencia verbal",
+    "reflection": "Hablar con ligereza sobre los defectos de otros destruye la confianza y genera un ambiente tóxico. Cuidar lo que dices asegura relaciones sanas y cosecha frutos de paz a tu alrededor."
+  },
+  {
+    "id": 119,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 71,
+    "reference": "Salmos 119:71",
+    "verse_text": "Bueno me es haber sido humillado; Para que aprenda tus estatutos.",
+    "topic": "Aprendizaje en la prueba",
+    "reflection": "Sufrir un revés inesperado que golpea tu orgullo duele intensamente en el momento inicial. Con el tiempo, esa experiencia enseña humildad y redirige tus pasos hacia lo verdaderamente esencial."
+  },
+  {
+    "id": 120,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 12,
+    "reference": "Isaías 26:12",
+    "verse_text": "Jehová, tú nos darás paz; porque también hiciste en nosotros todas nuestras obras.",
+    "topic": "Paz en la labor",
+    "reflection": "Sentir que el esfuerzo puesto en tus proyectos cotidianos no rinde frutos genera frustración. Reconocer que la obra descansa en una dirección superior devuelve la calma al espíritu."
+  },
+  {
+    "id": 121,
+    "book_id": 19,
+    "chapter": 138,
+    "verse": 3,
+    "reference": "Salmos 138:3",
+    "verse_text": "En el día que clamé, me respondiste; Y esforzaste mi alma con vigor.",
+    "topic": "Respuesta y vigor",
+    "reflection": "Agotar tus energías intentando resolver todo por cuenta propia conduce al desaliento total. Recordar que tu clamor encuentra respuesta inmediata infunde una energía nueva para seguir."
+  },
+  {
+    "id": 122,
+    "book_id": 20,
+    "chapter": 20,
+    "verse": 22,
+    "reference": "Proverbios 20:22",
+    "verse_text": "No digas: Yo me vengaré; Espera a Jehová, y él te salvará.",
+    "topic": "Justicia paciente",
+    "reflection": "Experimentar una ofensa injusta despierta un impulso visceral de devolver el golpe de inmediato. Contener la revancha y delegar la justicia en manos expertas preserva tu integridad."
+  },
+  {
+    "id": 123,
+    "book_id": 19,
+    "chapter": 143,
+    "verse": 10,
+    "reference": "Salmos 143:10",
+    "verse_text": "Enséñame a hacer tu voluntad, porque tú eres mi Dios: Tu buen espíritu me guíe a tierra de rectitud.",
+    "topic": "Guía diaria",
+    "reflection": "Tomar decisiones importantes sin una dirección clara genera inseguridad y temor a equivocarse. Pedir una guía superior orienta tus pasos cotidianos hacia un terreno firme y seguro."
+  },
+  {
+    "id": 124,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 26,
+    "reference": "Proverbios 3:26",
+    "verse_text": "Porque Jehová será tu confianza, Y él preservará tu pie de ser preso.",
+    "topic": "Confianza preservadora",
+    "reflection": "Sentir que un error del pasado o una trampa laboral te acecha genera pánico constante. Apoyar tu seguridad en la protección divina evita que caigas en redes de temor paralizante."
+  },
+  {
+    "id": 125,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 3,
+    "reference": "Salmos 121:3",
+    "verse_text": "No dará tu pie al resbaladero; Ni se dormirá el que te guarda.",
+    "topic": "Cuidado constante",
+    "reflection": "El temor a cometer un fallo irreparable en un proyecto clave quita la tranquilidad mental. Saber que cuentas con un cuidado incesante otorga la calma necesaria para avanzar seguros."
+  },
+  {
+    "id": 126,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 6,
+    "reference": "Proverbios 3:6",
+    "verse_text": "Reconócelo en todos tus caminos, y él enderezará tus veredas.",
+    "topic": "Dirección divina",
+    "reflection": "Tomar decisiones importantes sin consultar una guía superior suele conducir a tropiezos innecesarios. Involucrar una sabiduría mayor en cada paso diario endereza el rumbo con seguridad."
+  },
+  {
+    "id": 127,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 7,
+    "reference": "Proverbios 3:7",
+    "verse_text": "No seas sabio en tu propia opinión; Teme a Jehová, y apártate del mal;",
+    "topic": "Sabiduría humilde",
+    "reflection": "Creer que lo sabes todo y que puedes resolver tus crisis por cuenta propia te aísla y desgasta. Aceptar tus límites y buscar una guía superior aporta la humildad que sana tu interior."
+  },
+  {
+    "id": 128,
+    "book_id": 19,
+    "chapter": 31,
+    "verse": 24,
+    "reference": "Salmos 31:24",
+    "verse_text": "Esforzaos todos los que esperáis en Jehová, Y tome aliento vuestro corazón.",
+    "topic": "Aliento oportuno",
+    "reflection": "Cuando el desaliento amenaza con apagar tus fuerzas, el peso de la rutina resulta insoportable. Buscar renovación en la promesa divina inyecta un vigor inesperado para seguir luchando."
+  },
+  {
+    "id": 129,
+    "book_id": 19,
+    "chapter": 32,
+    "verse": 8,
+    "reference": "Salmos 32:8",
+    "verse_text": "Te haré ensañar, y te enseñaré el camino en que has de andar; Sobre ti fijaré mis ojos.",
+    "topic": "Guía personal",
+    "reflection": "Estar en una encrucijada sin saber qué decisión tomar genera una angustia paralizante. Saber que una mirada atenta vigila tus pasos ofrece la dirección exacta que tanto necesitas hoy."
+  },
+  {
+    "id": 130,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 5,
+    "reference": "Salmos 37:5",
+    "verse_text": "Encomienda a Jehová tu camino, Y confía en él; y él hará.",
+    "topic": "Entrega total",
+    "reflection": "Intentar controlar cada detalle de un problema complejo agota mentalmente y produce frustración. Soltar las riendas y dejar que otra autoridad actúe descansa el alma de tanta tensión."
+  },
+  {
+    "id": 131,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 7,
+    "reference": "Salmos 37:7",
+    "verse_text": "Guarda silencio ante Jehová, y espera en él.",
+    "topic": "Silencio activo",
+    "reflection": "El ruido de las opiniones ajenas y la prisa por ver resultados inmediatos agitan tus pensamientos. Detenerte en un silencio reverente aquieta la mente y devuelve la perspectiva correcta."
+  },
+  {
+    "id": 132,
+    "book_id": 19,
+    "chapter": 42,
+    "verse": 5,
+    "reference": "Salmos 42:5",
+    "verse_text": "¿Por qué te abates, oh alma mía, y te turbas dentro de mí? Espera en Dios; porque aún he de alabarle.",
+    "topic": "Esperanza íntima",
+    "reflection": "Atravesar un bajón anímico sin causa aparente arrastra tu enfoque hacia la oscuridad. Cuestionar tu propio desaliento y dirigir la mirada a una esperanza viva transforma el panorama interior."
+  },
+  {
+    "id": 133,
+    "book_id": 19,
+    "chapter": 46,
+    "verse": 1,
+    "reference": "Salmos 46:1",
+    "verse_text": "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+    "topic": "Pronto auxilio",
+    "reflection": "Cuando una emergencia imprevista golpea tu puerta, la sensación de vulnerabilidad es absoluta. Contar con un apoyo inmediato y sólido cambia el pánico por una profunda tranquilidad."
+  },
+  {
+    "id": 134,
+    "book_id": 19,
+    "chapter": 56,
+    "verse": 4,
+    "reference": "Salmos 56:4",
+    "verse_text": "En Dios alabaré su palabra: En Dios he confiado; no temeré Lo que la carne me hiciere.",
+    "topic": "Valor firme",
+    "reflection": "Sentir la crítica o la hostilidad de quienes te rodean intimida y debilita tus convicciones. Apoyar tu valor en una verdad superior neutraliza el miedo al juicio y al rechazo humano."
+  },
+  {
+    "id": 135,
+    "book_id": 19,
+    "chapter": 62,
+    "verse": 2,
+    "reference": "Salmos 62:2",
+    "verse_text": "Él sola es mi roca y mi salvación: Es mi refugio; no resbalaré mucho.",
+    "topic": "Refugio seguro",
+    "reflection": "El miedo a cometer un error fatal y fracasar públicamente genera una tensión agobiante. Apoyarse en un refugio inquebrantable sostiene tus pasos cuando el terreno amenaza con ceder."
+  },
+  {
+    "id": 136,
+    "book_id": 19,
+    "chapter": 68,
+    "verse": 19,
+    "reference": "Salmos 68:19",
+    "verse_text": "Bendito el Señor; cada día nos colmará de beneficios El Dios de nuestra salud.",
+    "topic": "Beneficios diarios",
+    "reflection": "La rutina pesada suele cegar tus ojos ante los pequeños favores que recibes cada jornada. Detenerte a reconocer la bondad cotidiana disipa la queja y devuelve la gratitud al corazón."
+  },
+  {
+    "id": 137,
+    "book_id": 19,
+    "chapter": 71,
+    "verse": 5,
+    "reference": "Salmos 71:5",
+    "verse_text": "Porque tú, oh Señor Jehová, eres mi esperanza, Mi seguridad desde mi juventud.",
+    "topic": "Esperanza constante",
+    "reflection": "Ver pasar los años acumulando incertidumbres puede hacer tambalear tu seguridad interior. Recordar el respaldo que te ha sostenido desde el pasado afianza tu confianza para lo que viene."
+  },
+  {
+    "id": 138,
+    "book_id": 19,
+    "chapter": 86,
+    "verse": 15,
+    "reference": "Salmos 86:15",
+    "verse_text": "Mas tú, Señor, Dios misericordioso y clemente, Lento para la ira, y grande en misericordia y verdad.",
+    "topic": "Misericordia divina",
+    "reflection": "El peso de tus propias fallas y errores repetidos suele hundirte en la culpa y el temor. Descubrir un trato compasivo y paciente renueva tus fuerzas para intentar empezar de nuevo."
+  },
+  {
+    "id": 139,
+    "book_id": 19,
+    "chapter": 90,
+    "verse": 14,
+    "reference": "Salmos 90:14",
+    "verse_text": "Sácianos de mañana de tu misericordia; Y cantaremos y nos alegraremos todos nuestros días.",
+    "topic": "Saciedad matutina",
+    "reflection": "Despertar con un profundo vacío existencial antes de enfrentar los pendientes agota el ánimo. Buscar la plenitud en el afecto divino llena de alegría genuina cada hora de la jornada."
+  },
+  {
+    "id": 140,
+    "book_id": 19,
+    "chapter": 107,
+    "verse": 9,
+    "reference": "Salmos 107:9",
+    "verse_text": "Porque hartó al alma hambriana, Y llenó de bien al alma sedienta.",
+    "topic": "Saciedad profunda",
+    "reflection": "Intentar calmar la inquietud interior con distracciones pasajeras deja un rastro de vacío. Encontrar satisfacción en la fuente correcta alimenta el espíritu con una paz duradera."
+  },
+  {
+    "id": 141,
+    "book_id": 19,
+    "chapter": 118,
+    "verse": 6,
+    "reference": "Salmos 118:6",
+    "verse_text": "Jehová está por mí; no temeré lo que me pueda hacer el hombre.",
+    "topic": "Respaldo supremo",
+    "reflection": "El temor a la desaprobación o al ataque de otros paraliza tu capacidad de actuar con libertad. Saber que cuentas con un respaldo absoluto disipa el miedo a las intenciones ajenas."
+  },
+  {
+    "id": 142,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 114,
+    "reference": "Salmos 119:114",
+    "verse_text": "Mi escondedero y mi escudo eres tú: En tu palabra he esperado.",
+    "topic": "Escudo protector",
+    "reflection": "Sentirte expuesto y sin defensas ante la hostilidad del entorno genera una gran ansiedad. Encontrar refugio en una promesa verdadera protege tus emociones de cualquier golpe externo."
+  },
+  {
+    "id": 143,
+    "book_id": 19,
+    "chapter": 23,
+    "verse": 3,
+    "reference": "Salmos 23:3",
+    "verse_text": "Confortará mi alma; guiaráme por sendas de justicia por amor de su nombre.",
+    "topic": "Restauración interior",
+    "reflection": "Cuando el agotamiento emocional nubla tu mente y las fuerzas flaquean, el camino se vuelve pesado. Permitir que una presencia amorosa renueve tu espíritu devuelve la paz y el vigor."
+  },
+  {
+    "id": 144,
+    "book_id": 20,
+    "chapter": 19,
+    "verse": 21,
+    "reference": "Proverbios 19:21",
+    "verse_text": "Muchos pensamientos hay en el corazón del hombre; Mas el consejo de Jehová permanecerá.",
+    "topic": "Consejo firme",
+    "reflection": "Diseñar planes minuciosos que luego se derrumban deja una agobiante sensación de fracaso. Aceptar una dirección superior que trasciende tus cálculos aporta serenidad ante lo imprevisto."
+  },
+  {
+    "id": 145,
+    "book_id": 20,
+    "chapter": 29,
+    "verse": 25,
+    "reference": "Proverbios 29:25",
+    "verse_text": "El temor del hombre pondrá lazo; Mas el que confía en Jehová será levantado.",
+    "topic": "Libertad del miedo",
+    "reflection": "Preocuparte excesivamente por encajar y agradar a todos te encadena a una constante ansiedad. Apoyar tu validación en la confianza divina rompe esa atadura y eleva tu dignidad."
+  },
+  {
+    "id": 146,
+    "book_id": 23,
+    "chapter": 25,
+    "verse": 1,
+    "reference": "Isaías 25:1",
+    "verse_text": "Jehová, tú eres mi Dios; te exaltaré, alabaré tu nombre; porque has hecho maravillas.",
+    "topic": "Alabanza sincera",
+    "reflection": "Atravesar etapas de sequía espiritual apaga el deseo de reconocer los aciertos de la vida. Expresar gratitud y asombro ante los detalles cotidianos reconecta tu alma con el bienestar."
+  },
+  {
+    "id": 147,
+    "book_id": 34,
+    "chapter": 1,
+    "verse": 7,
+    "reference": "Nahúm 1:7",
+    "verse_text": "Bueno es Jehová para fortaleza en el día de la angustia; y conoce a los que en él confían.",
+    "topic": "Bondad en la prueba",
+    "reflection": "Sentir que las circunstancias adversas te desbordan provoca una profunda sensación de abandono. Recordar que existe una bondad constante sosteniéndote devuelve la calma al espíritu."
+  },
+  {
+    "id": 148,
+    "book_id": 19,
+    "chapter": 84,
+    "verse": 12,
+    "reference": "Salmos 84:12",
+    "verse_text": "Jehová de los ejércitos, Dichoso el hombre que confía en ti.",
+    "topic": "Dichosa confianza",
+    "reflection": "Buscar la felicidad en logros pasajeros deja un vacío persistente que nada sacia. Descansar en una confianza absoluta aporta una dicha genuina que impregna toda la existencia."
+  },
+  {
+    "id": 149,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 1,
+    "reference": "Salmos 27:1",
+    "verse_text": "Jehová es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién aterrorizaré?",
+    "topic": "Luz y defensa",
+    "reflection": "Enfrentar escenarios inciertos donde la amenaza de fracasar parece inminente siembra pánico. Apoyar tu seguridad en una protección eterna disipa cualquier sombra de temor en tu vida."
+  },
+  {
+    "id": 150,
+    "book_id": 19,
+    "chapter": 91,
+    "verse": 2,
+    "reference": "Salmos 91:2",
+    "verse_text": "Diré yo a Jehová: Esperanza mía, y castillo mío; Mi Dios, en él confiaré.",
+    "topic": "Confianza íntima",
+    "reflection": "Declarar tu dependencia en medio de la vulnerabilidad exige vencer el orgullo personal. Reconocer que necesitas un sostén superior transforma el temor en una certeza inquebrantable."
+  },
+  {
+    "id": 151,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 2,
+    "reference": "Salmos 103:2",
+    "verse_text": "Bendice, alma mía, a Jehová, y no olvides ninguno de sus beneficios.",
+    "topic": "Memoria agradecida",
+    "reflection": "Cuando el estrés diario nubla tu perspectiva y solo ves carencias, la queja se vuelve un hábito automático. Recordar las bondades pasadas devuelve la gratitud al corazón cansado."
+  },
+  {
+    "id": 152,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 13,
+    "reference": "Salmos 103:13",
+    "verse_text": "Como el padre se compadece de los hijos, se compadece Jehová de los que le temen.",
+    "topic": "Ternura divina",
+    "reflection": "Sentir que tus tropiezos constantes te descalifican genera una profunda distancia emocional. Descubrir una compasión paternal que no te condena sana tus culpas y te acoge con ternura."
+  },
+  {
+    "id": 153,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 105,
+    "reference": "Salmos 119:105",
+    "verse_text": "Lámpara es a mis pies tu palabra, y lumbrera a mi camino.",
+    "topic": "Guía segura",
+    "reflection": "Avanzar a ciegas por un futuro incierto provoca vértigo y miedo a tomar elecciones erróneas. Contar con una luz íntima que alumbra el paso inmediato disipa la parálisis y da dirección."
+  },
+  {
+    "id": 154,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 1,
+    "reference": "Salmos 121:1",
+    "verse_text": "Alzaré mis ojos a los montes: ¿De dónde vendrá mi socorro?",
+    "topic": "Búsqueda de auxilio",
+    "reflection": "Cuando los problemas te superan y la ayuda humana brilla por su ausencia, la desesperación acecha. Elevar la mirada hacia una fuente superior de ayuda reorienta toda tu esperanza."
+  },
+  {
+    "id": 155,
+    "book_id": 19,
+    "chapter": 139,
+    "verse": 23,
+    "reference": "Salmos 139:23",
+    "verse_text": "Examíname, oh Dios, y conoce mi corazón: Pruébame y conoce mis pensamientos;",
+    "topic": "Autenticidad interior",
+    "reflection": "Ocultar tus debilidades detrás de una fachada perfecta fatiga la mente y aisla tu verdadero ser. Permitir que una mirada sabia escrudiñe tu interior trae la libertad de ser honestos."
+  },
+  {
+    "id": 156,
+    "book_id": 20,
+    "chapter": 4,
+    "verse": 23,
+    "reference": "Proverbios 4:23",
+    "verse_text": "Sobre toda cosa guardada, guarda tu corazón; porque de él mana la vida.",
+    "topic": "Cuidado del alma",
+    "reflection": "Permitir que los agravios y las críticas amarguen tus pensamientos contamina tu bienestar diario. Proteger lo que dejas entrar a tu mente preserva tu paz emocional de daños profundos."
+  },
+  {
+    "id": 157,
+    "book_id": 20,
+    "chapter": 12,
+    "verse": 25,
+    "reference": "Proverbios 12:25",
+    "verse_text": "La solicitud en el corazón del hombre lo abate; mas la buena palabra la alegra.",
+    "topic": "Aliento sanador",
+    "reflection": "Cargar en solitario con preocupaciones asfixiantes arrebata la alegría y entumece las fuerzas. Escuchar un mensaje oportuno de apoyo rompe el aislamiento y devuelve el optimismo perdido."
+  },
+  {
+    "id": 158,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 1,
+    "reference": "Proverbios 15:1",
+    "verse_text": "La blanda respuesta quita la ira; mas la palabra áspera hace subir el furor.",
+    "topic": "Control verbal",
+    "reflection": "Responder con agresividad a una provocación injusta solo aviva un fuego destructivo e innecesario. Elegir la templanza al hablar desactiva los conflictos y fomenta un clima de paz."
+  },
+  {
+    "id": 159,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 3,
+    "reference": "Proverbios 16:3",
+    "verse_text": "Encomienda a Jehová tus obras, y tus pensamientos serán afirmados.",
+    "topic": "Enfoque mental",
+    "reflection": "Darle vueltas obsesivas a tus proyectos pendientes genera un desgaste mental paralizante. Depositar tus metas en manos de una guía superior estabiliza el pensamiento y da claridad."
+  },
+  {
+    "id": 160,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 24,
+    "reference": "Proverbios 18:24",
+    "verse_text": "El hombre que tiene amigos ha de mostrarse amigo; y amigo hay más unido que un hermano.",
+    "topic": "Lealtad genuina",
+    "reflection": "Sentir soledad a pesar de estar rodeado de gente evidencia la falta de vínculos profundos. Cultivar una compañía sincera y leal transforma la experiencia de caminar por la vida."
+  },
+  {
+    "id": 161,
+    "book_id": 21,
+    "chapter": 3,
+    "verse": 1,
+    "reference": "Eclesiastés 3:1",
+    "verse_text": "Todo tiene su tiempo, y todo lo que se quiere debajo del cielo tiene su hora.",
+    "topic": "Tiempo perfecto",
+    "reflection": "Angustiarte por no ver resultados inmediatos en tus metas frustra tu presente de forma inútil. Aceptar que cada etapa de la vida responde a un ritmo propio otorga una gran serenidad."
+  },
+  {
+    "id": 162,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 3,
+    "reference": "Isaías 26:3",
+    "verse_text": "Tú guardarás en completa paz a aquel cuyo pensamiento en ti persevera; porque en ti se ha confiado.",
+    "topic": "Paz mental",
+    "reflection": "La vorágine de noticias alarmantes agita la mente y roba la tranquilidad con facilidad. Mantener el enfoque mental anclado en una firme seguridad preserva una paz interior inalterable."
+  },
+  {
+    "id": 163,
+    "book_id": 23,
+    "chapter": 41,
+    "verse": 10,
+    "reference": "Isaías 41:10",
+    "verse_text": "No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo:",
+    "topic": "Fortaleza divina",
+    "reflection": "Enfrentar un desafío desconocido que te intimida hace que las rodillas flaqueen de temor. Escuchar un respaldo incondicional renueva tu valor para avanzar a pesar de la incertidumbre."
+  },
+  {
+    "id": 164,
+    "book_id": 23,
+    "chapter": 43,
+    "verse": 2,
+    "reference": "Isaías 43:2",
+    "verse_text": "Cuando pases por las aguas, yo seré contigo; y por los ríos, anegaránte no.",
+    "topic": "Protección en la prueba",
+    "reflection": "Sentir que una crisis imprevista amenaza con arrastrarte genera un terror paralizante. Saber que existe una presencia protectora en medio del peligro cambia por completo tu perspectiva."
+  },
+  {
+    "id": 165,
+    "book_id": 25,
+    "chapter": 3,
+    "verse": 22,
+    "reference": "Lamentaciones 3:22",
+    "verse_text": "Es por la misericordia de Jehová que no hemos sido consumidos, porque nunca decayeron sus misericordias.",
+    "topic": "Misericordia constante",
+    "reflection": "Reconocer tus continuos errores y fallas personales suele hundirte en el desaliento total. Descubrir una paciencia infinita que te sostiene a diario ofrece una nueva oportunidad hoy."
+  },
+  {
+    "id": 166,
+    "book_id": 25,
+    "chapter": 3,
+    "verse": 23,
+    "reference": "Lamentaciones 3:23",
+    "verse_text": "Nuevas son cada mañana; grande es tu fidelidad.",
+    "topic": "Renovación diaria",
+    "reflection": "Cargar con el peso de los fracasos de ayer entorpece la posibilidad de un nuevo comienzo. Saber que cada jornada ofrece un borrón y cuenta nueva restaura la esperanza en tu alma."
+  },
+  {
+    "id": 167,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 34,
+    "reference": "Mateo 6:34",
+    "verse_text": "Así que, no os afanéis por el día de mañana; porque el día de mañana traerá su afán.",
+    "topic": "Vivir el presente",
+    "reflection": "Anticipar escenarios catastróficos que quizás nunca ocurran desgasta tus energías vitales hoy. Enfocar tu atención únicamente en resolver el presente disipa la ansiedad innecesaria."
+  },
+  {
+    "id": 168,
+    "book_id": 40,
+    "chapter": 7,
+    "verse": 7,
+    "reference": "Mateo 7:7",
+    "verse_text": "Pedid, y se os dará; buscad, y hallaréis; llamad, y se os abrirá.",
+    "topic": "Perseverancia en la oración",
+    "reflection": "Callar tus necesidades por miedo a molestar o a no ser escuchado genera una profunda soledad. Expresar tus peticiones con confianza abre la puerta a una respuesta que reconforta."
+  },
+  {
+    "id": 169,
+    "book_id": 41,
+    "chapter": 9,
+    "verse": 23,
+    "reference": "Marcos 9:23",
+    "verse_text": "Jesús le dijo: Si puedes creer, al que cree todo es posible.",
+    "topic": "Fe transformadora",
+    "reflection": "Enfrentar un panorama que parece totalmente imposible paraliza cualquier iniciativa de cambio. Abrir la mente a una perspectiva de fe transforma los límites en nuevas oportunidades."
+  },
+  {
+    "id": 170,
+    "book_id": 43,
+    "chapter": 14,
+    "verse": 27,
+    "reference": "Juan 14:27",
+    "verse_text": "La paz os dejo, mi paz os doy: no como el mundo la da, yo os la doy. No se turbe vuestro corazón",
+    "topic": "Paz interior",
+    "reflection": "Vivir con el pecho oprimido por la agitación constante del entorno agota tus emociones. Aceptar un calmante espiritual que supera las circunstancias devuelve la quietud a tu interior."
+  },
+  {
+    "id": 171,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 28,
+    "reference": "Romanos 8:28",
+    "verse_text": "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien",
+    "topic": "Propósito oculto",
+    "reflection": "Sufrir un revés inesperado que arruina tus planes genera desconcierto y frustración profunda. Descubrir que hasta los tropiezos contribuyen a tu crecimiento cambia por completo tu dolor."
+  },
+  {
+    "id": 172,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 7,
+    "reference": "Filipenses 4:7",
+    "verse_text": "Y la paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones",
+    "topic": "Paz superior",
+    "reflection": "Afrontar una crisis que desborda toda lógica humana deja la mente sin respuestas claras. Experimentar una calma inexplicable que protege tus emociones aporta el descanso que necesitas."
+  },
+  {
+    "id": 173,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 13,
+    "reference": "Filipenses 4:13",
+    "verse_text": "Todo lo puedo en Cristo que me fortalece.",
+    "topic": "Fuerza renovada",
+    "reflection": "Sentir que las demandas diarias sobrepasan por completo tu capacidad física e intelectual abruma. Conectar con una fuente inagotable de vigor interior impulsa a superar cualquier obstáculo."
+  },
+  {
+    "id": 174,
+    "book_id": 60,
+    "chapter": 5,
+    "verse": 7,
+    "reference": "1 Pedro 5:7",
+    "verse_text": "Echando toda vuestra ansiedad en él, porque él tiene cuidado de vosotros.",
+    "topic": "Descanso de cargas",
+    "reflection": "Cargar en solitario con el peso de los problemas agota tus reservas mentales y emocionales. Delegar tus preocupaciones en alguien que cuida de ti alivia instantáneamente tu espíritu."
+  },
+  {
+    "id": 175,
+    "book_id": 66,
+    "chapter": 21,
+    "verse": 4,
+    "reference": "Apocalipsis 21:4",
+    "verse_text": "Y enjugará Dios toda lágrima de los ojos de ellos; y la muerte no será más;",
+    "topic": "Consuelo definitivo",
+    "reflection": "Atravesar por pérdidas dolorosas que dejan un vacío irreparable entristece profundamente el alma. Saber que existe una promesa de restauración total consuela el presente con esperanza."
+  },
+  {
+    "id": 176,
+    "book_id": 19,
+    "chapter": 18,
+    "verse": 2,
+    "reference": "Salmos 18:2",
+    "verse_text": "Jehová, roca mía y castillo mío, y mi libertador; Dios mío, fuerte mío, en él confiaré; escudo mío, y el cuerno de mi salvación, mi alto refugio.",
+    "topic": "Refugio seguro",
+    "reflection": "Cuando las presiones externas amenazan tu estabilidad emocional, buscar un refugio seguro cambia el miedo por una profunda y sostenida confianza."
+  },
+  {
+    "id": 177,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 18,
+    "reference": "Salmos 34:18",
+    "verse_text": "Cercano está Jehová á los quebrantados de corazón; y á los contritos de espíritu salva.",
+    "topic": "Cercanía en el dolor",
+    "reflection": "Atravesar una etapa de profundo dolor deja el espíritu abatido y solitario. Saber que una presencia compasiva se acerca a consolarte devuelve la esperanza al alma."
+  },
+  {
+    "id": 178,
+    "book_id": 19,
+    "chapter": 40,
+    "verse": 2,
+    "reference": "Salmos 40:2",
+    "verse_text": "Y hizome sacar del pozo de la miseria, del lodo cenagoso; y puso mis pies sobre peña, y enderezó mis pasos.",
+    "topic": "Rescate seguro",
+    "reflection": "Sentir que te hundes en problemas sin salida genera desesperación. Experimentar un rescate inesperado afianza tus pasos sobre bases firmes y seguras para continuar."
+  },
+  {
+    "id": 179,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 24,
+    "reference": "Proverbios 3:24",
+    "verse_text": "Cuando te acostares, no tendrás temor; sino que te acostarás, y tu sueño será suave.",
+    "topic": "Sueño apacible",
+    "reflection": "Dar vueltas a las preocupaciones nocturnas roba el descanso indispensable. Confiar en una protección superior relaja las tensiones y permite conciliar un sueño reparador."
+  },
+  {
+    "id": 180,
+    "book_id": 23,
+    "chapter": 12,
+    "verse": 2,
+    "reference": "Isaías 12:2",
+    "verse_text": "He aquí Dios es salud mía; aseguraré y no temeré; porque mi fortaleza y mi canción es JAH Jehová, el cual es salvación mía.",
+    "topic": "Fortaleza confiada",
+    "reflection": "Reemplazar los pensamientos de derrota con la certeza de un respaldo divino disipa los temores más profundos y llena el interior de una renovada fortaleza."
+  },
+  {
+    "id": 181,
+    "book_id": 19,
+    "chapter": 9,
+    "verse": 10,
+    "reference": "Salmos 9:10",
+    "verse_text": "Y en ti confiarán los que conocen tu nombre; por cuanto tú, oh Jehová, no desamparaste a los que te buscaron.",
+    "topic": "Memoria fiel",
+    "reflection": "Recordar experiencias previas donde fuiste sostenido fortalece la confianza para afrontar los retos actuales sin temor alguno al desamparo."
+  },
+  {
+    "id": 182,
+    "book_id": 19,
+    "chapter": 125,
+    "verse": 2,
+    "reference": "Salmos 125:2",
+    "verse_text": "Como Jerusalén está alrededor de los montes, así Jehová está alrededor de su pueblo desde ahora y para siempre.",
+    "topic": "Cerco protector",
+    "reflection": "Sentirse vulnerable ante un entorno hostil genera constante inquietud. Saber que una protección invisible te rodea por completo aporta una paz inquebrantable."
+  },
+  {
+    "id": 183,
+    "book_id": 19,
+    "chapter": 90,
+    "verse": 12,
+    "reference": "Salmos 90:12",
+    "verse_text": "Enséñanos de tal modo a contar nuestros días, que traigamos al corazón sabiduría.",
+    "topic": "Sabiduría temporal",
+    "reflection": "Vivir en piloto automático desperdicia el tiempo en distracciones triviales y vacías. Meditar en la brevedad de la existencia ayuda a priorizar aquello que realmente importa en el corazón."
+  },
+  {
+    "id": 184,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 168,
+    "reference": "Salmos 119:168",
+    "verse_text": "Tus testimonios he guardado, y tus mandamientos; porque todos mis caminos están delante de ti.",
+    "topic": "Conciencia transparente",
+    "reflection": "Vivir con la plena conciencia de que cada acción es valorada orienta las decisiones cotidianas hacia una rectitud constante y transparente."
+  },
+  {
+    "id": 185,
+    "book_id": 19,
+    "chapter": 138,
+    "verse": 8,
+    "reference": "Salmos 138:8",
+    "verse_text": "Jehová cumplirá en mí su propósito: Tu misericordia, oh Jehová, es para siempre; no desampares la obra de tus manos.",
+    "topic": "Propósito cumplido",
+    "reflection": "Sentir que tu vida se estanca y no alcanza ningún objetivo relevante genera frustración. Saber que existe un diseño en marcha que te incluye rescata tu valor y da sentido al camino."
+  },
+  {
+    "id": 186,
+    "book_id": 20,
+    "chapter": 19,
+    "verse": 20,
+    "reference": "Proverbios 19:20",
+    "verse_text": "Escucha el consejo, y recibe la disciplina, para que seas sabio en tu vejez.",
+    "topic": "Consejo sabio",
+    "reflection": "Rechazar las correcciones oportunas por orgullo frena el crecimiento personal. Aceptar la guía de quienes tienen mayor experiencia forja un carácter sabio y prudente."
+  },
+  {
+    "id": 187,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 24,
+    "reference": "Proverbios 16:24",
+    "verse_text": "Panal de miel son los dichos suaves; suavidad al alma y medicina a los huesos.",
+    "topic": "Palabras sanadoras",
+    "reflection": "Las palabras amables y consideradas tienen el poder de sanar tensiones acumuladas y mejorar notablemente el bienestar emocional de quienes te rodean."
+  },
+  {
+    "id": 188,
+    "book_id": 20,
+    "chapter": 17,
+    "verse": 17,
+    "reference": "Proverbios 17:17",
+    "verse_text": "En todo tiempo ama el amigo; y es como hermano en la angustia.",
+    "topic": "Amistad fiel",
+    "reflection": "Contar con un apoyo sincero en los momentos más difíciles demuestra el verdadero valor de la lealtad y fortalece el espíritu ante la adversidad."
+  },
+  {
+    "id": 189,
+    "book_id": 21,
+    "chapter": 4,
+    "verse": 9,
+    "reference": "Eclesiastés 4:9",
+    "verse_text": "Mejores son dos que uno; porque tienen mejor paga de su trabajo.",
+    "topic": "Compañía valiosa",
+    "reflection": "Intentar cargar con todos los proyectos en solitario conduce al agotamiento y al desánimo. Compartir el esfuerzo con alguien de confianza multiplica los frutos y aligera cualquier peso."
+  },
+  {
+    "id": 190,
+    "book_id": 25,
+    "chapter": 3,
+    "verse": 24,
+    "reference": "Lamentaciones 3:24",
+    "verse_text": "Mi porción es Jehová, dijo mi alma; por tanto en él esperaré.",
+    "topic": "Esperanza segura",
+    "reflection": "Cuando los bienes materiales tambalean y la incertidumbre crece, depositar la esperanza en un valor eterno aporta una estabilidad que no se desvanece."
+  },
+  {
+    "id": 191,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 8,
+    "reference": "Isaías 40:8",
+    "verse_text": "Sécase la hierba, cójase la flor; mas la palabra del Dios nuestro permanece para siempre.",
+    "topic": "Verdad eterna",
+    "reflection": "La inestabilidad de los sistemas humanos contrasta con principios que nunca caducan. Anclar la vida en verdades eternas otorga seguridad ante los cambios."
+  },
+  {
+    "id": 192,
+    "book_id": 35,
+    "chapter": 3,
+    "verse": 18,
+    "reference": "Habacuc 3:18",
+    "verse_text": "Con todo, yo me alegraré en Jehová, y me gozaré en el Dios de mi salvación.",
+    "topic": "Gozo inquebrantable",
+    "reflection": "Ver derrumbarse tus planes materiales suele sepultar cualquier vestigio de entusiasmo. Decidir mantener el gozo interior a pesar de las ruinas demuestra una fortaleza espiritual madura."
+  },
+  {
+    "id": 193,
+    "book_id": 43,
+    "chapter": 16,
+    "verse": 33,
+    "reference": "Juan 16:33",
+    "verse_text": "Estas cosas os he hablado para que en mí tengáis paz. En el mundo tendréis aflicción; mas confiad, yo he vencido al mundo.",
+    "topic": "Paz en la prueba",
+    "reflection": "Aceptar que las dificultades forman parte de la vida cotidiana evita la frustración constante. Saber que hay una victoria asegurada infunde valor."
+  },
+  {
+    "id": 194,
+    "book_id": 41,
+    "chapter": 11,
+    "verse": 24,
+    "reference": "Marcos 11:24",
+    "verse_text": "Por tanto, os digo que todo lo que pidiereis orando, creed que lo recibiréis, y os vendrá.",
+    "topic": "Oración con fe",
+    "reflection": "Expresar tus peticiones con dudas constantes debilita la expectativa de ver una respuesta real. Orar con la firme convicción de ser escuchado transforma la pasividad en una certeza viva."
+  },
+  {
+    "id": 195,
+    "book_id": 43,
+    "chapter": 8,
+    "verse": 32,
+    "reference": "Juan 8:32",
+    "verse_text": "Y conoceréis la verdad, y la verdad os libertará.",
+    "topic": "Libertad verdadera",
+    "reflection": "Vivir bajo la sombra de mentiras internalizadas y culpas pasadas mantiene tu alma encadenada. Descubrir verdades profundas que rompen esquemas falsos otorga una liberación genuina."
+  },
+  {
+    "id": 196,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 31,
+    "reference": "Romanos 8:31",
+    "verse_text": "¿Pues qué diremos a esto? Si Dios es por nosotros, ¿quién contra nosotros?",
+    "topic": "Respaldo absoluto",
+    "reflection": "Sentirte rodeado de oposición y hostilidad en tus proyectos siembra un miedo paralizante. Saber que cuentas con un respaldo supremo desactiva el peso de cualquier amenaza externa."
+  },
+  {
+    "id": 197,
+    "book_id": 48,
+    "chapter": 6,
+    "verse": 2,
+    "reference": "Gálatas 6:2",
+    "verse_text": "Sobrellevad los unos las cargas de los otros, y cumplid así la ley de Cristo.",
+    "topic": "Solidaridad mutua",
+    "reflection": "Involucrarse genuinamente en aliviar el peso de quienes te rodean transforma la convivencia y edifica comunidades basadas en la solidaridad y el afecto."
+  },
+  {
+    "id": 198,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 4,
+    "reference": "Filipenses 4:4",
+    "verse_text": "Regocijaos en el Señor siempre. Otra vez digo: ¡Regocijaos!",
+    "topic": "Gozo constante",
+    "reflection": "Permitir que las dificultades cotidianas apaguen por completo tu sonrisa oscurece los días. Cultivar un gozo interior que trasciende el entorno inyecta luz y energía renovada al espíritu."
+  },
+  {
+    "id": 199,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 2,
+    "reference": "Colosenses 3:2",
+    "verse_text": "Poned la mira en las cosas de arriba, no en las de la tierra.",
+    "topic": "Perspectiva elevada",
+    "reflection": "Atraparnos en los problemas terrenales y los conflictos diarios asfixia la perspectiva mental. Elevar la mirada hacia horizontes superiores reorganiza las prioridades y devuelve la serenidad."
+  },
+  {
+    "id": 200,
+    "book_id": 59,
+    "chapter": 4,
+    "verse": 10,
+    "reference": "Santiago 4:10",
+    "verse_text": "Humillaos delante del Señor, y él os exaltará.",
+    "topic": "Humildad exaltada",
+    "reflection": "Abandonar la soberbia y reconocer las propias limitaciones ante Dios abre las puertas para recibir una dignidad renovada y un respaldo inesperado."
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "id": 1,
+    "book_id": 23,
+    "chapter": 41,
+    "verse": 10,
+    "reference": "Isaías 41:10",
+    "verse_text": "No temas, porque yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.",
+    "topic": "Confianza",
+    "reflection": "Hay días en que el miedo parece más grande que la fe, cuando las circunstancias nos hacen sentir solos frente a lo que no podemos controlar. Pero Dios no promete quitarnos la dificultad: promete quedarse en ella con nosotros. Su presencia no depende de que todo salga bien, sino de que Él sostiene, con su propia justicia, lo que nuestras fuerzas no alcanzan."
+  },
+  {
+    "id": 2,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 13,
+    "reference": "Filipenses 4:13",
+    "verse_text": "Todo lo puedo en Cristo que me fortalece.",
+    "topic": "Fortaleza",
+    "reflection": "Tu capacidad de resistir y vencer proviene de la fuerza que Él te imparte."
+  },
+  {
+    "id": 3,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 5,
+    "reference": "Proverbios 3:5",
+    "verse_text": "Fíate de Jehová de todo tu corazón.",
+    "topic": "Confianza",
+    "reflection": "Confiar a ciegas en Dios asegura tus pasos más que tu propio razonamiento."
+  },
+  {
+    "id": 4,
+    "book_id": 23,
+    "chapter": 41,
+    "verse": 10,
+    "reference": "Isaías 41:10",
+    "verse_text": "No temas, porque yo estoy contigo.",
+    "topic": "Presencia",
+    "reflection": "La certeza de su presencia disipa cualquier sombra de angustia."
+  },
+  {
+    "id": 5,
+    "book_id": 6,
+    "chapter": 1,
+    "verse": 9,
+    "reference": "Josué 1:9",
+    "verse_text": "Mira que te mando que te esfuerces y seas valiente.",
+    "topic": "Valentía",
+    "reflection": "El valor no es ausencia de miedo, es avanzar sabiendo que Él te respalda."
+  },
+  {
+    "id": 6,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 28,
+    "reference": "Romanos 8:28",
+    "verse_text": "A los que aman á Dios, todas las cosas les ayudan á bien.",
+    "topic": "Propósito",
+    "reflection": "Incluso lo que hoy no entiendes forma parte de un diseño para tu bien."
+  },
+  {
+    "id": 7,
+    "book_id": 19,
+    "chapter": 46,
+    "verse": 1,
+    "reference": "Salmos 46:1",
+    "verse_text": "Dios es nuestro amparo y fortaleza.",
+    "topic": "Refugio",
+    "reflection": "Cuando la tormenta arrecia, tu seguridad está en el refugio que no cae."
+  },
+  {
+    "id": 8,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 33,
+    "reference": "Mateo 6:33",
+    "verse_text": "Buscad primeramente el reino de Dios y su justicia.",
+    "topic": "Prioridad",
+    "reflection": "Priorizar lo eterno pone en orden cada necesidad terrenal."
+  },
+  {
+    "id": 9,
+    "book_id": 48,
+    "chapter": 5,
+    "verse": 22,
+    "reference": "Gálatas 5:22",
+    "verse_text": "El fruto del Espíritu es amor, gozo y paz.",
+    "topic": "Transformación",
+    "reflection": "Cuando Dios transforma tu interior, también cambia tu manera de vivir."
+  },
+  {
+    "id": 10,
+    "book_id": 55,
+    "chapter": 1,
+    "verse": 7,
+    "reference": "2 Timoteo 1:7",
+    "verse_text": "No nos ha dado Dios espíritu de cobardía, sino de poder.",
+    "topic": "Dominio Propio",
+    "reflection": "Tu espíritu fue equipado con firmeza para vencer cualquier temor."
+  },
+  {
+    "id": 11,
+    "book_id": 24,
+    "chapter": 29,
+    "verse": 11,
+    "reference": "Jeremías 29:11",
+    "verse_text": "Yo sé los pensamientos que tengo acerca de vosotros.",
+    "topic": "Esperanza",
+    "reflection": "Dios ya trazó un futuro lleno de paz; solo camina confiado."
+  },
+  {
+    "id": 12,
+    "book_id": 19,
+    "chapter": 23,
+    "verse": 1,
+    "reference": "Salmos 23:1",
+    "verse_text": "Jehová es mi pastor; nada me faltará.",
+    "topic": "Provisión",
+    "reflection": "Tenerlo a Él como guía garantiza que el alma nunca estará vacía."
+  },
+  {
+    "id": 13,
+    "book_id": 43,
+    "chapter": 14,
+    "verse": 6,
+    "reference": "Juan 14:6",
+    "verse_text": "Yo soy el camino, y la verdad, y la vida.",
+    "topic": "Dirección",
+    "reflection": "Cristo no solo muestra el rumbo, Él mismo es la ruta segura."
+  },
+  {
+    "id": 14,
+    "book_id": 58,
+    "chapter": 11,
+    "verse": 1,
+    "reference": "Hebreos 11:1",
+    "verse_text": "Es, pues, la fe la certeza de lo que se espera.",
+    "topic": "Certeza",
+    "reflection": "Tener fe es ver el respaldo de Dios antes de que la realidad cambie."
+  },
+  {
+    "id": 15,
+    "book_id": 19,
+    "chapter": 118,
+    "verse": 24,
+    "reference": "Salmos 118:24",
+    "verse_text": "Este es el día que hizo Jehová; nos gozaremos.",
+    "topic": "Gratitud",
+    "reflection": "Cada mañana es un regalo único para elegir la gratitud sobre la queja."
+  },
+  {
+    "id": 16,
+    "book_id": 46,
+    "chapter": 13,
+    "verse": 4,
+    "reference": "1 Corintios 13:4",
+    "verse_text": "El amor es sufrido, es benigno; el amor no tiene envidia.",
+    "topic": "Amor",
+    "reflection": "Amar de verdad exige paciencia y desprendimiento en lo cotidiano."
+  },
+  {
+    "id": 17,
+    "book_id": 49,
+    "chapter": 2,
+    "verse": 8,
+    "reference": "Efesios 2:8",
+    "verse_text": "Porque por gracia sois salvos por medio de la fe.",
+    "topic": "Gracia",
+    "reflection": "Tu rescate no es un logro propio, sino un regalo inmerecido."
+  },
+  {
+    "id": 18,
+    "book_id": 40,
+    "chapter": 11,
+    "verse": 28,
+    "reference": "Mateo 11:28",
+    "verse_text": "Venid á mí todos los que estáis trabajados y cargados.",
+    "topic": "Descanso",
+    "reflection": "Soltar el agotamiento en los brazos de Dios es hallar verdadero reposo."
+  },
+  {
+    "id": 19,
+    "book_id": 19,
+    "chapter": 91,
+    "verse": 1,
+    "reference": "Salmos 91:1",
+    "verse_text": "El que habita al abrigo del Altísimo morará bajo su sombra.",
+    "topic": "Protección",
+    "reflection": "Permanecer cerca de Dios te cubre con una seguridad impenetrable."
+  },
+  {
+    "id": 20,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 23,
+    "reference": "Colosenses 3:23",
+    "verse_text": "Y todo lo que hagáis, hacedlo de ánimo, como al Señor.",
+    "topic": "Servicio",
+    "reflection": "Cambiar el destinatario de tu esfuerzo transforma la rutina en adoración."
+  },
+  {
+    "id": 21,
+    "book_id": 62,
+    "chapter": 4,
+    "verse": 18,
+    "reference": "1 Juan 4:18",
+    "verse_text": "En el amor no hay temor; mas el perfecto amor echa fuera el temor.",
+    "topic": "Seguridad",
+    "reflection": "Experimentar el amor incondicional de Dios disipa toda inseguridad."
+  },
+  {
+    "id": 22,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 1,
+    "reference": "Salmos 27:1",
+    "verse_text": "Jehová es mi luz y mi salvación; ¿de quién temeré?",
+    "topic": "Iluminación",
+    "reflection": "Donde la presencia divina ilumina, la oscuridad pierde todo control."
+  },
+  {
+    "id": 23,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 3,
+    "reference": "Proverbios 16:3",
+    "verse_text": "Encomienda á Jehová tus obras, y tus pensamientos serán afirmados.",
+    "topic": "Proyectos",
+    "reflection": "Poner tus planes en manos de Dios le da claridad y firmeza a tu mente."
+  },
+  {
+    "id": 24,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 31,
+    "reference": "Isaías 40:31",
+    "verse_text": "Los que esperan á Jehová tendrán nuevas fuerzas.",
+    "topic": "Renovación",
+    "reflection": "Aprender a esperar en Dios renueva hasta el cansancio más profundo."
+  },
+  {
+    "id": 25,
+    "book_id": 60,
+    "chapter": 5,
+    "verse": 7,
+    "reference": "1 Pedro 5:7",
+    "verse_text": "Echando toda vuestra solicitud sobre él, porque él tiene cuidado de vosotros.",
+    "topic": "Alivio",
+    "reflection": "Entregarle tus ansiedades a Dios quita el peso de tus hombros."
+  },
+  {
+    "id": 26,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 8,
+    "reference": "Salmos 34:8",
+    "verse_text": "Gustad, y ved que es bueno Jehová.",
+    "topic": "Experiencia",
+    "reflection": "Comprobar la bondad de Dios requiere experimentarla en lo personal."
+  },
+  {
+    "id": 27,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 5,
+    "reference": "Santiago 1:5",
+    "verse_text": "Si alguno de vosotros tiene falta de sabiduría, pídala á Dios.",
+    "topic": "Discernimiento",
+    "reflection": "Dios responde con generosidad a quien busca sinceramente su sabiduría."
+  },
+  {
+    "id": 28,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 16,
+    "reference": "Mateo 5:16",
+    "verse_text": "Así alumbre vuestra luz delante de los hombres.",
+    "topic": "Testimonio",
+    "reflection": "Tus acciones cotidianas deben reflejar el amor divino hacia los demás."
+  },
+  {
+    "id": 29,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 2,
+    "reference": "Salmos 121:2",
+    "verse_text": "Mi socorro viene de Jehová, que hizo los cielos y la tierra.",
+    "topic": "Auxilio",
+    "reflection": "La ayuda que necesitas proviene del creador del universo entero."
+  },
+  {
+    "id": 30,
+    "book_id": 45,
+    "chapter": 12,
+    "verse": 2,
+    "reference": "Romanos 12:2",
+    "verse_text": "Transformaos por medio de la renovación de vuestro entendimiento.",
+    "topic": "Renovación",
+    "reflection": "Cambiar tu forma de pensar renueva tu forma de vivir cada día."
+  },
+  {
+    "id": 31,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 7,
+    "reference": "Filipenses 4:7",
+    "verse_text": "Y la paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros entendimientos en Cristo Jesús.",
+    "topic": "Tranquilidad",
+    "reflection": "Su paz protege tu mente en la tormenta."
+  },
+  {
+    "id": 32,
+    "book_id": 40,
+    "chapter": 28,
+    "verse": 20,
+    "reference": "Mateo 28:20",
+    "verse_text": "Enseñándoles que guarden todas las cosas que os he mandado; y he aquí, yo estoy con vosotros todos los días, hasta el fin del mundo. Amén.",
+    "topic": "Acompañamiento",
+    "reflection": "Su presencia diaria te sostiene siempre."
+  },
+  {
+    "id": 33,
+    "book_id": 20,
+    "chapter": 4,
+    "verse": 23,
+    "reference": "Proverbios 4:23",
+    "verse_text": "Sobre toda cosa guardada guarda tu corazón; Porque de él mana la vida.",
+    "topic": "Cuidado Interior",
+    "reflection": "Proteger tu interior guarda la fuente de la que fluye tu vida."
+  },
+  {
+    "id": 34,
+    "book_id": 52,
+    "chapter": 5,
+    "verse": 18,
+    "reference": "1 Tesalonicenses 5:18",
+    "verse_text": "Dad gracias en todo; porque esta es la voluntad de Dios para con vosotros en Cristo Jesús.",
+    "topic": "Gratitud",
+    "reflection": "Agradecer en todo transforma tu visión ante cualquier situación."
+  },
+  {
+    "id": 35,
+    "book_id": 19,
+    "chapter": 91,
+    "verse": 1,
+    "reference": "Salmos 91:1",
+    "verse_text": "El que habita al abrigo del Altísimo, Morará bajo la sombra del Omnipotente.",
+    "topic": "Protección",
+    "reflection": "Hacer de la presencia divina tu hogar ahuyenta todo temor."
+  },
+  {
+    "id": 36,
+    "book_id": 48,
+    "chapter": 6,
+    "verse": 9,
+    "reference": "Gálatas 6:9",
+    "verse_text": "No nos cansemos, pues, de hacer bien; que á su tiempo segaremos, si no hubiéremos desmayado.",
+    "topic": "Perseverancia",
+    "reflection": "Persevera en el bien; la cosecha llegará a su debido tiempo."
+  },
+  {
+    "id": 37,
+    "book_id": 49,
+    "chapter": 4,
+    "verse": 32,
+    "reference": "Efesios 4:32",
+    "verse_text": "Antes sed los unos con los otros benignos, misericordiosos, perdonándoos los unos á los otros, como también Dios os perdonó á vosotros en Cristo.",
+    "topic": "Misericordia",
+    "reflection": "Perdonar te libera del peso del rencor."
+  },
+  {
+    "id": 38,
+    "book_id": 58,
+    "chapter": 4,
+    "verse": 16,
+    "reference": "Hebreos 4:16",
+    "verse_text": "Lleguémonos pues confiadamente al trono de la gracia, para alcanzar misericordia, y hallar gracia para el oportuno socorro.",
+    "topic": "Acercamiento",
+    "reflection": "Acércate a Dios; su gracia te auxilia."
+  },
+  {
+    "id": 39,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 3,
+    "reference": "Isaías 26:3",
+    "verse_text": "Tú le guardarás en completa paz, cuyo pensamiento en ti persevera; porque en ti ha confiado.",
+    "topic": "Serenidad",
+    "reflection": "Mantener la mente fija en Dios produce serenidad permanente."
+  },
+  {
+    "id": 40,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 8,
+    "reference": "Salmos 34:8",
+    "verse_text": "Gustad, y ved que es bueno Jehová: Dichoso el hombre que confiará en él.",
+    "topic": "Experiencia",
+    "reflection": "Atreverse a confiar permite comprobar su infinita bondad."
+  },
+  {
+    "id": 41,
+    "book_id": 45,
+    "chapter": 15,
+    "verse": 13,
+    "reference": "Romanos 15:13",
+    "verse_text": "Y el Dios de esperanza os llene de todo gozo y paz en el creer, para que abundéis en esperanza por la virtud del Espíritu Santo.",
+    "topic": "Plenitud",
+    "reflection": "La esperanza de Dios llena tu corazón."
+  },
+  {
+    "id": 42,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 10,
+    "reference": "Proverbios 18:10",
+    "verse_text": "Torre fuerte es el nombre de Jehová: Á él correrá el justo, y será levantado.",
+    "topic": "Seguridad",
+    "reflection": "Buscar refugio en Dios garantiza protección ante la tormenta."
+  },
+  {
+    "id": 43,
+    "book_id": 62,
+    "chapter": 4,
+    "verse": 18,
+    "reference": "1 Juan 4:18",
+    "verse_text": "En el amor no hay temor; mas el perfecto amor echa fuera el temor: porque el temor tiene pena. De donde el que teme, no está perfecto en el amor.",
+    "topic": "Libertad",
+    "reflection": "El amor perfecto expulsa toda ansiedad."
+  },
+  {
+    "id": 44,
+    "book_id": 58,
+    "chapter": 12,
+    "verse": 2,
+    "reference": "Hebreos 12:2",
+    "verse_text": "Puestos los ojos en el autor y consumador de la fe, Jesús; el cual, habiéndole sido propuesto gozo, sufrió la cruz, menospreciando la vergüenza, y sentose á la diestra del trono de Dios.",
+    "topic": "Enfoque",
+    "reflection": "Fijar la mirada en Jesús te da impulso."
+  },
+  {
+    "id": 45,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 2,
+    "reference": "Salmos 103:2",
+    "verse_text": "Bendice, alma mía, á Jehová, Y no olvides ninguno de sus beneficios.",
+    "topic": "Memoria",
+    "reflection": "Recordar sus favores pasados fortalece tu fe en el presente."
+  },
+  {
+    "id": 46,
+    "book_id": 47,
+    "chapter": 5,
+    "verse": 17,
+    "reference": "2 Corintios 5:17",
+    "verse_text": "De modo que si alguno está en Cristo, nueva criatura es: las cosas viejas pasaron; he aquí todas son hechas nuevas.",
+    "topic": "Identidad",
+    "reflection": "En Cristo, tu pasado no determina tu nuevo comienzo."
+  },
+  {
+    "id": 47,
+    "book_id": 43,
+    "chapter": 14,
+    "verse": 27,
+    "reference": "Juan 14:27",
+    "verse_text": "La paz os dejo, mi paz os doy: yo no os la doy como el mundo la da. No se turbe vuestro corazón, ni tenga miedo.",
+    "topic": "Paz",
+    "reflection": "La paz de Cristo permanece firme aunque todo alrededor falle."
+  },
+  {
+    "id": 48,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 16,
+    "reference": "Mateo 5:16",
+    "verse_text": "Así alumbre vuestra luz delante de los hombres, para que vean vuestras buenas obras, y glorifiquen á vuestro Padre que está en los cielos.",
+    "topic": "Testimonio",
+    "reflection": "Tus acciones reflejan la luz de Dios."
+  },
+  {
+    "id": 49,
+    "book_id": 19,
+    "chapter": 118,
+    "verse": 24,
+    "reference": "Salmos 118:24",
+    "verse_text": "Este es el día que hizo Jehová; Nos gozaremos y alegraremos en él.",
+    "topic": "Presente",
+    "reflection": "El día de hoy es un regalo único para elegir la alegría."
+  },
+  {
+    "id": 50,
+    "book_id": 60,
+    "chapter": 2,
+    "verse": 9,
+    "reference": "1 Pedro 2:9",
+    "verse_text": "Mas vosotros sois linaje escogido, real sacerdocio, gente santa, pueblo adquirido, para que anunciéis las virtudes de aquel que os llamó de las tinieblas á su luz admirable.",
+    "topic": "Pertenencia",
+    "reflection": "Perteneces a Dios y fuiste rescatado."
+  },
+  {
+    "id": 51,
+    "book_id": 6,
+    "chapter": 24,
+    "verse": 15,
+    "reference": "Josué 24:15",
+    "verse_text": "Y si mal os parece servir á Jehová, escogeos hoy á quién sirváis... que yo y mi casa serviremos á Jehová.",
+    "topic": "Decisión",
+    "reflection": "Decidir servir a Dios hoy sostiene el rumbo de tu hogar."
+  },
+  {
+    "id": 52,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 1,
+    "reference": "Proverbios 15:1",
+    "verse_text": "La blanda respuesta quita la ira; Mas la palabra áspera hace subir el furor.",
+    "topic": "Mansedumbre",
+    "reflection": "Un tono apacible desarma discusiones y evita heridas."
+  },
+  {
+    "id": 53,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 22,
+    "reference": "Santiago 1:22",
+    "verse_text": "Mas sed hacedores de la palabra, y no tan solamente oidores, engañándoos á vosotros mismos.",
+    "topic": "Acción",
+    "reflection": "Poner en práctica lo aprendido transforma la vida real."
+  },
+  {
+    "id": 54,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 1,
+    "reference": "Salmos 27:1",
+    "verse_text": "JEHOVÁ es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién he de atemorizarme?",
+    "topic": "Certeza",
+    "reflection": "Cuando Dios fortalece tu vida, el miedo pierde fuerza."
+  },
+  {
+    "id": 55,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 31,
+    "reference": "Romanos 8:31",
+    "verse_text": "¿Pues qué diremos á esto? Si Dios por nosotros, ¿quién contra nosotros?",
+    "topic": "Respaldo",
+    "reflection": "Ninguna oposición supera el respaldo de Dios a tu lado."
+  },
+  {
+    "id": 56,
+    "book_id": 23,
+    "chapter": 43,
+    "verse": 2,
+    "reference": "Isaías 43:2",
+    "verse_text": "Cuando pasares por las aguas, yo seré contigo; y si por los ríos, no te anegarán. Cuando pasares por el fuego, no te quemarás, ni la llama arderá en ti.",
+    "topic": "Presencia",
+    "reflection": "Su presencia te protege en la prueba."
+  },
+  {
+    "id": 57,
+    "book_id": 33,
+    "chapter": 6,
+    "verse": 8,
+    "reference": "Miqueas 6:8",
+    "verse_text": "Oh hombre, él te ha declarado qué sea lo bueno, y qué pida de ti Jehová: solamente hacer juicio, y amar misericordia, y humillarte para caminar con tu Dios.",
+    "topic": "Humildad",
+    "reflection": "Actúa con justicia y camina humilde."
+  },
+  {
+    "id": 58,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 33,
+    "reference": "Mateo 6:33",
+    "verse_text": "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.",
+    "topic": "Prioridades",
+    "reflection": "Poner a Dios primero ordena todas las demás áreas de la vida."
+  },
+  {
+    "id": 59,
+    "book_id": 55,
+    "chapter": 3,
+    "verse": 16,
+    "reference": "2 Timoteo 3:16",
+    "verse_text": "Toda Escritura es inspirada divinamente y útil para enseñar, para redargüir, para corregir, para instituir en justicia.",
+    "topic": "Palabra",
+    "reflection": "La Biblia es la guía viva que corrige y dirige tu camino hoy."
+  },
+  {
+    "id": 60,
+    "book_id": 19,
+    "chapter": 139,
+    "verse": 14,
+    "reference": "Salmos 139:14",
+    "verse_text": "Te alabaré; porque formidables, maravillosas son tus obras: Estoy maravillado, Y mi alma lo sabe muy bien.",
+    "topic": "Autoestima",
+    "reflection": "Fuiste diseñado con propósito por un Creador perfecto."
+  },
+  {
+    "id": 61,
+    "book_id": 50,
+    "chapter": 2,
+    "verse": 3,
+    "reference": "Filipenses 2:3",
+    "verse_text": "Nada hagáis por contienda ó por vanagloria; antes bien en humildad, estimándoos los unos á los otros como superiores á vosotros mismos.",
+    "topic": "Modestia",
+    "reflection": "La humildad sincera mejora tu entorno."
+  },
+  {
+    "id": 62,
+    "book_id": 46,
+    "chapter": 10,
+    "verse": 13,
+    "reference": "1 Corintios 10:13",
+    "verse_text": "No os ha tomado tentación sino humana; mas fiel es Dios, que no os dejará ser tentados más de lo que podéis llevar; antes dará también juntamente con la tentación la salida, para que podáis aguantar.",
+    "topic": "Fidelidad Divina",
+    "reflection": "Dios siempre provee una vía de escape."
+  },
+  {
+    "id": 63,
+    "book_id": 20,
+    "chapter": 17,
+    "verse": 22,
+    "reference": "Proverbios 17:22",
+    "verse_text": "El corazón alegre constituye buen remedio: Mas el espíritu triste seca los huesos.",
+    "topic": "Alegría",
+    "reflection": "Un espíritu gozoso sanará tu cuerpo y fortalecerá el alma."
+  },
+  {
+    "id": 64,
+    "book_id": 19,
+    "chapter": 40,
+    "verse": 1,
+    "reference": "Salmos 40:1",
+    "verse_text": "Pacientemente esperé á Jehová, Y se inclinó á mí, y oyó mi clamor.",
+    "topic": "Paciencia",
+    "reflection": "Esperar con confianza en Dios asegura escuchar su respuesta."
+  },
+  {
+    "id": 65,
+    "book_id": 38,
+    "chapter": 4,
+    "verse": 6,
+    "reference": "Zacarías 4:6",
+    "verse_text": "No con ejército, ni con fuerza, sino con mi espíritu, ha dicho Jehová de los ejércitos.",
+    "topic": "Dependencia",
+    "reflection": "Donde tus fuerzas terminan, actúa el Espíritu divino."
+  },
+  {
+    "id": 66,
+    "book_id": 47,
+    "chapter": 4,
+    "verse": 16,
+    "reference": "2 Corintios 4:16",
+    "verse_text": "Por tanto, no desmayamos; antes aunque este nuestro hombre exterior se va desgastando, el interior empero se renueva de día en día.",
+    "topic": "Fuerza Interior",
+    "reflection": "Tu espíritu se renueva día tras día."
+  },
+  {
+    "id": 67,
+    "book_id": 50,
+    "chapter": 3,
+    "verse": 14,
+    "reference": "Filipenses 3:14",
+    "verse_text": "Prosigo á la meta, al premio del alto llamamiento de Dios en Cristo Jesús.",
+    "topic": "Enfoque",
+    "reflection": "Mantén tu mirada en la meta sin detenerte en los errores."
+  },
+  {
+    "id": 68,
+    "book_id": 43,
+    "chapter": 8,
+    "verse": 32,
+    "reference": "Juan 8:32",
+    "verse_text": "Y conoceréis la verdad, y la verdad os hará libres.",
+    "topic": "Verdad",
+    "reflection": "La verdad de Dios otorga una libertad genuina e inquebrantable."
+  },
+  {
+    "id": 69,
+    "book_id": 19,
+    "chapter": 19,
+    "verse": 14,
+    "reference": "Salmos 19:14",
+    "verse_text": "Sean gratos los dichos de mi boca y la meditación de mi corazón delante de ti, Oh Jehová, roca mía, y redentor mío.",
+    "topic": "Integridad",
+    "reflection": "Que la pureza de tu corazón coincida siempre con tus palabras."
+  },
+  {
+    "id": 70,
+    "book_id": 49,
+    "chapter": 3,
+    "verse": 20,
+    "reference": "Efesios 3:20-21",
+    "verse_text": "Y á Aquel que es poderoso para hacer todas las cosas mucho más abundantemente de lo que pedimos ó entendemos, por la potencia que obra en nosotros, Á él sea gloria en la iglesia por Cristo Jesús, por todas las edades del mundo sin fin. Amén.",
+    "topic": "Poder",
+    "reflection": "Él hace más de lo que puedes pedir."
+  },
+  {
+    "id": 71,
+    "book_id": 19,
+    "chapter": 1,
+    "verse": 1,
+    "reference": "Salmos 1:1",
+    "verse_text": "Bienaventurado el varón que no anduvo en consejo de malos.",
+    "topic": "Dichoso",
+    "reflection": "Apartarse de lo destructivo es el primer paso para proteger tu paz."
+  },
+  {
+    "id": 72,
+    "book_id": 40,
+    "chapter": 11,
+    "verse": 30,
+    "reference": "Mateo 11:30",
+    "verse_text": "Porque mi yugo es fácil, y ligera mi carga.",
+    "topic": "Alivio",
+    "reflection": "Seguir a Cristo no añade peso, te enseña a soltar lo innecesario."
+  },
+  {
+    "id": 73,
+    "book_id": 46,
+    "chapter": 16,
+    "verse": 14,
+    "reference": "1 Corintios 16:14",
+    "verse_text": "Todas vuestras cosas sean hechas con caridad.",
+    "topic": "Amor",
+    "reflection": "Que el amor sea el filtro de cada palabra y acción que realices hoy."
+  },
+  {
+    "id": 74,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 89,
+    "reference": "Salmos 119:89",
+    "verse_text": "Para siempre, oh Jehová, permanece tu palabra.",
+    "topic": "Firmeza",
+    "reflection": "Las modas pasan, pero la verdad de Dios se mantiene inquebrantable."
+  },
+  {
+    "id": 75,
+    "book_id": 58,
+    "chapter": 13,
+    "verse": 5,
+    "reference": "Hebreos 13:5",
+    "verse_text": "No te desampararé, ni te dejaré.",
+    "topic": "Fidelidad",
+    "reflection": "Su promesa de no abandonarte es tu garantía en los días difíciles."
+  },
+  {
+    "id": 76,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 22,
+    "reference": "Proverbios 15:22",
+    "verse_text": "Los pensamientos son frustrados donde no hay consejo.",
+    "topic": "Sabiduría",
+    "reflection": "Escuchar a otros con humildad previene errores evitables."
+  },
+  {
+    "id": 77,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 19,
+    "reference": "Filipenses 4:19",
+    "verse_text": "Mi Dios, pues, suplirá todo lo que os falta.",
+    "topic": "Provisión",
+    "reflection": "Tus necesidades no asustan al Dios que posee todo recurso."
+  },
+  {
+    "id": 78,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 28,
+    "reference": "Isaías 40:28",
+    "verse_text": "El Dios del siglo no se fatiga con cansancio.",
+    "topic": "Poder",
+    "reflection": "Cuando tus fuerzas se agotan, su poder permanece intacto."
+  },
+  {
+    "id": 79,
+    "book_id": 19,
+    "chapter": 32,
+    "verse": 8,
+    "reference": "Salmos 32:8",
+    "verse_text": "Hacerte he entender, y enseñarte he el camino.",
+    "topic": "Guía",
+    "reflection": "Dios no te deja a ciegas; su mirada atenta guía tus decisiones."
+  },
+  {
+    "id": 80,
+    "book_id": 62,
+    "chapter": 4,
+    "verse": 7,
+    "reference": "1 Juan 4:7",
+    "verse_text": "Amémonos unos á otros; porque el amor es de Dios.",
+    "topic": "Relaciones",
+    "reflection": "Amar sinceramente al prójimo demuestra que conoces el corazón divino."
+  },
+  {
+    "id": 81,
+    "book_id": 45,
+    "chapter": 12,
+    "verse": 21,
+    "reference": "Romanos 12:21",
+    "verse_text": "Vence con el bien el mal.",
+    "topic": "Superación",
+    "reflection": "Superar la ofensa haciendo el bien demuestra tu verdadera fuerza."
+  },
+  {
+    "id": 82,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 17,
+    "reference": "Santiago 1:17",
+    "verse_text": "Toda buena dádiva desciende del Padre.",
+    "topic": "Gratitud",
+    "reflection": "Cada cosa buena en tu vida es un regalo de su constancia."
+  },
+  {
+    "id": 83,
+    "book_id": 19,
+    "chapter": 63,
+    "verse": 1,
+    "reference": "Salmos 63:1",
+    "verse_text": "De madrugada te buscaré; mi alma tiene sed de ti.",
+    "topic": "Búsqueda",
+    "reflection": "Buscar a Dios al comenzar el día llena de propósito tus pasos."
+  },
+  {
+    "id": 84,
+    "book_id": 47,
+    "chapter": 5,
+    "verse": 7,
+    "reference": "2 Corintios 5:7",
+    "verse_text": "Porque por fe andamos, no por vista.",
+    "topic": "Fe",
+    "reflection": "Caminar por fe es confiar en su guía aun sin ver todo el panorama."
+  },
+  {
+    "id": 85,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 7,
+    "reference": "Salmos 121:7",
+    "verse_text": "Jehová te guardará de todo mal; él guardará tu alma.",
+    "topic": "Protección",
+    "reflection": "Tu vida está custodiada por aquel que jamás duerme."
+  },
+  {
+    "id": 86,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 6,
+    "reference": "Proverbios 3:6",
+    "verse_text": "Reconócelo en todos tus caminos, y él enderezará tus veredas.",
+    "topic": "Dirección",
+    "reflection": "Tomar en cuenta a Dios en todo abre caminos donde no los hay."
+  },
+  {
+    "id": 87,
+    "book_id": 60,
+    "chapter": 5,
+    "verse": 10,
+    "reference": "1 Pedro 5:10",
+    "verse_text": "El Dios de toda gracia os perfeccione y afirme.",
+    "topic": "Restauración",
+    "reflection": "Las pruebas de hoy son el taller donde Dios fortalece tu alma."
+  },
+  {
+    "id": 88,
+    "book_id": 49,
+    "chapter": 5,
+    "verse": 15,
+    "reference": "Efesios 5:15",
+    "verse_text": "Mirad cómo andéis, no como necios sino como sabios.",
+    "topic": "Prudencia",
+    "reflection": "Vivir con sabiduría es aprovechar cada oportunidad para hacer el bien."
+  },
+  {
+    "id": 89,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 14,
+    "reference": "Mateo 5:14",
+    "verse_text": "Vosotros sois la luz del mundo.",
+    "topic": "Propósito",
+    "reflection": "Tu fe no fue hecha para esconderse; hoy ilumina tu entorno."
+  },
+  {
+    "id": 90,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 8,
+    "reference": "Filipenses 4:8",
+    "verse_text": "En todo lo que es verdadero y honesto, en esto pensad.",
+    "topic": "Mente",
+    "reflection": "Lo que llena tus pensamientos determina la calidad de tu vida."
+  },
+  {
+    "id": 91,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 114,
+    "reference": "Salmos 119:114",
+    "verse_text": "Mi escondedero y mi escudo eres tú.",
+    "topic": "Refugio",
+    "reflection": "En los momentos de vulnerabilidad, las promesas de Dios son tu escudo."
+  },
+  {
+    "id": 92,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 14,
+    "reference": "Mateo 6:14",
+    "verse_text": "Si perdonareis á los hombres, os perdonará vuestro Padre.",
+    "topic": "Perdón",
+    "reflection": "Perdonar libera tu propio corazón antes que el de quien te ofendió."
+  },
+  {
+    "id": 93,
+    "book_id": 23,
+    "chapter": 41,
+    "verse": 13,
+    "reference": "Isaías 41:13",
+    "verse_text": "Yo soy tu Dios que te asusta de tu diestra.",
+    "topic": "Sostén",
+    "reflection": "Dios sostiene tu mano derecha; no enfrentas las batallas solo."
+  },
+  {
+    "id": 94,
+    "book_id": 48,
+    "chapter": 6,
+    "verse": 2,
+    "reference": "Gálatas 6:2",
+    "verse_text": "Sobrellevad los unos las cargas de los otros.",
+    "topic": "Empatía",
+    "reflection": "Apoyar al que sufre es reflejar el amor práctico de Jesús."
+  },
+  {
+    "id": 95,
+    "book_id": 19,
+    "chapter": 34,
+    "verse": 4,
+    "reference": "Salmos 34:4",
+    "verse_text": "Busqué á Jehová, y él me oyó y me libró.",
+    "topic": "Liberación",
+    "reflection": "Orar con sinceridad disipa el temor y devuelve la serenidad."
+  },
+  {
+    "id": 96,
+    "book_id": 20,
+    "chapter": 4,
+    "verse": 18,
+    "reference": "Proverbios 4:18",
+    "verse_text": "La senda de los justos es como la luz de la aurora.",
+    "topic": "Crecimiento",
+    "reflection": "Tu camino espiritual se aclara y fortalece con cada nuevo día."
+  },
+  {
+    "id": 97,
+    "book_id": 19,
+    "chapter": 145,
+    "verse": 18,
+    "reference": "Salmos 145:18",
+    "verse_text": "Cercano está Jehová á todos los que le invocan.",
+    "topic": "Cercanía",
+    "reflection": "Un corazón sincero siempre encuentra a Dios a solo una oración de distancia."
+  },
+  {
+    "id": 98,
+    "book_id": 47,
+    "chapter": 9,
+    "verse": 7,
+    "reference": "2 Corintios 9:7",
+    "verse_text": "Dios ama al dador alegre.",
+    "topic": "Generosidad",
+    "reflection": "Compartir con alegría transforma la generosidad en adoración."
+  },
+  {
+    "id": 99,
+    "book_id": 49,
+    "chapter": 6,
+    "verse": 11,
+    "reference": "Efesios 6:11",
+    "verse_text": "Vestíos de toda la armadura de Dios.",
+    "topic": "Firmeza",
+    "reflection": "La preparación espiritual diaria te mantiene firme ante cualquier prueba."
+  },
+  {
+    "id": 100,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 5,
+    "reference": "Salmos 37:5",
+    "verse_text": "Encomienda á Jehová tu camino, y espera en él.",
+    "topic": "Confianza",
+    "reflection": "Soltar el control y confiar en Dios abre espacio para sus milagros."
+  },
+  {
+    "id": 101,
+    "book_id": 52,
+    "chapter": 5,
+    "verse": 17,
+    "reference": "1 Tesalonicenses 5:17",
+    "verse_text": "Orad sin cesar.",
+    "topic": "Comunión",
+    "reflection": "Mantener una conversación constante con Dios transforma la rutina."
+  },
+  {
+    "id": 102,
+    "book_id": 23,
+    "chapter": 30,
+    "verse": 15,
+    "reference": "Isaías 30:15",
+    "verse_text": "En quietud y en confianza será vuestra fortaleza.",
+    "topic": "Quietud",
+    "reflection": "Guardar la calma confiando en Dios genera la fuerza que el afán destruye."
+  },
+  {
+    "id": 103,
+    "book_id": 20,
+    "chapter": 14,
+    "verse": 30,
+    "reference": "Proverbios 14:30",
+    "verse_text": "El corazón apacible es vida de la carne.",
+    "topic": "Paz Interior",
+    "reflection": "Cultivar un espíritu sereno cuida la salud de tu cuerpo y mente."
+  },
+  {
+    "id": 104,
+    "book_id": 58,
+    "chapter": 10,
+    "verse": 23,
+    "reference": "Hebreos 10:23",
+    "verse_text": "Mantengamos firme la profesión de nuestra fe.",
+    "topic": "Perseverancia",
+    "reflection": "Tu firmeza se apoya en la fidelidad de quien te hizo la promesa."
+  },
+  {
+    "id": 105,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 8,
+    "reference": "Salmos 103:8",
+    "verse_text": "Misericordioso y clemente es Jehová, lento para la ira.",
+    "topic": "Misericordia",
+    "reflection": "Dios te trata con una paciencia y compasión infinitamente superiores."
+  },
+  {
+    "id": 106,
+    "book_id": 62,
+    "chapter": 5,
+    "verse": 4,
+    "reference": "1 Juan 5:4",
+    "verse_text": "Esta es la victoria que vence al mundo, nuestra fe.",
+    "topic": "Victoria",
+    "reflection": "La fe te otorga la perspectiva necesaria para superar cualquier aflicción."
+  },
+  {
+    "id": 107,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 18,
+    "reference": "Romanos 8:18",
+    "verse_text": "Las aflicciones presentes no son de comparar con la gloria.",
+    "topic": "Esperanza",
+    "reflection": "El dolor actual es pasajero frente al futuro glorioso que Dios preparó."
+  },
+  {
+    "id": 108,
+    "book_id": 19,
+    "chapter": 139,
+    "verse": 23,
+    "reference": "Salmos 139:23",
+    "verse_text": "Examíname, oh Dios, y conoce mi corazón.",
+    "topic": "Integridad",
+    "reflection": "Permitir que Dios examine tu interior te libra de los autoengaños."
+  },
+  {
+    "id": 109,
+    "book_id": 19,
+    "chapter": 23,
+    "verse": 4,
+    "reference": "Salmos 23:4",
+    "verse_text": "Aunque ande en valle de sombra, no temeré mal alguno.",
+    "topic": "Protección",
+    "reflection": "La presencia del Buen Pastor ahuyenta el miedo en la noche más oscura."
+  },
+  {
+    "id": 110,
+    "book_id": 59,
+    "chapter": 4,
+    "verse": 7,
+    "reference": "Santiago 4:7",
+    "verse_text": "Someteos pues á Dios; resistid al diablo, y huirá.",
+    "topic": "Rendición",
+    "reflection": "Rendir tu voluntad a Dios es la clave para resistir toda tentación."
+  },
+  {
+    "id": 111,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 2,
+    "reference": "Colosenses 3:2",
+    "verse_text": "Poned la mira en las cosas de arriba.",
+    "topic": "Perspectiva",
+    "reflection": "Enfocar la mente en lo eterno calma la turbación de lo terrenal."
+  },
+  {
+    "id": 112,
+    "book_id": 20,
+    "chapter": 18,
+    "verse": 24,
+    "reference": "Proverbios 18:24",
+    "verse_text": "Y amigo hay más unido que un hermano.",
+    "topic": "Amistad",
+    "reflection": "La lealtad real en las relaciones trasciende los lazos de sangre."
+  },
+  {
+    "id": 113,
+    "book_id": 60,
+    "chapter": 2,
+    "verse": 24,
+    "reference": "1 Pedro 2:24",
+    "verse_text": "Por cuya herida habéis sido sanados.",
+    "topic": "Redención",
+    "reflection": "El sacrificio de Cristo ya pagó por tu sanidad y restauración completa."
+  },
+  {
+    "id": 114,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 32,
+    "reference": "Proverbios 16:32",
+    "verse_text": "Mejor es el que tarde se aira que el fuerte.",
+    "topic": "Autocontrol",
+    "reflection": "Dominar tus emociones demuestra una fuerza mayor que ganar batallas."
+  },
+  {
+    "id": 115,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 8,
+    "reference": "Mateo 5:8",
+    "verse_text": "Bienaventurados los de limpio corazón.",
+    "topic": "Pureza",
+    "reflection": "La pureza de intenciones te permite ver el obrar de Dios en todo."
+  },
+  {
+    "id": 116,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 165,
+    "reference": "Salmos 119:165",
+    "verse_text": "Mucha paz tienen los que aman tu ley.",
+    "topic": "Estabilidad",
+    "reflection": "Amar los principios divinos edifica una paz que no se derrumba."
+  },
+  {
+    "id": 117,
+    "book_id": 55,
+    "chapter": 1,
+    "verse": 9,
+    "reference": "2 Timoteo 1:9",
+    "verse_text": "Nos salvó y llamó con vocación santa.",
+    "topic": "Gracia",
+    "reflection": "Tu valor no depende de tus logros, sino de la gracia con que fuiste llamado."
+  },
+  {
+    "id": 118,
+    "book_id": 66,
+    "chapter": 3,
+    "verse": 20,
+    "reference": "Apocalipsis 3:20",
+    "verse_text": "He aquí, yo estoy á la puerta y llamo.",
+    "topic": "Intimidad",
+    "reflection": "Cristo toca a tu puerta hoy esperando compartir un momento contigo."
+  },
+  {
+    "id": 119,
+    "book_id": 33,
+    "chapter": 6,
+    "verse": 8,
+    "reference": "Miqueas 6:8",
+    "verse_text": "Hacer justicia, amar misericordia, y humillarte ante tu Dios.",
+    "topic": "Lealtad",
+    "reflection": "La verdadera espiritualidad se demuestra en la justicia y la humildad diaria."
+  },
+  {
+    "id": 120,
+    "book_id": 19,
+    "chapter": 37,
+    "verse": 3,
+    "reference": "Salmos 37:3",
+    "verse_text": "Confía en Jehová, y haz el bien.",
+    "topic": "Fe Activa",
+    "reflection": "La fe genuina se demuestra haciendo el bien mientras confías."
+  },
+  {
+    "id": 121,
+    "book_id": 40,
+    "chapter": 11,
+    "verse": 29,
+    "reference": "Mateo 11:29",
+    "verse_text": "Llevad mi yugo... soy manso y humilde de corazón.",
+    "topic": "Descanso",
+    "reflection": "Aprender de la humildad de Cristo trae alivio real al alma cansada."
+  },
+  {
+    "id": 122,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 12,
+    "reference": "Salmos 103:12",
+    "verse_text": "Cuanto está lejos el oriente del occidente, alejó nuestras rebeliones.",
+    "topic": "Perdón Divino",
+    "reflection": "El perdón de Dios borra tus errores pasados sin guardar registro."
+  },
+  {
+    "id": 123,
+    "book_id": 58,
+    "chapter": 11,
+    "verse": 6,
+    "reference": "Hebreos 11:6",
+    "verse_text": "Sin fe es imposible agradar á Dios.",
+    "topic": "Fe",
+    "reflection": "Buscar a Dios creyendo en su bondad siempre encuentra su galardón."
+  },
+  {
+    "id": 124,
+    "book_id": 20,
+    "chapter": 3,
+    "verse": 9,
+    "reference": "Proverbios 3:9",
+    "verse_text": "Honra á Jehová de tu sustancia.",
+    "topic": "Honra",
+    "reflection": "Colocar a Dios en primer lugar reconoce que todo proviene de Él."
+  },
+  {
+    "id": 125,
+    "book_id": 41,
+    "chapter": 11,
+    "verse": 24,
+    "reference": "Marcos 11:24",
+    "verse_text": "Todo lo que pidiereis orando, creed que lo recibiréis.",
+    "topic": "Certeza",
+    "reflection": "Confiar en la fidelidad de Dios le otorga poder a tu oración."
+  },
+  {
+    "id": 126,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 116,
+    "reference": "Salmos 119:116",
+    "verse_text": "Susténtame conforme á tu palabra, y viviré.",
+    "topic": "Sostén",
+    "reflection": "La palabra de Dios es el alimento que sostiene la vida del alma."
+  },
+  {
+    "id": 127,
+    "book_id": 23,
+    "chapter": 43,
+    "verse": 19,
+    "reference": "Isaías 43:19",
+    "verse_text": "He aquí que yo hago cosa nueva; presto saldrá á luz.",
+    "topic": "Restauración",
+    "reflection": "Dios abre rutas nuevas; no te quedes atado a lo que ya pasó."
+  },
+  {
+    "id": 128,
+    "book_id": 60,
+    "chapter": 1,
+    "verse": 8,
+    "reference": "1 Pedro 1:8",
+    "verse_text": "Creando en él... os alegráis con gozo inefable.",
+    "topic": "Gozo",
+    "reflection": "La fe en Cristo llena el corazón con una alegría indescriptible."
+  },
+  {
+    "id": 129,
+    "book_id": 19,
+    "chapter": 27,
+    "verse": 14,
+    "reference": "Salmos 27:14",
+    "verse_text": "Aguarda á Jehová; esfuérzate, y aliéntese tu corazón.",
+    "topic": "Paciencia",
+    "reflection": "Saber esperar en Dios fortalece el carácter y renueva el valor."
+  },
+  {
+    "id": 130,
+    "book_id": 47,
+    "chapter": 3,
+    "verse": 17,
+    "reference": "2 Corintios 3:17",
+    "verse_text": "Donde está el Espíritu del Señor, allí hay libertad.",
+    "topic": "Libertad",
+    "reflection": "Su presencia rompe las cadenas de la culpa y la angustia."
+  },
+  {
+    "id": 131,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 7,
+    "reference": "Proverbios 16:7",
+    "verse_text": "Cuando los caminos del hombre agradan á Jehová, en paz los pone.",
+    "topic": "Armonía",
+    "reflection": "Vivir para agradar a Dios disipa conflictos y promueve la concordia."
+  },
+  {
+    "id": 132,
+    "book_id": 19,
+    "chapter": 138,
+    "verse": 8,
+    "reference": "Salmos 138:8",
+    "verse_text": "Jehová cumplirá su propósito en mí.",
+    "topic": "Propósito",
+    "reflection": "Dios no deja obras a medias; Él perfeccionará su plan en ti."
+  },
+  {
+    "id": 133,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 6,
+    "reference": "Mateo 6:6",
+    "verse_text": "Ora á tu Padre que está en secreto.",
+    "topic": "Intimidad",
+    "reflection": "La vida de oración en privado fortalece la victoria en público."
+  },
+  {
+    "id": 134,
+    "book_id": 48,
+    "chapter": 5,
+    "verse": 16,
+    "reference": "Gálatas 5:16",
+    "verse_text": "Andad en el Espíritu, y no satisfagáis los deseos terrenales.",
+    "topic": "Guía",
+    "reflection": "Caminar en el Espíritu te da discernimiento para decidir sabiamente."
+  },
+  {
+    "id": 135,
+    "book_id": 21,
+    "chapter": 3,
+    "verse": 1,
+    "reference": "Eclesiastés 3:1",
+    "verse_text": "Todo tiene su tiempo, y todo lo que se quiere tiene su hora.",
+    "topic": "Tiempo",
+    "reflection": "Aceptar los tiempos de Dios trae descanso y elimina la prisa del alma."
+  },
+  {
+    "id": 136,
+    "book_id": 50,
+    "chapter": 1,
+    "verse": 6,
+    "reference": "Filipenses 1:6",
+    "verse_text": "El que comenzó la buena obra, la perfeccionará.",
+    "topic": "Constancia",
+    "reflection": "Dios continúa trabajando pacientemente en tu transformación interna."
+  },
+  {
+    "id": 137,
+    "book_id": 45,
+    "chapter": 10,
+    "verse": 17,
+    "reference": "Romanos 10:17",
+    "verse_text": "La fe es por el oír... la palabra de Dios.",
+    "topic": "Fe",
+    "reflection": "Alimentar la mente con la verdad bíblica fortalece la confianza."
+  },
+  {
+    "id": 138,
+    "book_id": 20,
+    "chapter": 4,
+    "verse": 26,
+    "reference": "Proverbios 4:26",
+    "verse_text": "Examina la senda de tus pies, y tus caminos sean ordenados.",
+    "topic": "Prudencia",
+    "reflection": "Reflexionar antes de dar un paso evita tropiezos y caídas."
+  },
+  {
+    "id": 139,
+    "book_id": 19,
+    "chapter": 90,
+    "verse": 12,
+    "reference": "Salmos 90:12",
+    "verse_text": "Enséñanos a contar nuestros días para traer sabiduría.",
+    "topic": "Tiempo",
+    "reflection": "Valorar la brevedad del tiempo enseña a priorizar lo eterno."
+  },
+  {
+    "id": 140,
+    "book_id": 49,
+    "chapter": 4,
+    "verse": 26,
+    "reference": "Efesios 4:26",
+    "verse_text": "No se ponga el sol sobre vuestro enojo.",
+    "topic": "Paz",
+    "reflection": "Resolver los desacuerdos rápido protege la salud del corazón."
+  },
+  {
+    "id": 141,
+    "book_id": 62,
+    "chapter": 4,
+    "verse": 19,
+    "reference": "1 Juan 4:19",
+    "verse_text": "Nosotros le amamos á él, porque él nos amó primero.",
+    "topic": "Amor Divine",
+    "reflection": "Tu capacidad de amar nace al experimentar primero su amor entero."
+  },
+  {
+    "id": 142,
+    "book_id": 19,
+    "chapter": 116,
+    "verse": 1,
+    "reference": "Salmos 116:1",
+    "verse_text": "Amo á Jehová, pues ha oído mi voz y mis súplicas.",
+    "topic": "Gratitud",
+    "reflection": "Saber que Dios escucha tus oraciones aviva un amor agradecido."
+  },
+  {
+    "id": 143,
+    "book_id": 42,
+    "chapter": 6,
+    "verse": 31,
+    "reference": "Lucas 6:31",
+    "verse_text": "Como queréis que os hagan los hombres, así haced.",
+    "topic": "Empatía",
+    "reflection": "Tratar a los demás con la bondad que deseas ver cambia todo."
+  },
+  {
+    "id": 144,
+    "book_id": 20,
+    "chapter": 28,
+    "verse": 13,
+    "reference": "Proverbios 28:13",
+    "verse_text": "El que confiesa y se aparta alcanzará misericordia.",
+    "topic": "Honestidad",
+    "reflection": "Reconocer las fallas y corregirlas abre paso al perdón y restauración."
+  },
+  {
+    "id": 145,
+    "book_id": 55,
+    "chapter": 2,
+    "verse": 15,
+    "reference": "2 Timoteo 2:15",
+    "verse_text": "Procura presentarte á Dios aprobado, que traza bien la verdad.",
+    "topic": "Diligencia",
+    "reflection": "Vivir con integridad y conocer la verdad da solidez a tus pasos."
+  },
+  {
+    "id": 146,
+    "book_id": 19,
+    "chapter": 56,
+    "verse": 3,
+    "reference": "Salmos 56:3",
+    "verse_text": "En el día que temo, yo en ti confío.",
+    "topic": "Confianza",
+    "reflection": "Transformar el miedo en oración es la mejor respuesta ante la prueba."
+  },
+  {
+    "id": 147,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 12,
+    "reference": "Santiago 1:12",
+    "verse_text": "Bienaventurado el varón que sufre la tentación con firmeza.",
+    "topic": "Perseverancia",
+    "reflection": "Permanecer fiel en los momentos difíciles fortalece el carácter."
+  },
+  {
+    "id": 148,
+    "book_id": 19,
+    "chapter": 147,
+    "verse": 3,
+    "reference": "Salmos 147:3",
+    "verse_text": "Él sana á los quebrantados de corazón.",
+    "topic": "Sanidad",
+    "reflection": "Dios restaura con ternura las áreas más dolidas de tu alma."
+  },
+  {
+    "id": 149,
+    "book_id": 43,
+    "chapter": 10,
+    "verse": 10,
+    "reference": "Juan 10:10",
+    "verse_text": "Yo he venido para que tengan vida en abundancia.",
+    "topic": "Vida",
+    "reflection": "Cristo no vino a dar religión, sino una vida plena y con sentido."
+  },
+  {
+    "id": 150,
+    "book_id": 58,
+    "chapter": 12,
+    "verse": 1,
+    "reference": "Hebreos 12:1",
+    "verse_text": "Corramos con paciencia la carrera propuesta.",
+    "topic": "Perseverancia",
+    "reflection": "Soltar las cargas pesadas permite avanzar firme hacia la meta."
+  },
+  {
+    "id": 151,
+    "book_id": 20,
+    "chapter": 17,
+    "verse": 17,
+    "reference": "Proverbios 17:17",
+    "verse_text": "En todo tiempo ama el amigo.",
+    "topic": "Lealtad",
+    "reflection": "Estar presente en la adversidad demuestra la lealtad de la amistad."
+  },
+  {
+    "id": 152,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 18,
+    "reference": "Salmos 119:18",
+    "verse_text": "Abre mis ojos, y miraré las maravillas de tu ley.",
+    "topic": "Revelación",
+    "reflection": "Buscar entender la Palabra abre descubrimientos profundos para la vida."
+  },
+  {
+    "id": 153,
+    "book_id": 60,
+    "chapter": 3,
+    "verse": 15,
+    "reference": "1 Pedro 3:15",
+    "verse_text": "Estad siempre preparados para responder sobre vuestra esperanza.",
+    "topic": "Testimonio",
+    "reflection": "Tener clara la razón de tu fe inspira a quien busca respuestas."
+  },
+  {
+    "id": 154,
+    "book_id": 19,
+    "chapter": 62,
+    "verse": 1,
+    "reference": "Salmos 62:1",
+    "verse_text": "En Dios solamente está callada mi alma.",
+    "topic": "Calma",
+    "reflection": "Solo en el silencio de la presencia divina descansa la mente."
+  },
+  {
+    "id": 155,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 9,
+    "reference": "Mateo 5:9",
+    "verse_text": "Bienaventurados los pacificadores.",
+    "topic": "Paz",
+    "reflection": "Buscar la paz y la reconciliación refleja el carácter de Dios."
+  },
+  {
+    "id": 156,
+    "book_id": 20,
+    "chapter": 15,
+    "verse": 13,
+    "reference": "Proverbios 15:13",
+    "verse_text": "El corazón alegre hermosea el rostro.",
+    "topic": "Alegría",
+    "reflection": "El gozo del alma se refleja de forma natural en tu semblante."
+  },
+  {
+    "id": 157,
+    "book_id": 19,
+    "chapter": 143,
+    "verse": 8,
+    "reference": "Salmos 143:8",
+    "verse_text": "Hazme oír por la mañana tu misericordia.",
+    "topic": "Comienzo",
+    "reflection": "Poner tu día en manos de Dios al despertar asegura buen rumbo."
+  },
+  {
+    "id": 158,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 38,
+    "reference": "Romanos 8:38",
+    "verse_text": "Nada nos podrá apartar del amor de Dios.",
+    "topic": "Seguridad",
+    "reflection": "Ninguna dificultad o crisis tiene poder para separarte de su amor."
+  },
+  {
+    "id": 159,
+    "book_id": 46,
+    "chapter": 15,
+    "verse": 10,
+    "reference": "1 Corintios 15:10",
+    "verse_text": "Por la gracia de Dios soy lo que soy.",
+    "topic": "Gracia",
+    "reflection": "Tu valor no se basa en méritos humanos, sino en la gracia recibida."
+  },
+  {
+    "id": 160,
+    "book_id": 19,
+    "chapter": 33,
+    "verse": 4,
+    "reference": "Salmos 33:4",
+    "verse_text": "Recta es la palabra de Jehová y toda su obra hecha con verdad.",
+    "topic": "Verdad",
+    "reflection": "En medio de falsedades, la verdad divina permanece inmutable."
+  },
+  {
+    "id": 161,
+    "book_id": 49,
+    "chapter": 2,
+    "verse": 10,
+    "reference": "Efesios 2:10",
+    "verse_text": "Somos hechura suya, creados para buenas obras.",
+    "topic": "Diseño",
+    "reflection": "Fuiste diseñado con valor para marcar una diferencia positiva."
+  },
+  {
+    "id": 162,
+    "book_id": 50,
+    "chapter": 4,
+    "verse": 11,
+    "reference": "Filipenses 4:11",
+    "verse_text": "He aprendido á contentarme con lo que tengo.",
+    "topic": "Contentamiento",
+    "reflection": "Apreciar y valorar el presente trae una profunda paz al corazón."
+  },
+  {
+    "id": 163,
+    "book_id": 53,
+    "chapter": 3,
+    "verse": 3,
+    "reference": "2 Tesalonicenses 3:3",
+    "verse_text": "Fiel es el Señor, que os guardará del mal.",
+    "topic": "Fidelidad",
+    "reflection": "La fidelidad de Dios es la protección más segura que rodea tu vida."
+  },
+  {
+    "id": 164,
+    "book_id": 19,
+    "chapter": 16,
+    "verse": 8,
+    "reference": "Salmos 16:8",
+    "verse_text": "Á Jehová he puesto siempre delante de mí; no seré conmovido.",
+    "topic": "Firmeza",
+    "reflection": "Poner a Dios en el centro le da estabilidad a tus emociones."
+  },
+  {
+    "id": 165,
+    "book_id": 66,
+    "chapter": 22,
+    "verse": 13,
+    "reference": "Apocalipsis 22:13",
+    "verse_text": "Yo soy el Alpha y la Omega, el primero y el último.",
+    "topic": "Soberanía",
+    "reflection": "Quien sostiene la historia sostiene también los detalles de tu vida."
+  },
+  {
+    "id": 166,
+    "book_id": 19,
+    "chapter": 19,
+    "verse": 7,
+    "reference": "Salmos 19:7",
+    "verse_text": "La ley de Jehová es perfecta, que convierte el alma.",
+    "topic": "Sabiduría",
+    "reflection": "La verdad divina restaura y da sabiduría al corazón sencillo."
+  },
+  {
+    "id": 167,
+    "book_id": 40,
+    "chapter": 5,
+    "verse": 7,
+    "reference": "Mateo 5:7",
+    "verse_text": "Bienaventurados los misericordiosos, porque ellos alcanzarán misericordia.",
+    "topic": "Compasión",
+    "reflection": "Mostrar compasión a otros te conecta con la gracia de Dios."
+  },
+  {
+    "id": 168,
+    "book_id": 23,
+    "chapter": 26,
+    "verse": 4,
+    "reference": "Isaías 26:4",
+    "verse_text": "Confiad en Jehová perpetuamente, porque en él hay fortaleza eterna.",
+    "topic": "Refugio",
+    "reflection": "Apoyarte en Dios te ofrece un cimiento invulnerable para siempre."
+  },
+  {
+    "id": 169,
+    "book_id": 20,
+    "chapter": 12,
+    "verse": 25,
+    "reference": "Proverbios 12:25",
+    "verse_text": "La congoja en el corazón abate, mas la buena palabra lo alegra.",
+    "topic": "Aliento",
+    "reflection": "Una palabra amable en el momento justo transforma el ánimo dolido."
+  },
+  {
+    "id": 170,
+    "book_id": 62,
+    "chapter": 3,
+    "verse": 1,
+    "reference": "1 Juan 3:1",
+    "verse_text": "Mirad cuál amor nos ha dado el Padre, de ser llamados hijos.",
+    "topic": "Identidad",
+    "reflection": "Tu identidad principal es ser un hijo profundamente amado por Dios."
+  },
+  {
+    "id": 171,
+    "book_id": 19,
+    "chapter": 28,
+    "verse": 7,
+    "reference": "Salmos 28:7",
+    "verse_text": "Jehová es mi fortaleza y mi escudo; en él confió mi corazón.",
+    "topic": "Alabanza",
+    "reflection": "Recordar la protección divina llena el corazón de alabanza y gozo."
+  },
+  {
+    "id": 172,
+    "book_id": 45,
+    "chapter": 12,
+    "verse": 10,
+    "reference": "Romanos 12:10",
+    "verse_text": "Amándos los unos á los otros con caridad fraternal.",
+    "topic": "Hermandad",
+    "reflection": "Demostrar afecto genuino fortalece los lazos de la comunidad."
+  },
+  {
+    "id": 173,
+    "book_id": 51,
+    "chapter": 4,
+    "verse": 2,
+    "reference": "Colosenses 4:2",
+    "verse_text": "Perseverad en la oración, velando en ella con acción de gracias.",
+    "topic": "Oración",
+    "reflection": "Acompañar la constante oración con gratitud transforma la perspectiva."
+  },
+  {
+    "id": 174,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 160,
+    "reference": "Salmos 119:160",
+    "verse_text": "La suma de tu palabra es verdad.",
+    "topic": "Verdad",
+    "reflection": "Cada principio bíblico es un pilar seguro para construir la vida."
+  },
+  {
+    "id": 175,
+    "book_id": 20,
+    "chapter": 19,
+    "verse": 21,
+    "reference": "Proverbios 19:21",
+    "verse_text": "Muchos pensamientos hay en el corazón, mas el consejo de Jehová permanecerá.",
+    "topic": "Propósito",
+    "reflection": "Aunque planees mucho, la voluntad de Dios traerá la verdadera victoria."
+  },
+  {
+    "id": 176,
+    "book_id": 47,
+    "chapter": 4,
+    "verse": 16,
+    "reference": "2 Corintios 4:16",
+    "verse_text": "Aunque este nuestro hombre exterior se desgaste, el interior se renueva.",
+    "topic": "Renovación",
+    "reflection": "El paso del tiempo no frena el crecimiento espiritual del alma."
+  },
+  {
+    "id": 177,
+    "book_id": 52,
+    "chapter": 5,
+    "verse": 18,
+    "reference": "1 Tesalonicenses 5:18",
+    "verse_text": "Dad gracias en todo, porque esta es la voluntad de Dios.",
+    "topic": "Gratitud",
+    "reflection": "Agradecer en toda situación cultiva un espíritu sano y maduro."
+  },
+  {
+    "id": 178,
+    "book_id": 19,
+    "chapter": 84,
+    "verse": 11,
+    "reference": "Salmos 84:11",
+    "verse_text": "Porque sol y escudo es Jehová Dios; gracia y gloria dará.",
+    "topic": "Bendición",
+    "reflection": "Dios no niega el bien a quien camina con integridad ante Él."
+  },
+  {
+    "id": 179,
+    "book_id": 59,
+    "chapter": 1,
+    "verse": 22,
+    "reference": "Santiago 1:22",
+    "verse_text": "Sed hacedores de la palabra, y no tan solamente oidores.",
+    "topic": "Acción",
+    "reflection": "Poner en práctica la fe es lo que transforma la vida real."
+  },
+  {
+    "id": 180,
+    "book_id": 20,
+    "chapter": 22,
+    "verse": 1,
+    "reference": "Proverbios 22:1",
+    "verse_text": "Estimable es más la buena fama que las muchas riquezas.",
+    "topic": "Reputación",
+    "reflection": "Un carácter íntegro tiene un valor inmensamente superior al dinero."
+  },
+  {
+    "id": 181,
+    "book_id": 19,
+    "chapter": 103,
+    "verse": 2,
+    "reference": "Salmos 103:2",
+    "verse_text": "Bendice, alma mía, á Jehová, y no olvides ninguno de sus beneficios.",
+    "topic": "Memoria",
+    "reflection": "Recordar las bondades de Dios fortalece la fe en las pruebas."
+  },
+  {
+    "id": 182,
+    "book_id": 23,
+    "chapter": 40,
+    "verse": 29,
+    "reference": "Isaías 40:29",
+    "verse_text": "Él da esfuerzo al cansado, y multiplica las fuerzas al que no tiene.",
+    "topic": "Fuerza",
+    "reflection": "Cuando tus energías fallan, Dios infunde una nueva fortaleza."
+  },
+  {
+    "id": 183,
+    "book_id": 40,
+    "chapter": 6,
+    "verse": 21,
+    "reference": "Mateo 6:21",
+    "verse_text": "Donde estuviere vuestro tesoro, allí estará vuestro corazón.",
+    "topic": "Prioridades",
+    "reflection": "Aquello que más valoras es lo que al final dirige tu vida."
+  },
+  {
+    "id": 184,
+    "book_id": 45,
+    "chapter": 5,
+    "verse": 5,
+    "reference": "Romanos 5:5",
+    "verse_text": "La esperanza no avergüenza, porque el amor de Dios ha sido derramado.",
+    "topic": "Esperanza",
+    "reflection": "Confiar en Dios nunca resulta en desilusión; su amor llena el alma."
+  },
+  {
+    "id": 185,
+    "book_id": 46,
+    "chapter": 10,
+    "verse": 13,
+    "reference": "1 Corintios 10:13",
+    "verse_text": "Fiel es Dios, que no os dejará ser tentados más de lo que podéis.",
+    "topic": "Sostén",
+    "reflection": "Dios conoce tus límites y siempre abre una salida a la prueba."
+  },
+  {
+    "id": 186,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 37,
+    "reference": "Salmos 119:37",
+    "verse_text": "Aparta mis ojos para que no vean la vanidad; avívame en tu camino.",
+    "topic": "Enfoque",
+    "reflection": "Apartar la mirada de las distracciones mantiene vivo el espíritu."
+  },
+  {
+    "id": 187,
+    "book_id": 20,
+    "chapter": 13,
+    "verse": 20,
+    "reference": "Proverbios 13:20",
+    "verse_text": "El que anda con sabios, sabio será.",
+    "topic": "Relaciones",
+    "reflection": "Rodearte de gente sabia te impulsa a crecer en la vida."
+  },
+  {
+    "id": 188,
+    "book_id": 49,
+    "chapter": 4,
+    "verse": 2,
+    "reference": "Efesios 4:2",
+    "verse_text": "Con toda humildad y mansedumbre, soportándos los unos á los otros.",
+    "topic": "Convivencia",
+    "reflection": "La paciencia y la humildad facilitan las relaciones saludables."
+  },
+  {
+    "id": 189,
+    "book_id": 19,
+    "chapter": 40,
+    "verse": 1,
+    "reference": "Salmos 40:1",
+    "verse_text": "Pacientemente esperé á Jehová, y se inclinó á mí.",
+    "topic": "Paciencia",
+    "reflection": "La espera paciente en Dios siempre encuentra respuesta a su tiempo."
+  },
+  {
+    "id": 190,
+    "book_id": 62,
+    "chapter": 4,
+    "verse": 16,
+    "reference": "1 Juan 4:16",
+    "verse_text": "Dios es amor; y el que permanece en amor, permanece en Dios.",
+    "topic": "Amor",
+    "reflection": "Habitar en el amor puro te conecta directamente con la esencia divina."
+  },
+  {
+    "id": 191,
+    "book_id": 20,
+    "chapter": 16,
+    "verse": 24,
+    "reference": "Proverbios 16:24",
+    "verse_text": "Panal de miel son las palabras suaves; suavidad al alma.",
+    "topic": "Palabras",
+    "reflection": "Elegir palabras amables trae medicina y alivio a quienes te escuchan."
+  },
+  {
+    "id": 192,
+    "book_id": 45,
+    "chapter": 8,
+    "verse": 31,
+    "reference": "Romanos 8:31",
+    "verse_text": "Si Dios por nosotros, ¿quién contra nosotros?",
+    "topic": "Victoria",
+    "reflection": "Contar con el respaldo de Dios supera cualquier oposición humana."
+  },
+  {
+    "id": 193,
+    "book_id": 34,
+    "chapter": 1,
+    "verse": 7,
+    "reference": "Nahúm 1:7",
+    "verse_text": "Bueno es Jehová, fortaleza en el día de la angustia.",
+    "topic": "Bondad",
+    "reflection": "Dios conoce y protege a quienes buscan refugio en su bondad."
+  },
+  {
+    "id": 194,
+    "book_id": 50,
+    "chapter": 2,
+    "verse": 14,
+    "reference": "Filipenses 2:14",
+    "verse_text": "Haced todo sin murmuraciones y contiendas.",
+    "topic": "Actitud",
+    "reflection": "Hacer tus tareas con buena disposición trae armonía a tu entorno."
+  },
+  {
+    "id": 195,
+    "book_id": 51,
+    "chapter": 3,
+    "verse": 12,
+    "reference": "Colosenses 3:12",
+    "verse_text": "Vestíos de misericordia, de benignidad, de humildad.",
+    "topic": "Carácter",
+    "reflection": "Adornar tu carácter con virtudes pacíficas refleja el rostro de Cristo."
+  },
+  {
+    "id": 196,
+    "book_id": 19,
+    "chapter": 119,
+    "verse": 140,
+    "reference": "Salmos 119:140",
+    "verse_text": "Sumamente pura es tu palabra, y la ama tu siervo.",
+    "topic": "Pureza",
+    "reflection": "La pureza de la Verdad trae limpieza y transparencia al caminar."
+  },
+  {
+    "id": 197,
+    "book_id": 47,
+    "chapter": 12,
+    "verse": 10,
+    "reference": "2 Corintios 12:10",
+    "verse_text": "Cuando soy flaco, entonces soy fuerte.",
+    "topic": "Fortaleza",
+    "reflection": "Tus flaquezas son la oportunidad para que brille el poder de Dios."
+  },
+  {
+    "id": 198,
+    "book_id": 60,
+    "chapter": 5,
+    "verse": 6,
+    "reference": "1 Pedro 5:6",
+    "verse_text": "Humillaos pues bajo la poderosa mano de Dios, para que os exalte.",
+    "topic": "Humildad",
+    "reflection": "Reconocer tu dependencia divina es la antesala de su respaldo."
+  },
+  {
+    "id": 199,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 8,
+    "reference": "Salmos 121:8",
+    "verse_text": "Jehová guardará tu salida y tu entrada desde ahora para siempre.",
+    "topic": "Cuidado",
+    "reflection": "Cada paso de tu rutina diaria está bajo la custodia celestial."
+  },
+  {
+    "id": 200,
+    "book_id": 66,
+    "chapter": 21,
+    "verse": 4,
+    "reference": "Apocalipsis 21:4",
+    "verse_text": "Enjugará Dios toda lágrima de los ojos de ellos.",
+    "topic": "Consuelo",
+    "reflection": "El dolor actual terminará; Dios dará un consuelo perfecto y eterno."
+  },
+  {
+    "id": 9001,
+    "book_id": 99,
+    "chapter": 901,
+    "verse": 1,
+    "reference": "Filipenses 4:13",
+    "verse_text": "Todo lo puedo en Cristo que me fortalece.",
+    "topic": "Fortaleza",
+    "reflection": "No se trata de tener fuerzas propias ilimitadas, sino de apoyarte en Alguien más grande que tu cansancio."
+  },
+  {
+    "id": 9002,
+    "book_id": 99,
+    "chapter": 902,
+    "verse": 1,
+    "reference": "Salmo 46:1",
+    "verse_text": "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+    "topic": "Refugio",
+    "reflection": "Cuando todo se mueve alrededor tuyo y sientes que pierdes el equilibrio, este versículo no promete que nada se moverá: promete que hay un lugar firme donde sostenerte mientras todo lo demás tiembla."
+  },
+  {
+    "id": 9003,
+    "book_id": 99,
+    "chapter": 903,
+    "verse": 1,
+    "reference": "Isaías 41:10",
+    "verse_text": "No temas, porque yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.",
+    "topic": "Confianza",
+    "reflection": "Hay días en que el miedo parece más grande que la fe, cuando las circunstancias nos hacen sentir solos frente a lo que no podemos controlar. Pero Dios no promete quitarnos la dificultad: promete quedarse en ella con nosotros. Su presencia no depende de que todo salga bien, sino de que Él sostiene, con su propia justicia, lo que nuestras fuerzas no alcanzan."
+  },
+  {
+    "id": 9004,
+    "book_id": 99,
+    "chapter": 904,
+    "verse": 1,
+    "reference": "1 Corintios 10:13",
+    "verse_text": "No os ha tomado tentación sino humana; mas fiel es Dios, que no os dejará ser tentados más de lo que podéis llevar; antes dará también juntamente con la tentación la salida, para que podáis aguantar.",
+    "topic": "Fidelidad Divina",
+    "reflection": "A veces sentimos que lo que enfrentamos es único, que nadie más ha cargado un peso tan raro o tan grande como el nuestro. Pero este versículo nos recuerda que no estamos improvisando solos frente a la prueba: hay una salida ya preparada, aunque todavía no la veamos con claridad. Nuestra parte no es encontrarla de inmediato, sino sostenernos mientras aparece."
+  },
+  {
+    "id": 9005,
+    "book_id": 99,
+    "chapter": 905,
+    "verse": 1,
+    "reference": "Romanos 8:38-39",
+    "verse_text": "Por lo cual estoy cierto que ni la muerte, ni la vida, ni ángeles, ni principados, ni potestades, ni lo presente, ni lo por venir, ni lo alto, ni lo bajo, ni ninguna criatura nos podrá apartar del amor de Dios, que es en Cristo Jesús Señor nuestro.",
+    "topic": "Amor Inseparable",
+    "reflection": "Ninguna lista de miedos es tan larga como para quedar fuera de esta promesa."
+  },
+  {
+    "id": 9006,
+    "book_id": 99,
+    "chapter": 906,
+    "verse": 1,
+    "reference": "Romanos 8:38-39",
+    "verse_text": "Por lo cual estoy cierto que ni la muerte, ni la vida, ni ángeles, ni principados, ni potestades, ni lo presente, ni lo por venir, ni lo alto, ni lo bajo, ni ninguna criatura nos podrá apartar del amor de Dios, que es en Cristo Jesús Señor nuestro.",
+    "topic": "Amor Inseparable",
+    "reflection": "Pablo escribe esto no desde la teoría sino desde la cárcel, perseguido, incierto de su propio futuro, y aun así hace una lista deliberadamente exagerada de todo lo que podría separarnos de Dios, solo para descartarlo todo, uno por uno. No es una frase bonita para un mal día: es la conclusión de alguien que ya había perdido casi todo lo demás y descubrió que eso, precisamente, no se lo podían quitar. Cuando sientas que tu situación es la excepción a esta promesa, recuerda que fue escrita por alguien en peor situación que la tuya."
+  }
+]

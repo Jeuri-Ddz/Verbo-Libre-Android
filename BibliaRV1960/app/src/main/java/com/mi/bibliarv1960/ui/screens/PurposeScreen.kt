@@ -23,7 +23,13 @@ fun PurposeScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Propósito", fontWeight = FontWeight.Bold) },
+                title = { 
+                    Text(
+                        "Propósito", 
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold 
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onOpenDrawer) {
                         Icon(

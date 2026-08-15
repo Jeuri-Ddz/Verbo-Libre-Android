@@ -3,6 +3,7 @@ package com.mi.bibliarv1960.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.mi.bibliarv1960.DebugConfig
 import com.mi.bibliarv1960.data.repository.BibleRepository
 import com.mi.bibliarv1960.data.repository.NoteRepository
 import com.mi.bibliarv1960.data.local.entities.*
@@ -128,6 +129,7 @@ class BibleViewModel(
 
     private fun initializeDailyData() {
         viewModelScope.launch {
+            // 1. Obtener o generar la semilla UNA SOLA VEZ de forma segura
             val seed = dataStoreManager.deviceSeed.first() ?: run {
                 val newSeed = UUID.randomUUID().toString()
                 dataStoreManager.saveDeviceSeed(newSeed)
@@ -136,37 +138,38 @@ class BibleViewModel(
 
             val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-            // 1. Sorteo de Contenido Devocional
-            repository.allDevotionals.collect { devotionals ->
-                if (devotionals.isNotEmpty()) {
-                    val combined = "${seed}_content_devo_$todayDate"
-                    _todayDevotional.value = devotionals[abs(combined.hashCode()) % devotionals.size]
+            // 2. Sorteo de Contenido Devocional
+            launch {
+                repository.allDevotionals.collect { devotionals ->
+                    if (devotionals.isNotEmpty()) {
+                        val forcedId = DebugConfig.DEBUG_FORCE_DEVOTIONAL_ID
+                        if (forcedId != null) {
+                            _todayDevotional.value = devotionals.find { it.id == forcedId } ?: devotionals.first()
+                        } else {
+                            // Usamos un salt específico para devocionales
+                            val combined = "${seed}_devo_$todayDate"
+                            _todayDevotional.value = devotionals[abs(combined.hashCode()) % devotionals.size]
+                        }
+                    }
                 }
             }
-        }
-        
-        viewModelScope.launch {
-            val seed = dataStoreManager.deviceSeed.first() ?: ""
-            val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
-            // 2. Sorteo de Contenido Versículo
-            repository.allDailyVerses.collect { verses ->
-                if (verses.isNotEmpty()) {
-                    val combined = "${seed}_content_verse_$todayDate"
-                    _todayVerse.value = verses[abs(combined.hashCode()) % verses.size]
+            
+            // 3. Sorteo de Contenido Versículo
+            launch {
+                repository.allDailyVerses.collect { verses ->
+                    if (verses.isNotEmpty()) {
+                        // Usamos un salt específico para versículos
+                        val combined = "${seed}_verse_$todayDate"
+                        _todayVerse.value = verses[abs(combined.hashCode()) % verses.size]
+                    }
                 }
             }
-        }
 
-        viewModelScope.launch {
-            val seed = dataStoreManager.deviceSeed.first() ?: ""
-            val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
-            // 3. Sorteo de Fondos (Determinístico con Salt de texto)
-            val bgVerseStr = "${seed}_bg_verse_$todayDate"
+            // 4. Sorteo de Fondos (Determinístico con Salt único)
+            val bgVerseStr = "${seed}_bg_v_$todayDate"
             _todayVerseBgIndex.value = (abs(bgVerseStr.hashCode()) % 5) + 1 // 1 al 5
 
-            val bgDevoStr = "${seed}_bg_devo_$todayDate"
+            val bgDevoStr = "${seed}_bg_d_$todayDate"
             _todayDevotionalBgIndex.value = (abs(bgDevoStr.hashCode()) % 5) + 6 // 6 al 10
         }
     }
@@ -201,9 +204,29 @@ class BibleViewModel(
     fun nextDevotionalPreview() {
         val currentList = allDevotionals.value
         if (currentList.isEmpty()) return
-        
-        val currentIndex = _previewDevotionalIndex.value ?: -1
-        _previewDevotionalIndex.value = (currentIndex + 1) % currentList.size
+
+        val forcedId = DebugConfig.DEBUG_FORCE_DEVOTIONAL_ID
+        if (forcedId != null) {
+            // --- MODO DEBUG SECUENCIAL (1 al 200) ---
+            val currentDevo = displayDevotional.value
+            val currentId = currentDevo?.id ?: forcedId
+
+            // Avanzar al siguiente ID, volviendo al 1 después del 200
+            val nextId = if (currentId < 200) currentId + 1 else 1
+            val nextIndex = currentList.indexOfFirst { it.id == nextId }
+
+            if (nextIndex != -1) {
+                _previewDevotionalIndex.value = nextIndex
+            } else {
+                // Si el ID exacto no existe, usamos el siguiente índice disponible
+                val currentIndex = _previewDevotionalIndex.value ?: -1
+                _previewDevotionalIndex.value = (currentIndex + 1) % currentList.size
+            }
+        } else {
+            // --- COMPORTAMIENTO NORMAL ---
+            val currentIndex = _previewDevotionalIndex.value ?: -1
+            _previewDevotionalIndex.value = (currentIndex + 1) % currentList.size
+        }
 
         val currentBgIndex = _previewDevotionalBgIndex.value ?: todayDevotionalBgIndex.value
         // Fondos de devo son del 6 al 10. (6-1=5, 5%5=0, 0+6=6...)

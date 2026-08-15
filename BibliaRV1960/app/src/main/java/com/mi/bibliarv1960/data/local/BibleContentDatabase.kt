@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
         DevotionalEntity::class,
         DailyVerseEntity::class
     ],
-    version = 25,
+    version = 26,
     exportSchema = false
 )
 abstract class BibleContentDatabase : RoomDatabase() {

@@ -309,13 +309,15 @@ class MainActivity : ComponentActivity() {
                         composable("all_notes") {
                             val notes by notesViewModel.allNotes.collectAsState()
                             val allBooks by viewModel.allBooks.collectAsState()
+                            val allTranslations by viewModel.allTranslations.collectAsState()
                             AllNotesScreen(
                                 notes = notes,
                                 books = allBooks,
+                                translations = allTranslations,
                                 onNoteClick = { note ->
                                     safeNavigate(Screen.Reader.createRoute(note.bookId, note.chapter, note.verseNumber))
                                 },
-                                onBack = { safePopBack() }
+                                onOpenDrawer = { scope.launch { drawerState.open() } }
                             )
                         }
                         composable(Screen.Purpose.route) {
@@ -327,13 +329,17 @@ class MainActivity : ComponentActivity() {
                             DailyVerseScreen(
                                 viewModel = viewModel,
                                 onNavigate = { route -> safeNavigate(route) },
-                                onBack = { safePopBack() }
+                                onBack = { 
+                                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                                }
                             )
                         }
                         composable(Screen.Devotional.route) {
                             DevotionalScreen(
                                 viewModel = viewModel,
-                                onBack = { safePopBack() }
+                                onBack = { 
+                                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                                }
                             )
                         }
                         composable(Screen.Search.route) {

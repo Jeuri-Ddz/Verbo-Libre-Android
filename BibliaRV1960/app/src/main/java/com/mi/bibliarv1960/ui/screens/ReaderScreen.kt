@@ -877,10 +877,12 @@ fun ReaderScreen(
                 val editorState by notesViewModel.editorState.collectAsState()
                 editorState?.let { state ->
                     val verse = verses.find { it.verse == state.verseNumber }
+                    val translation = translations.find { it.id == selectedTranslationId }
                     NoteEditorSheet(
                         state = state,
                         verseText = verse?.text.orEmpty(),
                         reference = "$bookName ${state.chapter}:${state.verseNumber}",
+                        translationName = translation?.abbreviation ?: translation?.name,
                         onTextChange = notesViewModel::updateDraftText,
                         onSave = notesViewModel::saveCurrentNote,
                         onDelete = notesViewModel::deleteCurrentNote,
