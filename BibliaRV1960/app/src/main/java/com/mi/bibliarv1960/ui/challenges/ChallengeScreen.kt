@@ -1,9 +1,7 @@
 package com.mi.bibliarv1960.ui.challenges
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -19,18 +17,20 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.ChallengeEntity
 import com.mi.bibliarv1960.ui.components.LinoButton
 import com.mi.bibliarv1960.ui.components.LinoButtonVariant
-import androidx.compose.foundation.layout.FlowRow
+import com.mi.bibliarv1960.ui.theme.BibliaRV1960Theme
 
 @Composable
 fun ChallengeScreen(
@@ -41,168 +41,221 @@ fun ChallengeScreen(
     val status by viewModel.challengeStatus.collectAsState()
     val completedCount by viewModel.completedCount.collectAsState()
 
+    ChallengeScreenContent(
+        challenge = challenge,
+        status = status,
+        completedCount = completedCount,
+        onClose = onClose,
+        onCheckFillVerse = { result, correct -> viewModel.submitResult(result, correct) },
+        onCheckTrivia = { index -> 
+            val correct = index == challenge?.correctIndex
+            viewModel.submitResult(ChallengeResult.Trivia(index), correct)
+        },
+        onNextChallengePreview = { viewModel.nextChallengePreview() }
+    )
+}
+
+@Composable
+private fun ChallengeScreenContent(
+    challenge: ChallengeEntity?,
+    status: DailyChallengeStatus?,
+    completedCount: Int,
+    onClose: () -> Unit,
+    onCheckFillVerse: (ChallengeResult.FillVerse, Boolean) -> Unit,
+    onCheckTrivia: (Int) -> Unit,
+    onNextChallengePreview: () -> Unit
+) {
+    // Levantamiento de estado para FillVerse
+    val correctWords = challenge?.correctWords ?: emptyList()
+    var userSelections by remember(challenge) {
+        val result = status?.result
+        val initial = if (result is ChallengeResult.FillVerse) {
+            result.userWords
+        } else {
+            List(correctWords.size) { "" }
+        }
+        mutableStateOf(initial)
+    }
+
+    val allWordsBank = remember(challenge) {
+        (correctWords + (challenge?.distractors ?: emptyList())).shuffled()
+    }
+
+    var selectedTriviaIndex by remember(challenge) {
+        val result = status?.result
+        val initial = if (result is ChallengeResult.Trivia) result.selectedIndex else -1
+        mutableStateOf(initial)
+    }
+
+    val isLocked = status?.isCompleted == true
+    val allBlanksFilled = userSelections.none { it.isEmpty() }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
-        tonalElevation = 0.dp
+        color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(top = 24.dp, bottom = 12.dp),
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 1. Header (Fijo arriba)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Cerrar", tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
-                }
+            // 1. Header (Fijo) - Ahora incluye el título del reto
+            ChallengeHeader(
+                challenge = challenge,
+                completedCount = completedCount,
+                onClose = onClose
+            )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color(0xFFB9915A), modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Retos acertados: $completedCount",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                    )
-                }
-            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // 2. Contenedor del reto Adaptativo (Full Screen Adaptable)
-            BoxWithConstraints(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
+            // 2. Content (Flexible) - Únicamente el contenido variable
+            Box(
+                modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                val maxHeightPx = this.constraints.maxHeight
-                
-                // PASO 1: Calcular tamaño inicial según altura disponible
-                val initialTextSize = remember(maxHeightPx) {
-                    when {
-                        maxHeightPx < 400 -> 14.sp
-                        maxHeightPx < 600 -> 18.sp
-                        maxHeightPx < 800 -> 22.sp
-                        else -> 26.sp
-                    }
-                }
-
-                // PASO 2: Estados separados para medición y ajuste
-                var textSize by remember(challenge) { mutableStateOf(initialTextSize) }
-                var contentHeight by remember { mutableIntStateOf(0) }
-                var iterations by remember { mutableIntStateOf(0) }
-
-                // PASO 3: LaunchedEffect que reduce en UN SOLO PASO proporcional
-                LaunchedEffect(contentHeight, maxHeightPx, iterations) {
-                    if ((maxHeightPx > 0) && (contentHeight > 0) && (iterations < 20)) {
-                        val ratio = contentHeight.toFloat() / maxHeightPx.toFloat()
-                        if (ratio > 0.95f) {
-                            // Calcular reducción exacta necesaria
-                            val reductionFactor = (ratio - 0.85f).coerceIn(0.1f, 0.4f)
-                            val newSize = (textSize.value * (1f - reductionFactor)).coerceAtLeast(14f)
-                            if (newSize < textSize.value) {
-                                textSize = newSize.sp
-                                iterations++  // Safety net: máximo 20 intentos
+                challenge?.let { ch ->
+                    if (ch.type == "FILL_VERSE") {
+                        FillVerseLayout(
+                            challenge = ch,
+                            status = status,
+                            userSelections = userSelections,
+                            onBlankClick = { index ->
+                                if (!isLocked) {
+                                    val newList = userSelections.toMutableList()
+                                    newList[index] = ""
+                                    userSelections = newList
+                                }
                             }
-                        }
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onSizeChanged { size ->
-                            contentHeight = size.height  // Solo actualiza la medición
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    // Punto rojo decorativo
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .background(Color(0xFFE4574C), CircleShape)
-                    )
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Text(
-                        text = "RETO DE HOY",
-                        style = MaterialTheme.typography.labelLarge,
-                        letterSpacing = 2.sp,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    challenge?.let { ch ->
-                        Log.d("ChallengeScreen", "Cargando reto ID: ${ch.id}, Tipo: ${ch.type}")
-                        Text(
-                            text = if (ch.type == "FILL_VERSE") "Completa el versículo" else "Trivia bíblica",
-                            fontSize = if (ch.type == "FILL_VERSE") (textSize.value * 1.1f).sp else textSize,
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp),
-                            textAlign = TextAlign.Center
                         )
-
-                        if (ch.type == "FILL_VERSE") {
-                            FillVerseLayout(
-                                challenge = ch,
-                                status = status,
-                                currentTextSize = textSize
-                            ) { result, correct ->
-                                viewModel.submitResult(result, correct)
+                    } else {
+                        TriviaLayout(
+                            challenge = ch,
+                            status = status,
+                            selectedIndex = selectedTriviaIndex,
+                            onSelect = { index ->
+                                if (!isLocked) selectedTriviaIndex = index
                             }
-                        } else {
-                            TriviaLayout(ch, status, currentTextSize = textSize) { index ->
-                                viewModel.submitResult(ChallengeResult.Trivia(index), index == ch.correctIndex)
-                            }
-                        }
+                        )
                     }
                 }
             }
 
-            // 3. Footer (Fijo abajo)
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 3. Footer (Banco + Botón + Branding)
             Column(
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (status?.isCompleted == true) {
-                    Text(
-                        text = "¡Vuelve mañana para un nuevo reto!",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                if (!isLocked && (challenge?.type == "FILL_VERSE" || challenge?.type == "TRIVIA")) {
+                    if (challenge.type == "FILL_VERSE") {
+                        WordBankFlowRow(
+                            options = allWordsBank,
+                            userSelections = userSelections,
+                            onWordClick = { word ->
+                                val firstEmpty = userSelections.indexOfFirst { it.isEmpty() }
+                                if (firstEmpty != -1) {
+                                    val newList = userSelections.toMutableList()
+                                    newList[firstEmpty] = word
+                                    userSelections = newList
+                                }
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+
+                    val isEnabled = if (challenge.type == "FILL_VERSE") allBlanksFilled else selectedTriviaIndex != -1
+                    val buttonText = if (challenge.type == "FILL_VERSE") "Comprobar versículo" else "Comprobar respuesta"
+
                     LinoButton(
-                        text = "Continuar",
-                        onClick = onClose,
-                        variant = LinoButtonVariant.PRIMARY
+                        text = buttonText,
+                        onClick = {
+                            if (challenge.type == "FILL_VERSE") {
+                                val isCorrect = userSelections == correctWords
+                                onCheckFillVerse(ChallengeResult.FillVerse(userSelections), isCorrect)
+                            } else {
+                                onCheckTrivia(selectedTriviaIndex)
+                            }
+                        },
+                        variant = LinoButtonVariant.ACCENT,
+                        enabled = isEnabled,
+                        fixedHeight = 44.dp,
+                        modifier = Modifier.fillMaxWidth()
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                BrandingFooter(onClick = onNextChallengePreview)
+            }
+        }
+    }
+}
 
-                // Firma para testeo (Clickable para ciclar retos)
-                Text(
-                    text = "Verbo Libre",
-                    fontFamily = FontFamily.Serif,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
-                    modifier = Modifier
-                        .padding(bottom = 12.dp)
-                        .clickable { viewModel.nextChallengePreview() }
+@Composable
+private fun ChallengeHeader(
+    challenge: ChallengeEntity?,
+    completedCount: Int,
+    onClose: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onClose) {
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = "Cerrar",
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.EmojiEvents,
+                    contentDescription = null,
+                    tint = Color(0xFFB9915A),
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "Retos acertados: $completedCount",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+            }
+        }
+
+        if (challenge != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+            // Indicador visual superior
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .background(Color(0xFFE4574C), CircleShape)
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "RETO DE HOY",
+                style = MaterialTheme.typography.labelLarge,
+                letterSpacing = 2.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = if (challenge.type == "FILL_VERSE") "Completa el versículo" else "Trivia bíblica",
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 8.dp),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -211,92 +264,52 @@ fun ChallengeScreen(
 fun FillVerseLayout(
     challenge: ChallengeEntity,
     status: DailyChallengeStatus?,
-    currentTextSize: TextUnit = 24.sp,
-    onCheck: (ChallengeResult.FillVerse, Boolean) -> Unit
+    userSelections: List<String>,
+    onBlankClick: (Int) -> Unit
 ) {
     val verseText = challenge.verseText ?: ""
     val correctWords = challenge.correctWords ?: emptyList()
     
-    // PASO 8: Validar consistencia de correctWords con placeholders
-    val placeholderCount = Regex("\\{\\d+\\}").findAll(verseText).count()
-    if (correctWords.isEmpty() || placeholderCount != correctWords.size) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Reto no disponible",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.error
-            )
-            Text(
-                text = "Por favor, intenta de nuevo más tarde",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-            )
+    val fullVerseForLength = remember(challenge) {
+        var text = verseText
+        correctWords.forEachIndexed { i, word ->
+            text = text.replace("{$i}", word)
         }
-        return
+        text
     }
 
-    val allWordsBank = remember(challenge) {
-        (correctWords + (challenge.distractors ?: emptyList())).shuffled()
-    }
-
-    var userSelections by remember(challenge) { mutableStateOf(List(correctWords.size) { "" }) }
-
-    LaunchedEffect(status) {
-        val result = status?.result
-        if (result is ChallengeResult.FillVerse) userSelections = result.userWords
+    val verseFontSize = when (fullVerseForLength.length) {
+        in 0..60 -> 22.sp
+        in 61..90 -> 19.sp
+        else -> 16.sp
     }
 
     val isLocked = status?.isCompleted == true
-
-    // PASO 4: Calcular effectiveTextSize según longitud máxima de palabras
-    val effectiveTextSize = remember(currentTextSize, correctWords) {
-        val maxWordLength = (correctWords + (challenge.distractors ?: emptyList()))
-            .maxOfOrNull { it.length } ?: 0
-        when {
-            maxWordLength > 14 -> (currentTextSize.value * 0.65f).sp
-            maxWordLength > 12 -> (currentTextSize.value * 0.7f).sp
-            maxWordLength > 10 -> (currentTextSize.value * 0.8f).sp
-            else -> currentTextSize
-        }
-    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val isAllFilled = userSelections.none { it.isEmpty() }
-        
-        // PASO 2: Renderizar versículo secuencialmente con FlowRow (Inline Blanks)
         val parts = verseText.split(Regex("\\{\\d+\\}"))
         
-        // Altura de línea uniforme para evitar saltos inconsistentes
-        val lineSpacing = (effectiveTextSize.value * 2.2f).dp
-
         FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalArrangement = Arrangement.Center
         ) {
             parts.forEachIndexed { index, part ->
                 if (part.isNotBlank()) {
-                    Box(
-                        modifier = Modifier.height(lineSpacing),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = part.trim() + " ",
-                            fontSize = effectiveTextSize,
+                    Text(
+                        text = part.trim() + " ",
+                        style = TextStyle(
+                            fontSize = verseFontSize,
                             fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.Normal,
+                            lineHeight = 1.9.em,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colorScheme.onBackground
                         )
-                    }
+                    )
                 }
 
                 if (index < userSelections.size) {
@@ -307,18 +320,16 @@ fun FillVerseLayout(
                     val underlineColor = when {
                         isCorrect -> Color(0xFF3C9D6B)
                         isWrong -> Color(0xFFE4574C)
-                        word.isNotEmpty() -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)
                     }
 
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .height(lineSpacing)
-                            .widthIn(min = 64.dp)
+                            .padding(horizontal = 4.dp)
+                            .widthIn(min = 60.dp)
                             .drawBehind {
                                 val strokeWidth = 1.5.dp.toPx()
-                                val y = size.height - 6.dp.toPx()
+                                val y = size.height - 4.dp.toPx()
                                 drawLine(
                                     color = underlineColor,
                                     start = Offset(0f, y),
@@ -327,109 +338,34 @@ fun FillVerseLayout(
                                 )
                             }
                             .clickable(enabled = !isLocked && word.isNotEmpty()) {
-                                val newList = userSelections.toMutableList()
-                                newList[index] = ""
-                                userSelections = newList
+                                onBlankClick(index)
                             },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = word,
-                            fontSize = effectiveTextSize,
-                            fontFamily = FontFamily.Serif,
-                            fontStyle = if (word.isNotEmpty()) FontStyle.Italic else FontStyle.Normal,
-                            fontWeight = FontWeight.Medium,
+                            style = TextStyle(
+                                fontSize = verseFontSize,
+                                fontFamily = FontFamily.Serif,
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Normal,
+                                color = if (word.isNotEmpty()) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                textAlign = TextAlign.Center
+                            ),
                             maxLines = 1,
-                            softWrap = false,
-                            color = if (word.isNotEmpty()) underlineColor else Color.Transparent,
-                            modifier = Modifier.padding(horizontal = 4.dp)
+                            softWrap = false
                         )
                     }
-                    // Espacio sutil después del blank
-                    Spacer(modifier = Modifier.width(2.dp))
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (!isLocked) {
-            LinoButton(
-                text = "Comprobar versículo",
-                onClick = {
-                    val isCorrect = userSelections == correctWords
-                    onCheck(ChallengeResult.FillVerse(userSelections), isCorrect)
-                },
-                variant = LinoButtonVariant.PRIMARY,
-                enabled = isAllFilled,
-                fixedHeight = 44.dp,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        // 2. Banco de palabras o Explicación
         if (isLocked) {
+            Spacer(modifier = Modifier.height(32.dp))
             ChallengeExplanation(
                 reference = challenge.reference,
-                explanation = challenge.explanation,
-                currentTextSize = currentTextSize
+                explanation = challenge.explanation
             )
-        } else {
-            Text(
-                text = "Toca las palabras para completar:",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            // PASO 5: FlowRow dinámico en el banco de palabras
-            FlowRow(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                allWordsBank.forEach { word ->
-                    val isUsed = userSelections.contains(word)
-                    Surface(
-                        onClick = {
-                            if (!isUsed) {
-                                val firstEmpty = userSelections.indexOfFirst { it.isEmpty() }
-                                if (firstEmpty != -1) {
-                                    val newList = userSelections.toMutableList()
-                                    newList[firstEmpty] = word
-                                    userSelections = newList
-                                }
-                            }
-                        },
-                        shape = RoundedCornerShape(12.dp),
-                        tonalElevation = if (isUsed) 0.dp else 2.dp,
-                        color = if (isUsed) Color.Transparent else MaterialTheme.colorScheme.surface,
-                        border = if (isUsed)
-                            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
-                            else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                        enabled = !isUsed,
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .wrapContentWidth()
-                            .heightIn(min = 44.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = word,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = (currentTextSize.value * 0.7f).coerceAtLeast(14f).sp,
-                                maxLines = 1,
-                                softWrap = false,
-                                color = if (isUsed) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 }
@@ -438,48 +374,55 @@ fun FillVerseLayout(
 fun TriviaLayout(
     challenge: ChallengeEntity,
     status: DailyChallengeStatus?,
-    currentTextSize: TextUnit = 24.sp,
-    onAnswer: (Int) -> Unit
+    selectedIndex: Int,
+    onSelect: (Int) -> Unit
 ) {
     val isLocked = status?.isCompleted == true
-    val selectedIndex = (status?.result as? ChallengeResult.Trivia)?.selectedIndex ?: -1
+    val finalSelectedIndex = if (isLocked) {
+        (status.result as? ChallengeResult.Trivia)?.selectedIndex ?: selectedIndex
+    } else {
+        selectedIndex
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 1. Pregunta con estilo elegante
         Text(
-            text = challenge.question ?: "Cargando pregunta...",
-            style = MaterialTheme.typography.headlineSmall,
-            fontSize = currentTextSize,
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center,
-            lineHeight = (currentTextSize.value * 1.3f).sp,
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 28.dp)
+            text = challenge.question ?: "",
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                lineHeight = 1.4.em,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // 2. Opciones de respuesta
         val options = challenge.options ?: emptyList()
         options.forEachIndexed { index, option ->
-            val isSelected = index == selectedIndex
+            val isSelected = index == finalSelectedIndex
             val isCorrect = isLocked && index == challenge.correctIndex
             val isWrong = isLocked && isSelected && !isCorrect
 
+            val triviaOptionFontSize = when (option.length) {
+                in 0..30 -> 16.sp
+                else -> 14.sp
+            }
+
             Surface(
-                onClick = { if (!isLocked) onAnswer(index) },
-                shape = RoundedCornerShape(16.dp),
-                tonalElevation = 0.dp,
+                onClick = { if (!isLocked) onSelect(index) },
+                shape = RoundedCornerShape(12.dp),
                 color = when {
-                    isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.12f)
-                    isWrong -> Color(0xFFE4574C).copy(alpha = 0.12f)
-                    isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                    isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.1f)
+                    isWrong -> Color(0xFFE4574C).copy(alpha = 0.1f)
+                    isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
                     else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 },
                 border = BorderStroke(
-                    width = if (isCorrect || isWrong || isSelected) 2.dp else 1.dp,
+                    width = 1.dp,
                     color = when {
                         isCorrect -> Color(0xFF3C9D6B)
                         isWrong -> Color(0xFFE4574C)
@@ -489,55 +432,71 @@ fun TriviaLayout(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 12.dp)
+                    .padding(bottom = 8.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Círculo indicador A, B, C, D
-                    Surface(
-                        shape = CircleShape,
-                        tonalElevation = 0.dp,
-                        color = when {
-                            isCorrect -> Color(0xFF3C9D6B)
-                            isWrong -> Color(0xFFE4574C)
-                            isSelected -> MaterialTheme.colorScheme.primary
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        },
-                        modifier = Modifier.size(28.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = listOf("A", "B", "C", "D").getOrElse(index) { "?" },
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 13.sp,
-                                color = if (isCorrect || isWrong || isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Text(
-                        text = option,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = (currentTextSize.value * 0.75f).coerceAtLeast(14f).sp,
-                        fontWeight = if (isSelected || isCorrect) FontWeight.Bold else FontWeight.Medium,
+                Text(
+                    text = option,
+                    style = TextStyle(
+                        fontSize = triviaOptionFontSize,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    textAlign = TextAlign.Start
+                )
             }
         }
 
-        // 3. Resultado y Explicación (Solo si está bloqueado/completado)
         if (isLocked) {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             ChallengeExplanation(
                 reference = challenge.reference,
-                explanation = challenge.explanation,
-                currentTextSize = currentTextSize
+                explanation = challenge.explanation
             )
+        }
+    }
+}
+
+@Composable
+private fun WordBankFlowRow(
+    options: List<String>,
+    userSelections: List<String>,
+    onWordClick: (String) -> Unit
+) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        options.forEach { word ->
+            val isUsed = userSelections.contains(word)
+            
+            Surface(
+                onClick = { if (!isUsed) onWordClick(word) },
+                shape = RoundedCornerShape(8.dp),
+                color = if (isUsed) Color.Transparent else MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .wrapContentWidth()
+                    .heightIn(min = 44.dp)
+                    .alpha(if (isUsed) 0.3f else 1f),
+                enabled = !isUsed
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = word,
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        maxLines = 1,
+                        softWrap = false
+                    )
+                }
+            }
         }
     }
 }
@@ -545,35 +504,177 @@ fun TriviaLayout(
 @Composable
 fun ChallengeExplanation(
     reference: String,
-    explanation: String,
-    currentTextSize: TextUnit
+    explanation: String
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(
                 MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
-                RoundedCornerShape(16.dp)
+                RoundedCornerShape(12.dp)
             )
-            .padding(20.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = reference,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFB9915A)
         )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = explanation,
             style = MaterialTheme.typography.bodyMedium,
-            fontSize = (currentTextSize.value * 0.65f).coerceAtLeast(14f).sp,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
-            lineHeight = (currentTextSize.value * 1.0f).sp
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
         )
+    }
+}
+
+@Composable
+private fun BrandingFooter(onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Verbo Libre",
+            fontFamily = FontFamily.Serif,
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .clickable { onClick() }
+        )
+    }
+}
+
+// Previews
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun PreviewShortVerse() {
+    val challenge = ChallengeEntity(
+        id = 1,
+        type = "FILL_VERSE",
+        reference = "Salmos 23:1",
+        verseText = "Jehová es mi {0}; nada me {1}.",
+        correctWords = listOf("pastor", "faltará"),
+        distractors = listOf("guía", "sucederá"),
+        explanation = "La figura del pastor garantiza provisión y cuidado."
+    )
+    BibliaRV1960Theme {
+        ChallengeScreenContent(
+            challenge = challenge,
+            status = null,
+            completedCount = 5,
+            onClose = {},
+            onCheckFillVerse = { _, _ -> },
+            onCheckTrivia = {},
+            onNextChallengePreview = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun PreviewLongVerse() {
+    val challenge = ChallengeEntity(
+        id = 2,
+        type = "FILL_VERSE",
+        reference = "Isaías 41:10",
+        verseText = "No {0}, que yo soy contigo; no {1}, que yo soy tu Dios que te esfuerzo: siempre te {2}, siempre te sustentaré con la diestra de mi justicia.",
+        correctWords = listOf("temas", "desmayes", "ayudaré"),
+        distractors = listOf("llores", "temas", "cuidaré"),
+        explanation = "Dios promete su compañía y sostén en todo momento."
+    )
+    BibliaRV1960Theme {
+        ChallengeScreenContent(
+            challenge = challenge,
+            status = null,
+            completedCount = 10,
+            onClose = {},
+            onCheckFillVerse = { _, _ -> },
+            onCheckTrivia = {},
+            onNextChallengePreview = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun PreviewWordBankLongWords() {
+    val challenge = ChallengeEntity(
+        id = 3,
+        type = "FILL_VERSE",
+        reference = "Proverbios 3:5",
+        verseText = "Fíate de {0} de todo tu {1}, y no estribes en tu {2}.",
+        correctWords = listOf("Jehová", "corazón", "prudencia"),
+        distractors = listOf("entendimiento", "conocimiento", "sabiduría"),
+        explanation = "Confiar en Dios supera nuestra propia lógica."
+    )
+    BibliaRV1960Theme {
+        ChallengeScreenContent(
+            challenge = challenge,
+            status = null,
+            completedCount = 15,
+            onClose = {},
+            onCheckFillVerse = { _, _ -> },
+            onCheckTrivia = {},
+            onNextChallengePreview = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 280) // Pantalla angosta
+@Composable
+fun PreviewNarrowScreen() {
+    val challenge = ChallengeEntity(
+        id = 4,
+        type = "TRIVIA",
+        reference = "Juan 14:6",
+        question = "¿Cuál es el camino, la verdad y la vida?",
+        options = listOf("Las buenas obras", "El conocimiento", "Jesucristo", "La religión"),
+        correctIndex = 2,
+        explanation = "Jesús es el único camino al Padre."
+    )
+    BibliaRV1960Theme {
+        ChallengeScreenContent(
+            challenge = challenge,
+            status = null,
+            completedCount = 20,
+            onClose = {},
+            onCheckFillVerse = { _, _ -> },
+            onCheckTrivia = {},
+            onNextChallengePreview = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun PreviewCheckButtonStates() {
+    val challenge = ChallengeEntity(
+        id = 5,
+        type = "FILL_VERSE",
+        reference = "Mateo 6:33",
+        verseText = "Mas buscad {0} el {1} de Dios.",
+        correctWords = listOf("primeramente", "reino"),
+        distractors = listOf("siempre", "camino"),
+        explanation = ""
+    )
+    BibliaRV1960Theme {
+        Column {
+            Text("Deshabilitado:")
+            ChallengeScreenContent(
+                challenge = challenge,
+                status = null,
+                completedCount = 0,
+                onClose = {},
+                onCheckFillVerse = { _, _ -> },
+                onCheckTrivia = {},
+                onNextChallengePreview = {}
+            )
+        }
     }
 }

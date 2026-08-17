@@ -24,7 +24,8 @@ import com.mi.bibliarv1960.ui.theme.LinoBg
 enum class LinoButtonVariant {
     PRIMARY,
     OUTLINE,
-    GHOST
+    GHOST,
+    ACCENT
 }
 
 @Composable
@@ -39,15 +40,17 @@ fun LinoButton(
     val height = fixedHeight ?: if (variant == LinoButtonVariant.GHOST) 44.dp else 52.dp
     val containerColor = when (variant) {
         LinoButtonVariant.PRIMARY -> LinoBg
+        LinoButtonVariant.ACCENT -> LinoAccent
         else -> Color.Transparent
     }
     val contentColor = when (variant) {
         LinoButtonVariant.PRIMARY -> LinoAccent
+        LinoButtonVariant.ACCENT -> LinoBg
         LinoButtonVariant.OUTLINE -> LinoBg
         LinoButtonVariant.GHOST -> LinoBg.copy(alpha = 0.85f)
     }
     val border = when (variant) {
-        LinoButtonVariant.PRIMARY -> null
+        LinoButtonVariant.PRIMARY, LinoButtonVariant.ACCENT -> null
         LinoButtonVariant.OUTLINE -> BorderStroke(1.5.dp, LinoBg.copy(alpha = 0.55f))
         LinoButtonVariant.GHOST -> BorderStroke(1.5.dp, LinoBg.copy(alpha = 0.30f))
     }
