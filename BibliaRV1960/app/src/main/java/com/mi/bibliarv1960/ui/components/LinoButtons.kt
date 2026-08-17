@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.ui.theme.LinoAccent
@@ -30,9 +32,11 @@ fun LinoButton(
     text: String,
     onClick: () -> Unit,
     variant: LinoButtonVariant = LinoButtonVariant.PRIMARY,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    fixedHeight: Dp? = null
 ) {
-    val height = if (variant == LinoButtonVariant.GHOST) 44.dp else 52.dp
+    val height = fixedHeight ?: if (variant == LinoButtonVariant.GHOST) 44.dp else 52.dp
     val containerColor = when (variant) {
         LinoButtonVariant.PRIMARY -> LinoBg
         else -> Color.Transparent
@@ -52,11 +56,13 @@ fun LinoButton(
 
     Surface(
         onClick = onClick,
+        enabled = enabled,
         color = containerColor,
         contentColor = contentColor,
         shape = RoundedCornerShape(14.dp),
         border = border,
         modifier = modifier
+            .alpha(if (enabled) 1f else 0.5f)
             .fillMaxWidth()
             .height(height)
     ) {

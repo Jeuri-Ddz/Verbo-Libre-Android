@@ -42,44 +42,74 @@ class ChallengeViewModel(
     val challengeStatus: StateFlow<DailyChallengeStatus?> = _challengeStatus.asStateFlow()
 
     private var allChallengesList: List<ChallengeEntity> = emptyList()
+    private var isInitialized = false
 
     val completedCount: StateFlow<Int> = dataStoreManager.challengeCompletedCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
     init {
-        // Cargar todos los retos una vez de forma segura
+        loadChallengesAndStatus()
+    }
+
+    private fun loadChallengesAndStatus() {
+        if (isInitialized) return
+        isInitialized = true
+        
         viewModelScope.launch {
             try {
-                repository.allChallenges.collect { challenges ->
-                    allChallengesList = challenges
-                    if (challenges.isNotEmpty() && _currentChallenge.value == null) {
-                        selectDailyChallenge(challenges)
+                repository.allChallenges
+                    .catch { e -> e.printStackTrace() }
+                    .collect { challenges ->
+                        allChallengesList = challenges
+                        if (challenges.isNotEmpty() && _currentChallenge.value == null) {
+                            selectDailyChallenge(challenges)
+                        }
+                        if (challenges.isNotEmpty()) {
+                            loadChallengeStatus()
+                        }
                     }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun loadChallengeStatus() {
+        viewModelScope.launch {
+            try {
+                val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                val lastDate = dataStoreManager.lastChallengeDate.firstOrNull()
+                
+                if (lastDate == todayDate) {
+                    val resultJson = dataStoreManager.lastChallengeResult.firstOrNull()
+                    if (!resultJson.isNullOrBlank()) {
+                        try {
+                            val status = Json.decodeFromString<DailyChallengeStatus>(resultJson)
+                            _challengeStatus.value = status
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            _challengeStatus.value = null  // Reset si falla el parsing
+                        }
+                    }
+                } else {
+                    _challengeStatus.value = null  // Nuevo día, limpiar estado
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        loadChallengeStatus()
-    }
-
-    private fun loadChallengeStatus() {
-        viewModelScope.launch {
-            val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val lastDate = dataStoreManager.lastChallengeDate.firstOrNull()
-            if (lastDate == todayDate) {
-                val resultJson = dataStoreManager.lastChallengeResult.firstOrNull()
-                if (resultJson != null) {
-                    try {
-                        _challengeStatus.value = Json.decodeFromString<DailyChallengeStatus>(resultJson)
-                    } catch (e: Exception) { e.printStackTrace() }
-                }
-            }
-        }
     }
 
     private fun selectDailyChallenge(challenges: List<ChallengeEntity>) {
+        // Capturar fecha UNA SOLA VEZ al inicio
         val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        
+        // Verificar si ya tenemos un reto para hoy
+        val savedDate = _challengeStatus.value?.date
+        if (savedDate == todayDate && _currentChallenge.value != null) {
+            return  // Ya tenemos reto para hoy, no recalcular
+        }
+        
         val calendar = Calendar.getInstance()
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
         
@@ -116,5 +146,11 @@ class ChallengeViewModel(
             _currentChallenge.value = allChallengesList[previewIndex]
             _challengeStatus.value = null
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        allChallengesList = emptyList()
+        isInitialized = false
     }
 }
