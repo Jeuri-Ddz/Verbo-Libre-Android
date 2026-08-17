@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,6 +34,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mi.bibliarv1960.ui.notes.AllNotesScreen
 import com.mi.bibliarv1960.ui.notes.NotesViewModel
+import com.mi.bibliarv1960.ui.challenges.ChallengeViewModel
+import com.mi.bibliarv1960.ui.challenges.ChallengeScreen
+import com.mi.bibliarv1960.ui.challenges.DailyChallengeStatus
 import com.mi.bibliarv1960.ui.navigation.Screen
 import com.mi.bibliarv1960.ui.screens.*
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
@@ -40,6 +44,7 @@ import com.mi.bibliarv1960.ui.theme.BibliaRV1960Theme
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModelFactory
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 
 class MainActivity : ComponentActivity() {
 
@@ -49,6 +54,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private val notesViewModel: NotesViewModel by viewModels {
+        val app = application as BibleApplication
+        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
+    }
+
+    private val challengeViewModel: ChallengeViewModel by viewModels {
         val app = application as BibleApplication
         BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
     }
@@ -85,6 +95,17 @@ class MainActivity : ComponentActivity() {
                     if (now - lastNavTime > 400L && navController.previousBackStackEntry != null) {
                         lastNavTime = now
                         navController.popBackStack()
+                    }
+                }
+
+                // --- Auto-start Reto del Día ---
+                LaunchedEffect(Unit) {
+                    val todayDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+                    // Usamos un pequeño delay para asegurar que el NavHost esté listo
+                    kotlinx.coroutines.delay(100)
+                    val status = challengeViewModel.challengeStatus.first()
+                    if (status == null || status.date != todayDate) {
+                        navController.navigate(Screen.Challenge.route)
                     }
                 }
 
@@ -181,6 +202,17 @@ class MainActivity : ComponentActivity() {
                                 onClick = {
                                     scope.launch { drawerState.close() }
                                     safeNavigate("all_notes")
+                                },
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+
+                            NavigationDrawerItem(
+                                icon = { Icon(Icons.Outlined.Extension, contentDescription = null) }, 
+                                label = { Text("Reto del día") },
+                                selected = false,
+                                onClick = {
+                                    scope.launch { drawerState.close() }
+                                    safeNavigate(Screen.Challenge.route)
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
@@ -339,6 +371,20 @@ class MainActivity : ComponentActivity() {
                                 viewModel = viewModel,
                                 onBack = { 
                                     navController.popBackStack(Screen.Home.route, inclusive = false)
+                                }
+                            )
+                        }
+                        composable(Screen.Challenge.route) {
+                            ChallengeScreen(
+                                viewModel = challengeViewModel,
+                                onClose = {
+                                    if (navController.previousBackStackEntry != null) {
+                                        navController.popBackStack()
+                                    } else {
+                                        navController.navigate(Screen.Home.route) {
+                                            popUpTo(Screen.Challenge.route) { inclusive = true }
+                                        }
+                                    }
                                 }
                             )
                         }

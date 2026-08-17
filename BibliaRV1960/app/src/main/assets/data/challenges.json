@@ -1,0 +1,117 @@
+[
+  {
+    "id": 1,
+    "type": "FILL_VERSE",
+    "reference": "Proverbios 3:5",
+    "verse_text": "Fíate de {0} de todo tu {1}, y no estribes en tu {2}.",
+    "correct_words": ["Jehová", "corazón", "prudencia"],
+    "distractors": ["alma", "espíritu", "entendimiento"],
+    "explanation": "Confiar en Dios significa rendir nuestra propia lógica a su sabiduría infinita."
+  },
+  {
+    "id": 2,
+    "type": "TRIVIA",
+    "reference": "Filipenses 4:13",
+    "question": "¿En qué se basa la fortaleza del creyente según este versículo?",
+    "options": [
+      "En su propia fuerza de voluntad",
+      "En el apoyo de su comunidad",
+      "En Cristo que le fortalece",
+      "En la ausencia de problemas"
+    ],
+    "correct_index": 2,
+    "explanation": "Nuestra capacidad de resistir no es propia, sino impartida por Cristo en cada situación."
+  },
+  {
+    "id": 3,
+    "type": "FILL_VERSE",
+    "reference": "Salmos 119:105",
+    "verse_text": "Lámpara es á mis {0} tu {1}, y {2} á mi camino.",
+    "correct_words": ["pies", "palabra", "lumbrera"],
+    "distractors": ["ojos", "verdad", "guía"],
+    "explanation": "La Biblia no solo nos da conocimiento, nos da dirección práctica para cada paso."
+  },
+  {
+    "id": 4,
+    "type": "TRIVIA",
+    "reference": "Génesis 1:1",
+    "question": "¿Qué creó Dios en el principio según el primer versículo de la Biblia?",
+    "options": [
+      "La luz y las tinieblas",
+      "Los cielos y la tierra",
+      "El hombre y la mujer",
+      "Los mares y los peces"
+    ],
+    "correct_index": 1,
+    "explanation": "El relato bíblico comienza estableciendo a Dios como el Creador absoluto de todo lo existente."
+  },
+  {
+    "id": 5,
+    "type": "FILL_VERSE",
+    "reference": "Mateo 6:33",
+    "verse_text": "Mas buscad {0} el {1} de Dios y su {2}.",
+    "correct_words": ["primeramente", "reino", "justicia"],
+    "distractors": ["siempre", "camino", "voluntad"],
+    "explanation": "Al poner las prioridades de Dios primero, Él se encarga de nuestras necesidades secundarias."
+  },
+  {
+    "id": 6,
+    "type": "TRIVIA",
+    "reference": "Josué 1:9",
+    "question": "¿Qué dos cualidades le ordena Dios a Josué que tenga?",
+    "options": [
+      "Paciencia y humildad",
+      "Sabiduría y prudencia",
+      "Esfuerzo y valentía",
+      "Fe y esperanza"
+    ],
+    "correct_index": 2,
+    "explanation": "Dios no solo promete su presencia, sino que pide una actitud activa de valor ante los retos."
+  },
+  {
+    "id": 7,
+    "type": "FILL_VERSE",
+    "reference": "Juan 14:6",
+    "verse_text": "Yo soy el {0}, y la {1}, y la {2}.",
+    "correct_words": ["camino", "verdad", "vida"],
+    "distractors": ["maestro", "luz", "pastor"],
+    "explanation": "Jesús se define no como una opción, sino como la esencia misma de la salvación."
+  },
+  {
+    "id": 8,
+    "type": "TRIVIA",
+    "reference": "Romanos 8:31",
+    "question": "Si Dios es por nosotros, ¿cuál es la conclusión del apóstol Pablo?",
+    "options": [
+      "¿Quién contra nosotros?",
+      "¿Quién nos amará?",
+      "¿Quién nos juzgará?",
+      "¿Quién nos salvará?"
+    ],
+    "correct_index": 0,
+    "explanation": "Tener el respaldo de Dios hace que cualquier oposición pierda su poder real sobre nosotros."
+  },
+  {
+    "id": 9,
+    "type": "FILL_VERSE",
+    "reference": "Salmos 23:1",
+    "verse_text": "Jehová es mi {0}; nada me {1}.",
+    "correct_words": ["pastor", "faltará"],
+    "distractors": ["guía", "sucederá", "amigo", "pasará"],
+    "explanation": "La figura del pastor garantiza provisión, cuidado y protección constante."
+  },
+  {
+    "id": 10,
+    "type": "TRIVIA",
+    "reference": "1 Juan 4:19",
+    "question": "¿Por qué nosotros amamos a Dios según este versículo?",
+    "options": [
+      "Porque queremos ir al cielo",
+      "Porque Él nos amó primero",
+      "Porque tememos su juicio",
+      "Porque buscamos su bendición"
+    ],
+    "correct_index": 1,
+    "explanation": "Nuestro amor es una respuesta agradecida a la iniciativa de amor que Dios tuvo con nosotros."
+  }
+]

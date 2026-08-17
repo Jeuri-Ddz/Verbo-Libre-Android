@@ -516,6 +516,10 @@ class BibleViewModelFactory(
                 @Suppress("UNCHECKED_CAST")
                 NotesViewModel(noteRepository) as T
             }
+            modelClass.isAssignableFrom(com.mi.bibliarv1960.ui.challenges.ChallengeViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                com.mi.bibliarv1960.ui.challenges.ChallengeViewModel(repository, dataStoreManager) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

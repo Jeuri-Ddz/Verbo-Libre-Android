@@ -5,6 +5,7 @@ import android.util.Log
 import com.mi.bibliarv1960.data.local.dao.BibleContentDao
 import com.mi.bibliarv1960.data.local.entities.DailyVerseEntity
 import com.mi.bibliarv1960.data.local.entities.DevotionalEntity
+import com.mi.bibliarv1960.data.local.entities.ChallengeEntity
 import kotlinx.serialization.json.Json
 import java.io.InputStreamReader
 
@@ -40,6 +41,20 @@ class DataImportManager(private val context: Context, private val dao: BibleCont
             }
         } catch (e: Exception) {
             Log.e("DataImportManager", "Error importing daily verses", e)
+        }
+    }
+
+    suspend fun importChallenges() {
+        try {
+            context.assets.open("data/challenges.json").use { inputStream ->
+                val reader = InputStreamReader(inputStream)
+                val jsonString = reader.readText()
+                val challenges = json.decodeFromString<List<ChallengeEntity>>(jsonString)
+                dao.insertChallenges(challenges)
+                Log.d("DataImportManager", "Imported ${challenges.size} challenges")
+            }
+        } catch (e: Exception) {
+            Log.e("DataImportManager", "Error importing challenges", e)
         }
     }
 }

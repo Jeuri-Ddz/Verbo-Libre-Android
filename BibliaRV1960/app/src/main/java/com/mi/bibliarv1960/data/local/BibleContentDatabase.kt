@@ -18,11 +18,13 @@ import kotlinx.coroutines.launch
         VerseEntity::class, 
         TranslationEntity::class,
         DevotionalEntity::class,
-        DailyVerseEntity::class
+        DailyVerseEntity::class,
+        ChallengeEntity::class
     ],
-    version = 26,
+    version = 27,
     exportSchema = false
 )
+@androidx.room.TypeConverters(com.mi.bibliarv1960.data.local.converters.BibleTypeConverters::class)
 abstract class BibleContentDatabase : RoomDatabase() {
     abstract fun bibleContentDao(): BibleContentDao
 
@@ -65,6 +67,7 @@ abstract class BibleContentDatabase : RoomDatabase() {
                 
                 importManager.importDevotionals()
                 importManager.importDailyVerses()
+                importManager.importChallenges()
             }
         }
     }

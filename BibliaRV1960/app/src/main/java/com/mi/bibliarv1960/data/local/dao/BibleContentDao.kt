@@ -44,4 +44,10 @@ interface BibleContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDailyVerses(dailyVerses: List<DailyVerseEntity>)
+
+    @Query("SELECT * FROM challenges")
+    fun getAllChallenges(): Flow<List<ChallengeEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertChallenges(challenges: List<ChallengeEntity>)
 }

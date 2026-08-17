@@ -28,6 +28,8 @@ class BibleRepository(
 
     val allDailyVerses: Flow<List<DailyVerseEntity>> = contentDao.getAllDailyVerses()
 
+    val allChallenges: Flow<List<ChallengeEntity>> = contentDao.getAllChallenges()
+
     // User Data
     val allCategories: Flow<List<BookmarkCategoryEntity>> = userDataDao.getAllCategories()
     
