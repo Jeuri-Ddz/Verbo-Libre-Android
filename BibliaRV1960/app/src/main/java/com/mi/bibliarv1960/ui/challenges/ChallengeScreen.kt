@@ -199,7 +199,7 @@ fun FillVerseLayout(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Texto con huecos (Implementación manual centrada y segura)
+        // 1. Área del Versículo con huecos
         val verseText = challenge.verseText ?: ""
         val parts = if (verseText.isNotEmpty()) {
             verseText.split(Regex("\\{\\d+\\}"))
@@ -209,9 +209,12 @@ fun FillVerseLayout(
         val totalElementsCount = parts.size + userSelections.size
         
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var currentIndex = 0
             val maxPerRow = 2 
             val rows = (0 until totalElementsCount).chunked(maxPerRow)
             
@@ -219,7 +222,7 @@ fun FillVerseLayout(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 6.dp)
                 ) {
                     rowIndices.forEach { globalIndex ->
                         val partIdx = globalIndex / 2
@@ -231,126 +234,157 @@ fun FillVerseLayout(
                                     style = MaterialTheme.typography.headlineSmall,
                                     fontSize = currentTextSize,
                                     fontFamily = FontFamily.Serif,
-                                    lineHeight = (currentTextSize.value * 1.3f).sp,
-                                    textAlign = TextAlign.Center
+                                    fontWeight = FontWeight.Medium,
+                                    lineHeight = (currentTextSize.value * 1.4f).sp,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
                         } else {
-                            // Hueco interactivo
+                            // Hueco interactivo / Palabra colocada
                             if (partIdx < userSelections.size) {
                                 val word = userSelections[partIdx]
                                 val isCorrect = isLocked && word == correctWords[partIdx]
                                 val isWrong = isLocked && word != correctWords[partIdx] && word.isNotEmpty()
                                 
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .padding(horizontal = 6.dp)
-                                        .clickable(enabled = !isLocked && word.isNotEmpty()) {
+                                Surface(
+                                    onClick = { 
+                                        if (!isLocked && word.isNotEmpty()) {
                                             val newList = userSelections.toMutableList()
                                             newList[partIdx] = ""
                                             userSelections = newList
                                         }
+                                    },
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = when {
+                                        isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.15f)
+                                        isWrong -> Color(0xFFE4574C).copy(alpha = 0.15f)
+                                        word.isEmpty() -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                                        else -> MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                                    },
+                                    border = androidx.compose.foundation.BorderStroke(
+                                        width = 1.5.dp,
+                                        color = when {
+                                            isCorrect -> Color(0xFF3C9D6B)
+                                            isWrong -> Color(0xFFE4574C)
+                                            word.isEmpty() -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                                            else -> MaterialTheme.colorScheme.primary
+                                        }
+                                    ),
+                                    modifier = Modifier.padding(horizontal = 6.dp)
                                 ) {
                                     Text(
                                         text = word.ifEmpty { "        " },
                                         style = MaterialTheme.typography.headlineSmall,
                                         fontSize = currentTextSize,
                                         fontFamily = FontFamily.Serif,
+                                        fontWeight = FontWeight.Bold,
                                         color = when {
                                             isCorrect -> Color(0xFF3C9D6B)
                                             isWrong -> Color(0xFFE4574C)
                                             else -> MaterialTheme.colorScheme.primary
                                         },
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .width(60.dp)
-                                            .height(2.dp)
-                                            .background(
-                                                if (isLocked) {
-                                                    if (isCorrect) Color(0xFF3C9D6B) else Color(0xFFE4574C)
-                                                } else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
-                                            )
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                                     )
                                 }
                             }
                         }
+                        currentIndex++
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
-
+        // 2. Banco de palabras o Explicación
         if (isLocked) {
-            Text(
-                text = challenge.reference,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFB9915A)
-            )
-            Text(
-                text = challenge.explanation,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 12.dp),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                        RoundedCornerShape(16.dp)
+                    )
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = challenge.reference,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFB9915A)
+                )
+                
+                Spacer(modifier = Modifier.height(10.dp))
+                
+                Text(
+                    text = challenge.explanation,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = (currentTextSize.value * 0.65f).sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    lineHeight = (currentTextSize.value * 1.0f).sp
+                )
+            }
         } else {
-            // Banco de palabras
+            // Banco de palabras estilizado como Chips
             Text(
-                text = "Completa con:",
+                text = "Toca las palabras para completar:",
                 style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             
-            // Reemplazo de FlowRow para el banco de palabras
-            allWordsBank.chunked(3).forEach { wordRow ->
-                Row(
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    wordRow.forEach { word ->
-                        val isUsed = userSelections.contains(word)
-                        Surface(
-                            onClick = {
-                                if (!isUsed) {
-                                    val firstEmpty = userSelections.indexOfFirst { it.isEmpty() }
-                                    if (firstEmpty != -1) {
-                                        val newList = userSelections.toMutableList()
-                                        newList[firstEmpty] = word
-                                        userSelections = newList
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                allWordsBank.chunked(3).forEach { wordRow ->
+                    Row(
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        wordRow.forEach { word ->
+                            val isUsed = userSelections.contains(word)
+                            Surface(
+                                onClick = {
+                                    if (!isUsed) {
+                                        val firstEmpty = userSelections.indexOfFirst { it.isEmpty() }
+                                        if (firstEmpty != -1) {
+                                            val newList = userSelections.toMutableList()
+                                            newList[firstEmpty] = word
+                                            userSelections = newList
+                                        }
                                     }
-                                }
-                            },
-                            shape = RoundedCornerShape(12.dp),
-                            color = if (isUsed) Color.Transparent else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                            border = if (isUsed) null else androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                            enabled = !isUsed
-                        ) {
-                            Text(
-                                text = word,
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontSize = (currentTextSize.value * 0.65f).sp,
-                                color = if (isUsed) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.onSurface
-                            )
+                                },
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isUsed) Color.Transparent else MaterialTheme.colorScheme.surface,
+                                shadowElevation = if (isUsed) 0.dp else 2.dp,
+                                border = if (isUsed) 
+                                    androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+                                    else androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                                enabled = !isUsed
+                            ) {
+                                Text(
+                                    text = word,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = (currentTextSize.value * 0.7f).sp,
+                                    color = if (isUsed) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.onSurface
+                                )
+                            }
                         }
                     }
                 }
             }
 
             if (userSelections.none { it.isEmpty() }) {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 LinoButton(
-                    text = "Comprobar",
+                    text = "Comprobar versículo",
                     onClick = {
                         val isCorrect = userSelections == correctWords
                         onCheck(ChallengeResult.FillVerse(userSelections), isCorrect)
-                    }
+                    },
+                    variant = LinoButtonVariant.PRIMARY
                 )
             }
         }
@@ -371,35 +405,42 @@ fun TriviaLayout(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // 1. Pregunta con estilo elegante
         Text(
             text = challenge.question ?: "Cargando pregunta...",
             style = MaterialTheme.typography.headlineSmall,
             fontSize = currentTextSize,
             fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             lineHeight = (currentTextSize.value * 1.3f).sp,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 28.dp)
         )
 
+        // 2. Opciones de respuesta
         val options = challenge.options ?: emptyList()
         options.forEachIndexed { index, option ->
+            val isSelected = index == selectedIndex
             val isCorrect = isLocked && index == challenge.correctIndex
-            val isSelectedWrong = isLocked && index == selectedIndex && index != challenge.correctIndex
+            val isWrong = isLocked && isSelected && !isCorrect
             
             Surface(
                 onClick = { if (!isLocked) onAnswer(index) },
                 shape = RoundedCornerShape(16.dp),
                 color = when {
-                    isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.1f)
-                    isSelectedWrong -> Color(0xFFE4574C).copy(alpha = 0.1f)
-                    else -> MaterialTheme.colorScheme.surface
+                    isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.12f)
+                    isWrong -> Color(0xFFE4574C).copy(alpha = 0.12f)
+                    isSelected -> MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                    else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 },
                 border = androidx.compose.foundation.BorderStroke(
-                    width = if (isCorrect || isSelectedWrong) 2.dp else 1.dp,
+                    width = if (isCorrect || isWrong || isSelected) 2.dp else 1.dp,
                     color = when {
                         isCorrect -> Color(0xFF3C9D6B)
-                        isSelectedWrong -> Color(0xFFE4574C)
-                        else -> MaterialTheme.colorScheme.outlineVariant
+                        isWrong -> Color(0xFFE4574C)
+                        isSelected -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                     }
                 ),
                 modifier = Modifier
@@ -407,60 +448,75 @@ fun TriviaLayout(
                     .padding(bottom = 12.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val indicator = when(index) {
-                        0 -> "A"
-                        1 -> "B"
-                        2 -> "C"
-                        3 -> "D"
-                        else -> "?"
-                    }
+                    // Círculo indicador A, B, C, D
                     Surface(
                         shape = CircleShape,
                         color = when {
                             isCorrect -> Color(0xFF3C9D6B)
-                            isSelectedWrong -> Color(0xFFE4574C)
+                            isWrong -> Color(0xFFE4574C)
+                            isSelected -> MaterialTheme.colorScheme.primary
                             else -> MaterialTheme.colorScheme.surfaceVariant
                         },
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(28.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
-                                text = indicator,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp,
-                                color = if (isCorrect || isSelectedWrong) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+                                text = listOf("A", "B", "C", "D").getOrElse(index) { "?" },
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 13.sp,
+                                color = if (isCorrect || isWrong || isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
+                    
                     Spacer(modifier = Modifier.width(16.dp))
+                    
                     Text(
                         text = option,
                         style = MaterialTheme.typography.bodyLarge,
-                        fontSize = (currentTextSize.value * 0.7f).sp,
+                        fontSize = (currentTextSize.value * 0.75f).sp,
+                        fontWeight = if (isSelected || isCorrect) FontWeight.Bold else FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
         }
 
+        // 3. Resultado y Explicación (Solo si está bloqueado/completado)
         if (isLocked) {
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = challenge.reference,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFB9915A)
-            )
-            Text(
-                text = challenge.explanation,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 12.dp),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
+            Spacer(modifier = Modifier.height(20.dp))
+            
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                        RoundedCornerShape(12.dp)
+                    )
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = challenge.reference,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFB9915A)
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = challenge.explanation,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = (currentTextSize.value * 0.65f).sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    lineHeight = (currentTextSize.value * 1.0f).sp
+                )
+            }
         }
     }
 }
