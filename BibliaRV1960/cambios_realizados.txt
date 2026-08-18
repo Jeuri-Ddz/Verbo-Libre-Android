@@ -1,0 +1,25 @@
+REGISTRO DE CAMBIOS - ELIMINACIÓN DE 'COMPLETA EL VERSÍCULO'
+Fecha: 2026-08-18
+
+TAREAS:
+1. Limpiar challenges.json (Eliminar FILL_VERSE).
+2. Modificar ChallengeViewModel.kt (Forzar tipo TRIVIA).
+3. Limpiar ChallengeScreen.kt (Eliminar UI de FILL_VERSE).
+
+---------------------------------------------------------
+ESTADO: COMPLETADO
+
+RESUMEN DE CAMBIOS:
+1. app/src/main/assets/data/challenges.json: Eliminados todos los registros de tipo "FILL_VERSE".
+2. ChallengeViewModel.kt:
+   - Eliminada la alternancia de tipos basada en el día.
+   - Forzada la carga exclusiva de retos tipo "TRIVIA".
+   - Eliminada la clase sellada ChallengeResult.FillVerse.
+3. ChallengeScreen.kt:
+   - Eliminado el Composable FillVerseLayout.
+   - Eliminado el Composable WordBankFlowRow.
+   - Simplificado el encabezado para mostrar siempre "Trivia bíblica".
+   - Eliminada la lógica de gestión de palabras y espacios en blanco.
+   - Limpieza de imports y previews no utilizados.
+
+Los tests y herramientas de testeo no han sido modificados.

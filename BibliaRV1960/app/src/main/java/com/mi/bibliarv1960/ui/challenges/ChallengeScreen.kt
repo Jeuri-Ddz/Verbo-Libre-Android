@@ -13,17 +13,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -40,19 +35,28 @@ fun ChallengeScreen(
     val challenge by viewModel.currentChallenge.collectAsState()
     val status by viewModel.challengeStatus.collectAsState()
     val completedCount by viewModel.completedCount.collectAsState()
+    val isStatusLoaded by viewModel.isStatusLoaded.collectAsState()
 
-    ChallengeScreenContent(
-        challenge = challenge,
-        status = status,
-        completedCount = completedCount,
-        onClose = onClose,
-        onCheckFillVerse = { result, correct -> viewModel.submitResult(result, correct) },
-        onCheckTrivia = { index -> 
-            val correct = index == challenge?.correctIndex
-            viewModel.submitResult(ChallengeResult.Trivia(index), correct)
-        },
-        onNextChallengePreview = { viewModel.nextChallengePreview() }
-    )
+    if (!isStatusLoaded || challenge == null) {
+        // Loading state (Solo cabecera mínima o Box vacío para evitar parpadeo)
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+            }
+        }
+    } else {
+        ChallengeScreenContent(
+            challenge = challenge,
+            status = status,
+            completedCount = completedCount,
+            onClose = onClose,
+            onCheckTrivia = { index -> 
+                val correct = index == challenge?.correctIndex
+                viewModel.submitResult(ChallengeResult.Trivia(index), correct)
+            },
+            onNextChallengePreview = { viewModel.nextChallengePreview() }
+        )
+    }
 }
 
 @Composable
@@ -61,26 +65,9 @@ private fun ChallengeScreenContent(
     status: DailyChallengeStatus?,
     completedCount: Int,
     onClose: () -> Unit,
-    onCheckFillVerse: (ChallengeResult.FillVerse, Boolean) -> Unit,
     onCheckTrivia: (Int) -> Unit,
     onNextChallengePreview: () -> Unit
 ) {
-    // Levantamiento de estado para FillVerse
-    val correctWords = challenge?.correctWords ?: emptyList()
-    var userSelections by remember(challenge) {
-        val result = status?.result
-        val initial = if (result is ChallengeResult.FillVerse) {
-            result.userWords
-        } else {
-            List(correctWords.size) { "" }
-        }
-        mutableStateOf(initial)
-    }
-
-    val allWordsBank = remember(challenge) {
-        (correctWords + (challenge?.distractors ?: emptyList())).shuffled()
-    }
-
     var selectedTriviaIndex by remember(challenge) {
         val result = status?.result
         val initial = if (result is ChallengeResult.Trivia) result.selectedIndex else -1
@@ -88,7 +75,6 @@ private fun ChallengeScreenContent(
     }
 
     val isLocked = status?.isCompleted == true
-    val allBlanksFilled = userSelections.none { it.isEmpty() }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -115,29 +101,14 @@ private fun ChallengeScreenContent(
                 contentAlignment = Alignment.Center
             ) {
                 challenge?.let { ch ->
-                    if (ch.type == "FILL_VERSE") {
-                        FillVerseLayout(
-                            challenge = ch,
-                            status = status,
-                            userSelections = userSelections,
-                            onBlankClick = { index ->
-                                if (!isLocked) {
-                                    val newList = userSelections.toMutableList()
-                                    newList[index] = ""
-                                    userSelections = newList
-                                }
-                            }
-                        )
-                    } else {
-                        TriviaLayout(
-                            challenge = ch,
-                            status = status,
-                            selectedIndex = selectedTriviaIndex,
-                            onSelect = { index ->
-                                if (!isLocked) selectedTriviaIndex = index
-                            }
-                        )
-                    }
+                    TriviaLayout(
+                        challenge = ch,
+                        status = status,
+                        selectedIndex = selectedTriviaIndex,
+                        onSelect = { index ->
+                            if (!isLocked) selectedTriviaIndex = index
+                        }
+                    )
                 }
             }
 
@@ -148,38 +119,12 @@ private fun ChallengeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (!isLocked && (challenge?.type == "FILL_VERSE" || challenge?.type == "TRIVIA")) {
-                    if (challenge.type == "FILL_VERSE") {
-                        WordBankFlowRow(
-                            options = allWordsBank,
-                            userSelections = userSelections,
-                            onWordClick = { word ->
-                                val firstEmpty = userSelections.indexOfFirst { it.isEmpty() }
-                                if (firstEmpty != -1) {
-                                    val newList = userSelections.toMutableList()
-                                    newList[firstEmpty] = word
-                                    userSelections = newList
-                                }
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
-
-                    val isEnabled = if (challenge.type == "FILL_VERSE") allBlanksFilled else selectedTriviaIndex != -1
-                    val buttonText = if (challenge.type == "FILL_VERSE") "Comprobar versículo" else "Comprobar respuesta"
-
+                if (!isLocked && challenge != null) {
                     LinoButton(
-                        text = buttonText,
-                        onClick = {
-                            if (challenge.type == "FILL_VERSE") {
-                                val isCorrect = userSelections == correctWords
-                                onCheckFillVerse(ChallengeResult.FillVerse(userSelections), isCorrect)
-                            } else {
-                                onCheckTrivia(selectedTriviaIndex)
-                            }
-                        },
+                        text = "Comprobar respuesta",
+                        onClick = { onCheckTrivia(selectedTriviaIndex) },
                         variant = LinoButtonVariant.ACCENT,
-                        enabled = isEnabled,
+                        enabled = selectedTriviaIndex != -1,
                         fixedHeight = 44.dp,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -249,122 +194,12 @@ private fun ChallengeHeader(
             )
 
             Text(
-                text = if (challenge.type == "FILL_VERSE") "Completa el versículo" else "Trivia bíblica",
-                style = MaterialTheme.typography.titleMedium,
+                text = "Trivia bíblica",
+                style = MaterialTheme.typography.headlineSmall,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-fun FillVerseLayout(
-    challenge: ChallengeEntity,
-    status: DailyChallengeStatus?,
-    userSelections: List<String>,
-    onBlankClick: (Int) -> Unit
-) {
-    val verseText = challenge.verseText ?: ""
-    val correctWords = challenge.correctWords ?: emptyList()
-    
-    val fullVerseForLength = remember(challenge) {
-        var text = verseText
-        correctWords.forEachIndexed { i, word ->
-            text = text.replace("{$i}", word)
-        }
-        text
-    }
-
-    val verseFontSize = when (fullVerseForLength.length) {
-        in 0..60 -> 22.sp
-        in 61..90 -> 19.sp
-        else -> 16.sp
-    }
-
-    val isLocked = status?.isCompleted == true
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val parts = verseText.split(Regex("\\{\\d+\\}"))
-        
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalArrangement = Arrangement.Center
-        ) {
-            parts.forEachIndexed { index, part ->
-                if (part.isNotBlank()) {
-                    Text(
-                        text = part.trim() + " ",
-                        style = TextStyle(
-                            fontSize = verseFontSize,
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Normal,
-                            lineHeight = 1.9.em,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    )
-                }
-
-                if (index < userSelections.size) {
-                    val word = userSelections[index]
-                    val isCorrect = isLocked && word == correctWords.getOrNull(index)
-                    val isWrong = isLocked && word.isNotEmpty() && !isCorrect
-                    
-                    val underlineColor = when {
-                        isCorrect -> Color(0xFF3C9D6B)
-                        isWrong -> Color(0xFFE4574C)
-                        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .widthIn(min = 60.dp)
-                            .drawBehind {
-                                val strokeWidth = 1.5.dp.toPx()
-                                val y = size.height - 4.dp.toPx()
-                                drawLine(
-                                    color = underlineColor,
-                                    start = Offset(0f, y),
-                                    end = Offset(size.width, y),
-                                    strokeWidth = strokeWidth
-                                )
-                            }
-                            .clickable(enabled = !isLocked && word.isNotEmpty()) {
-                                onBlankClick(index)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = word,
-                            style = TextStyle(
-                                fontSize = verseFontSize,
-                                fontFamily = FontFamily.Serif,
-                                fontStyle = FontStyle.Italic,
-                                fontWeight = FontWeight.Normal,
-                                color = if (word.isNotEmpty()) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                textAlign = TextAlign.Center
-                            ),
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                    }
-                }
-            }
-        }
-
-        if (isLocked) {
-            Spacer(modifier = Modifier.height(32.dp))
-            ChallengeExplanation(
-                reference = challenge.reference,
-                explanation = challenge.explanation
             )
         }
     }
@@ -458,50 +293,6 @@ fun TriviaLayout(
 }
 
 @Composable
-private fun WordBankFlowRow(
-    options: List<String>,
-    userSelections: List<String>,
-    onWordClick: (String) -> Unit
-) {
-    FlowRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        options.forEach { word ->
-            val isUsed = userSelections.contains(word)
-            
-            Surface(
-                onClick = { if (!isUsed) onWordClick(word) },
-                shape = RoundedCornerShape(8.dp),
-                color = if (isUsed) Color.Transparent else MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .wrapContentWidth()
-                    .heightIn(min = 44.dp)
-                    .alpha(if (isUsed) 0.3f else 1f),
-                enabled = !isUsed
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        text = word,
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        ),
-                        maxLines = 1,
-                        softWrap = false
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun ChallengeExplanation(
     reference: String,
     explanation: String
@@ -553,82 +344,7 @@ private fun BrandingFooter(onClick: () -> Unit) {
 // Previews
 @Preview(showBackground = true, widthDp = 360)
 @Composable
-fun PreviewShortVerse() {
-    val challenge = ChallengeEntity(
-        id = 1,
-        type = "FILL_VERSE",
-        reference = "Salmos 23:1",
-        verseText = "Jehová es mi {0}; nada me {1}.",
-        correctWords = listOf("pastor", "faltará"),
-        distractors = listOf("guía", "sucederá"),
-        explanation = "La figura del pastor garantiza provisión y cuidado."
-    )
-    BibliaRV1960Theme {
-        ChallengeScreenContent(
-            challenge = challenge,
-            status = null,
-            completedCount = 5,
-            onClose = {},
-            onCheckFillVerse = { _, _ -> },
-            onCheckTrivia = {},
-            onNextChallengePreview = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360)
-@Composable
-fun PreviewLongVerse() {
-    val challenge = ChallengeEntity(
-        id = 2,
-        type = "FILL_VERSE",
-        reference = "Isaías 41:10",
-        verseText = "No {0}, que yo soy contigo; no {1}, que yo soy tu Dios que te esfuerzo: siempre te {2}, siempre te sustentaré con la diestra de mi justicia.",
-        correctWords = listOf("temas", "desmayes", "ayudaré"),
-        distractors = listOf("llores", "temas", "cuidaré"),
-        explanation = "Dios promete su compañía y sostén en todo momento."
-    )
-    BibliaRV1960Theme {
-        ChallengeScreenContent(
-            challenge = challenge,
-            status = null,
-            completedCount = 10,
-            onClose = {},
-            onCheckFillVerse = { _, _ -> },
-            onCheckTrivia = {},
-            onNextChallengePreview = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360)
-@Composable
-fun PreviewWordBankLongWords() {
-    val challenge = ChallengeEntity(
-        id = 3,
-        type = "FILL_VERSE",
-        reference = "Proverbios 3:5",
-        verseText = "Fíate de {0} de todo tu {1}, y no estribes en tu {2}.",
-        correctWords = listOf("Jehová", "corazón", "prudencia"),
-        distractors = listOf("entendimiento", "conocimiento", "sabiduría"),
-        explanation = "Confiar en Dios supera nuestra propia lógica."
-    )
-    BibliaRV1960Theme {
-        ChallengeScreenContent(
-            challenge = challenge,
-            status = null,
-            completedCount = 15,
-            onClose = {},
-            onCheckFillVerse = { _, _ -> },
-            onCheckTrivia = {},
-            onNextChallengePreview = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 280) // Pantalla angosta
-@Composable
-fun PreviewNarrowScreen() {
+fun PreviewTrivia() {
     val challenge = ChallengeEntity(
         id = 4,
         type = "TRIVIA",
@@ -644,37 +360,8 @@ fun PreviewNarrowScreen() {
             status = null,
             completedCount = 20,
             onClose = {},
-            onCheckFillVerse = { _, _ -> },
             onCheckTrivia = {},
             onNextChallengePreview = {}
         )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360)
-@Composable
-fun PreviewCheckButtonStates() {
-    val challenge = ChallengeEntity(
-        id = 5,
-        type = "FILL_VERSE",
-        reference = "Mateo 6:33",
-        verseText = "Mas buscad {0} el {1} de Dios.",
-        correctWords = listOf("primeramente", "reino"),
-        distractors = listOf("siempre", "camino"),
-        explanation = ""
-    )
-    BibliaRV1960Theme {
-        Column {
-            Text("Deshabilitado:")
-            ChallengeScreenContent(
-                challenge = challenge,
-                status = null,
-                completedCount = 0,
-                onClose = {},
-                onCheckFillVerse = { _, _ -> },
-                onCheckTrivia = {},
-                onNextChallengePreview = {}
-            )
-        }
     }
 }

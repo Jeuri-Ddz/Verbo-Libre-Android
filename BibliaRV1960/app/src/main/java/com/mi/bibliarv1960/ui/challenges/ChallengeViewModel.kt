@@ -17,8 +17,6 @@ import kotlin.math.abs
 @Serializable
 sealed class ChallengeResult {
     @Serializable
-    data class FillVerse(val userWords: List<String>) : ChallengeResult()
-    @Serializable
     data class Trivia(val selectedIndex: Int) : ChallengeResult()
 }
 
@@ -40,6 +38,9 @@ class ChallengeViewModel(
 
     private val _challengeStatus = MutableStateFlow<DailyChallengeStatus?>(null)
     val challengeStatus: StateFlow<DailyChallengeStatus?> = _challengeStatus.asStateFlow()
+
+    private val _isStatusLoaded = MutableStateFlow(false)
+    val isStatusLoaded: StateFlow<Boolean> = _isStatusLoaded.asStateFlow()
 
     private var allChallengesList: List<ChallengeEntity> = emptyList()
     private var isInitialized = false
@@ -94,8 +95,10 @@ class ChallengeViewModel(
                 } else {
                     _challengeStatus.value = null  // Nuevo día, limpiar estado
                 }
+                _isStatusLoaded.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
+                _isStatusLoaded.value = true
             }
         }
     }
@@ -110,11 +113,7 @@ class ChallengeViewModel(
             return  // Ya tenemos reto para hoy, no recalcular
         }
         
-        val calendar = Calendar.getInstance()
-        val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-        
-        val targetType = if (dayOfYear % 2 == 0) "FILL_VERSE" else "TRIVIA"
-        val filteredChallenges = challenges.filter { it.type == targetType }
+        val filteredChallenges = challenges.filter { it.type == "TRIVIA" }
         val pool = if (filteredChallenges.isNotEmpty()) filteredChallenges else challenges
         
         if (pool.isNotEmpty()) {

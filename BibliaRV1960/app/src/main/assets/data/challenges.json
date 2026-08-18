@@ -1,117 +1,2004 @@
 [
   {
     "id": 1,
-    "type": "FILL_VERSE",
-    "reference": "Proverbios 3:5",
-    "verse_text": "Fíate de {0} de todo tu {1}, y no estribes en tu {2}.",
-    "correct_words": ["Jehová", "corazón", "prudencia"],
-    "distractors": ["alma", "espíritu", "entendimiento"],
-    "explanation": "Confiar en Dios significa rendir nuestra propia lógica a su sabiduría infinita."
+    "type": "TRIVIA",
+    "reference": "Job 2:11",
+    "question": "¿Cómo se llamaban los tres amigos de Job que le visitaron?",
+    "options": [
+      "Elifaz, Bildad y Zofar",
+      "Elifaz, Balac y Sofar",
+      "Eliú, Bildad y Zofar",
+      "Elifaz, Bildad y Eliú"
+    ],
+    "correct_index": 0,
+    "explanation": "Y oyeron tres amigos de Job todo este mal que había venido sobre él, y vinieron cada uno de su lugar; Elifaz Temanita, Bildad Suhita, y Zofar Naamatita."
   },
   {
     "id": 2,
     "type": "TRIVIA",
-    "reference": "Filipenses 4:13",
-    "question": "¿En qué se basa la fortaleza del creyente según este versículo?",
+    "reference": "Mateo 1:16",
+    "question": "¿Cómo se llamaba el padre de José, marido de María?",
     "options": [
-      "En su propia fuerza de voluntad",
-      "En el apoyo de su comunidad",
-      "En Cristo que le fortalece",
-      "En la ausencia de problemas"
+      "Jacob",
+      "Elí",
+      "David",
+      "Abraham"
     ],
-    "correct_index": 2,
-    "explanation": "Nuestra capacidad de resistir no es propia, sino impartida por Cristo en cada situación."
+    "correct_index": 0,
+    "explanation": "Y Jacob engendró á José, marido de María, de la cual nació Jesús, el cual es llamado el Cristo."
   },
   {
     "id": 3,
-    "type": "FILL_VERSE",
-    "reference": "Salmos 119:105",
-    "verse_text": "Lámpara es á mis {0} tu {1}, y {2} á mi camino.",
-    "correct_words": ["pies", "palabra", "lumbrera"],
-    "distractors": ["ojos", "verdad", "guía"],
-    "explanation": "La Biblia no solo nos da conocimiento, nos da dirección práctica para cada paso."
+    "type": "TRIVIA",
+    "reference": "Génesis 20:1-2",
+    "question": "¿A qué rey de Gerar le dijo Abraham que Sara era su hermana?",
+    "options": [
+      "A Melquisedec",
+      "A Abimelec",
+      "A Faraón",
+      "A Quedorlaomer"
+    ],
+    "correct_index": 1,
+    "explanation": "Y dijo Abraham de Sara su mujer: Mi hermana es. Y Abimelec, rey de Gerar, envió y tomó á Sara."
   },
   {
     "id": 4,
     "type": "TRIVIA",
-    "reference": "Génesis 1:1",
-    "question": "¿Qué creó Dios en el principio según el primer versículo de la Biblia?",
+    "reference": "Efesios 6:17",
+    "question": "¿Cuál es la espada del Espíritu según Efesios 6?",
     "options": [
-      "La luz y las tinieblas",
-      "Los cielos y la tierra",
-      "El hombre y la mujer",
-      "Los mares y los peces"
+      "La fe en Cristo",
+      "La palabra de Dios",
+      "El poder de la oración",
+      "El fuego del cielo"
     ],
     "correct_index": 1,
-    "explanation": "El relato bíblico comienza estableciendo a Dios como el Creador absoluto de todo lo existente."
+    "explanation": "Y tomad el yelmo de salud, y la espada del Espíritu, que es la palabra de Dios."
   },
   {
     "id": 5,
-    "type": "FILL_VERSE",
-    "reference": "Mateo 6:33",
-    "verse_text": "Mas buscad {0} el {1} de Dios y su {2}.",
-    "correct_words": ["primeramente", "reino", "justicia"],
-    "distractors": ["siempre", "camino", "voluntad"],
-    "explanation": "Al poner las prioridades de Dios primero, Él se encarga de nuestras necesidades secundarias."
+    "type": "TRIVIA",
+    "reference": "Mateo 26:57",
+    "question": "¿Quién era el sumo sacerdote cuando Cristo fue condenado?",
+    "options": [
+      "Anás",
+      "Caifás",
+      "Gamaliel",
+      "Nicodemo"
+    ],
+    "correct_index": 1,
+    "explanation": "Y ellos, prendiendo á Jesús, le llevaron á Caifás, sumo sacerdote, donde los escribas y los ancianos estaban juntos."
   },
   {
     "id": 6,
     "type": "TRIVIA",
-    "reference": "Josué 1:9",
-    "question": "¿Qué dos cualidades le ordena Dios a Josué que tenga?",
+    "reference": "2 Reyes 11:3",
+    "question": "¿Quién se convirtió en la primera mujer que gobernó sobre Israel?",
     "options": [
-      "Paciencia y humildad",
-      "Sabiduría y prudencia",
-      "Esfuerzo y valentía",
-      "Fe y esperanza"
+      "Débora",
+      "Jezabel",
+      "Ester",
+      "Atalía"
     ],
-    "correct_index": 2,
-    "explanation": "Dios no solo promete su presencia, sino que pide una actitud activa de valor ante los retos."
+    "correct_index": 3,
+    "explanation": "Y estuvo con ella escondido en la casa de Jehová seis años. Y Atalía reinaba sobre el país."
   },
   {
     "id": 7,
-    "type": "FILL_VERSE",
-    "reference": "Juan 14:6",
-    "verse_text": "Yo soy el {0}, y la {1}, y la {2}.",
-    "correct_words": ["camino", "verdad", "vida"],
-    "distractors": ["maestro", "luz", "pastor"],
-    "explanation": "Jesús se define no como una opción, sino como la esencia misma de la salvación."
+    "type": "TRIVIA",
+    "reference": "3 Juan 1:1",
+    "question": "¿Qué libro se dedicó al muy amado Gayo?",
+    "options": [
+      "2 de Juan",
+      "3 de Juan",
+      "Filemón",
+      "Judas"
+    ],
+    "correct_index": 1,
+    "explanation": "El anciano al muy amado Gayo, al cual yo amo en verdad."
   },
   {
     "id": 8,
     "type": "TRIVIA",
-    "reference": "Romanos 8:31",
-    "question": "Si Dios es por nosotros, ¿cuál es la conclusión del apóstol Pablo?",
+    "reference": "Génesis 14:18",
+    "question": "¿Qué rey de Salem salió a recibir a Abraham después de derrotar a Quedorlaomer?",
     "options": [
-      "¿Quién contra nosotros?",
-      "¿Quién nos amará?",
-      "¿Quién nos juzgará?",
-      "¿Quién nos salvará?"
+      "Abimelec",
+      "Melquisedec",
+      "Faraón",
+      "Hiram"
     ],
-    "correct_index": 0,
-    "explanation": "Tener el respaldo de Dios hace que cualquier oposición pierda su poder real sobre nosotros."
+    "correct_index": 1,
+    "explanation": "Entonces Melquisedec, rey de Salem, sacó pan y vino; el cual era sacerdote del Dios alto."
   },
   {
     "id": 9,
-    "type": "FILL_VERSE",
-    "reference": "Salmos 23:1",
-    "verse_text": "Jehová es mi {0}; nada me {1}.",
-    "correct_words": ["pastor", "faltará"],
-    "distractors": ["guía", "sucederá", "amigo", "pasará"],
-    "explanation": "La figura del pastor garantiza provisión, cuidado y protección constante."
+    "type": "TRIVIA",
+    "reference": "1 Crónicas 13:14",
+    "question": "¿A quién bendijo Dios por tener el arca en su casa durante 3 meses?",
+    "options": [
+      "A Obed-edom",
+      "A Abinadab",
+      "A Uza",
+      "A Aminadab"
+    ],
+    "correct_index": 0,
+    "explanation": "Y el arca de Dios estuvo en casa de Obed-edom, en su casa, tres meses: y bendijo Jehová la casa de Obed-edom, y todas las cosas que tenía."
   },
   {
     "id": 10,
     "type": "TRIVIA",
-    "reference": "1 Juan 4:19",
-    "question": "¿Por qué nosotros amamos a Dios según este versículo?",
+    "reference": "Gálatas 2:11-14",
+    "question": "¿A qué apóstol reprendió Pablo en Antioquía?",
     "options": [
-      "Porque queremos ir al cielo",
-      "Porque Él nos amó primero",
-      "Porque tememos su juicio",
-      "Porque buscamos su bendición"
+      "A Juan",
+      "A Santiago",
+      "A Pedro",
+      "A Bernabé"
+    ],
+    "correct_index": 2,
+    "explanation": "Empero cuando Pedro vino á Antioquía, le resistí en la cara, porque era de condenar."
+  },
+  {
+    "id": 11,
+    "type": "TRIVIA",
+    "reference": "Hechos 9:36-40",
+    "question": "¿A quién resucitó Pedro en Jope?",
+    "options": [
+      "A Lidia",
+      "A Priscila",
+      "A Dorcas o Tabita",
+      "A María"
+    ],
+    "correct_index": 2,
+    "explanation": "Entonces Pedro, echando fuera á todos, se puso de rodillas y oró; y volviéndose al cuerpo, dijo: Tabita, levántate. Y ella abrió los ojos, y viendo á Pedro, se incorporó."
+  },
+  {
+    "id": 12,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 20:5-6",
+    "question": "¿A qué rey le añadió Dios quince años más de vida?",
+    "options": [
+      "A David",
+      "A Salomón",
+      "A Josías",
+      "A Ezequías"
+    ],
+    "correct_index": 3,
+    "explanation": "Vuelve, y di á Ezequías, príncipe de mi pueblo: Así dice Jehová, el Dios de David tu padre: Yo he oído tu oración, y he visto tus lágrimas; he aquí te sano; al tercer día subirás á la casa de Jehová. Y añadiré á tus días quince años."
+  },
+  {
+    "id": 13,
+    "type": "TRIVIA",
+    "reference": "Juan 6:68",
+    "question": "¿Quién dijo: Señor, ¿a quién iremos? Tú tienes palabras de vida eterna?",
+    "options": [
+      "Pedro",
+      "Juan",
+      "Tomás",
+      "Felipe"
+    ],
+    "correct_index": 0,
+    "explanation": "Y respondióle Simón Pedro: Señor, ¿á quién iremos? tú tienes palabras de vida eterna."
+  },
+  {
+    "id": 14,
+    "type": "TRIVIA",
+    "reference": "2 Crónicas 32:27-31",
+    "question": "¿Qué rey de Israel en tiempos de Isaías mostró todos sus tesoros a los babilonios?",
+    "options": [
+      "Acaz",
+      "Ezequías",
+      "Manasés",
+      "Josías"
     ],
     "correct_index": 1,
-    "explanation": "Nuestro amor es una respuesta agradecida a la iniciativa de amor que Dios tuvo con nosotros."
+    "explanation": "Empero en lo de los embajadores de los príncipes de Babilonia, que enviaron á él para saber del prodigio que había acontecido en aquella tierra, Dios lo dejó, para probarle, para hacer conocer todo lo que estaba en su corazón."
+  },
+  {
+    "id": 15,
+    "type": "TRIVIA",
+    "reference": "Jueces 3:15",
+    "question": "¿Qué personaje de la Biblia que liberó a los israelitas era zurdo?",
+    "options": [
+      "Sansón",
+      "Aod",
+      "Gedeón",
+      "Jefté"
+    ],
+    "correct_index": 1,
+    "explanation": "Y los hijos de Israel clamaron á Jehová; y Jehová les suscitó salvador, á Aod, hijo de Gera, Benjamita, el cual tenía cerrada la mano derecha."
+  },
+  {
+    "id": 16,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 16:13",
+    "question": "¿De la boca de qué tres seres salen los espíritus inmundos a manera de ranas?",
+    "options": [
+      "Del dragón, de la bestia y del falso profeta",
+      "De la serpiente, del león y del oso",
+      "Del ángel caído, del anticristo y de la ramera",
+      "Del dragón, de la serpiente y del escorpión"
+    ],
+    "correct_index": 0,
+    "explanation": "Y vi salir de la boca del dragón, y de la boca de la bestia, y de la boca del falso profeta, tres espíritus inmundos á manera de ranas."
+  },
+  {
+    "id": 17,
+    "type": "TRIVIA",
+    "reference": "Génesis 24:67",
+    "question": "¿Con quién se casó Isaac?",
+    "options": [
+      "Con Rebeca",
+      "Con Raquel",
+      "Con Lea",
+      "Con Sara"
+    ],
+    "correct_index": 0,
+    "explanation": "Y trájola Isaac á la tienda de su madre Sara, y tomó á Rebeca por mujer; y amóla."
+  },
+  {
+    "id": 18,
+    "type": "TRIVIA",
+    "reference": "2 Crónicas 26:19-21",
+    "question": "¿Qué rey profanó el templo y fue castigado con la lepra?",
+    "options": [
+      "Acaz",
+      "Uzías",
+      "Manasés",
+      "Jeroboam"
+    ],
+    "correct_index": 1,
+    "explanation": "Y Uzías se airó, teniendo el incensario en su mano para quemar incienso; y en airándose contra los sacerdotes, la lepra le brotó en la frente."
+  },
+  {
+    "id": 19,
+    "type": "TRIVIA",
+    "reference": "2 Corintios 2:12-13",
+    "question": "¿En qué ciudad Pablo sintió angustia por no haber hallado a Tito?",
+    "options": [
+      "En Troas",
+      "En Corinto",
+      "En Filipos",
+      "En Tesalónica"
+    ],
+    "correct_index": 0,
+    "explanation": "Cuando vine á Troas para el evangelio de Cristo, y me fué abierta puerta en el Señor, no tuve reposo en mi espíritu, por no haber hallado á Tito, mi hermano."
+  },
+  {
+    "id": 20,
+    "type": "TRIVIA",
+    "reference": "2 Samuel 9:3",
+    "question": "¿Qué hijo de Jonatán era lisiado de los pies?",
+    "options": [
+      "Mefi-boset",
+      "Is-boset",
+      "Saúl",
+      "Aminadab"
+    ],
+    "correct_index": 0,
+    "explanation": "Y el rey dijo: ¿No ha quedado nadie de la casa de Saúl, á quien haga yo misericordia de Dios? Y Siba respondió al rey: Aun ha quedado un hijo de Jonatán, lisiado de los pies."
+  },
+  {
+    "id": 21,
+    "type": "TRIVIA",
+    "reference": "Ester 10:3",
+    "question": "¿Qué libro de la Biblia no menciona el nombre de Dios?",
+    "options": [
+      "Rut",
+      "Ester",
+      "Cantares",
+      "Eclesiastés"
+    ],
+    "correct_index": 1,
+    "explanation": "El libro de Ester es el único libro de la Biblia donde no aparece explícitamente el nombre de Dios."
+  },
+  {
+    "id": 22,
+    "type": "TRIVIA",
+    "reference": "Marcos 8:24",
+    "question": "¿Qué vio un ciego cuando Jesús lo sanó parcialmente?",
+    "options": [
+      "Veo los hombres como árboles que andan",
+      "Veo una gran luz que me ciega",
+      "Veo ángeles que descienden del cielo",
+      "Veo todo borroso y confuso"
+    ],
+    "correct_index": 0,
+    "explanation": "Y él mirando, dijo: Veo los hombres, pues los veo que andan como árboles."
+  },
+  {
+    "id": 23,
+    "type": "TRIVIA",
+    "reference": "Jueces 13:2",
+    "question": "¿Cuál era el nombre del padre de Sansón?",
+    "options": [
+      "Elcana",
+      "Manoa",
+      "Isaí",
+      "Jonatán"
+    ],
+    "correct_index": 1,
+    "explanation": "Y había un hombre de Sora, del linaje de Dan, llamado Manoa; y su mujer era estéril, que nunca había parido."
+  },
+  {
+    "id": 24,
+    "type": "TRIVIA",
+    "reference": "Jueces 4:4-5",
+    "question": "¿Cuál era el nombre de la profetisa que solía estar debajo de una palmera?",
+    "options": [
+      "Ana",
+      "María",
+      "Débora",
+      "Ester"
+    ],
+    "correct_index": 2,
+    "explanation": "Y Débora, profetisa, mujer de Lapidot, juzgaba á Israel en aquel tiempo; y habitaba debajo de la palma de Débora, entre Rama y Beth-el, en el monte de Ephraim."
+  },
+  {
+    "id": 25,
+    "type": "TRIVIA",
+    "reference": "Lucas 23:38",
+    "question": "¿Qué decía el letrero que estaba sobre la cruz de Jesús?",
+    "options": [
+      "Este es Jesús, el Salvador del mundo",
+      "Este es el rey de los judíos",
+      "Este es el Hijo de Dios",
+      "Este es el Cordero de Dios"
+    ],
+    "correct_index": 1,
+    "explanation": "Y había también sobre él un título escrito con letras griegas, y latinas, y hebraicas: ESTE ES EL REY DE LOS JUDÍOS."
+  },
+  {
+    "id": 26,
+    "type": "TRIVIA",
+    "reference": "Éxodo 18:3-4",
+    "question": "¿Cómo se llamaron los hijos de Moisés y Séfora?",
+    "options": [
+      "Gersón y Eliezer",
+      "Aarón y Hur",
+      "Nadab y Abiú",
+      "Itamar y Eleazar"
+    ],
+    "correct_index": 0,
+    "explanation": "Y el nombre del uno era Gersón, porque dijo: Peregrino he sido en tierra ajena; y el nombre del otro era Eliezer, porque dijo: El Dios de mi padre me ayudó."
+  },
+  {
+    "id": 27,
+    "type": "TRIVIA",
+    "reference": "Ezequiel 1:3",
+    "question": "¿En qué lugar fue llamado Ezequiel?",
+    "options": [
+      "En el río Quebar",
+      "En el río Jordán",
+      "En el monte Sinaí",
+      "En el valle de Cedrón"
+    ],
+    "correct_index": 0,
+    "explanation": "Fué palabra de Jehová á Ezequiel sacerdote, hijo de Buzi, en la tierra de los Caldeos, junto al río de Chebar."
+  },
+  {
+    "id": 28,
+    "type": "TRIVIA",
+    "reference": "Mateo 15:37",
+    "question": "¿Cuántas cestas de sobra recogieron los discípulos después de la alimentación de los cuatro mil?",
+    "options": [
+      "Doce cestas",
+      "Siete cestas",
+      "Cinco cestas",
+      "Tres cestas"
+    ],
+    "correct_index": 1,
+    "explanation": "Y comieron todos, y se hartaron: y alzaron lo que sobró de los pedazos, siete espuertas llenas."
+  },
+  {
+    "id": 29,
+    "type": "TRIVIA",
+    "reference": "Génesis 41:45",
+    "question": "¿Qué nombre le dio el faraón a José?",
+    "options": [
+      "Moisés",
+      "Zafnat Panej",
+      "Manasés",
+      "Abram"
+    ],
+    "correct_index": 1,
+    "explanation": "Y llamó Faraón el nombre de José, Zafnat-paneah; y dióle por mujer á Asenath, hija de Potipherah, sacerdote de On."
+  },
+  {
+    "id": 30,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 1:3-4",
+    "question": "¿Cómo se llamaba la virgen que servía al rey David en su vejez?",
+    "options": [
+      "Abisag la sunamita",
+      "Betsabé la hetea",
+      "Abigail la carmelita",
+      "Mical la hija de Saúl"
+    ],
+    "correct_index": 0,
+    "explanation": "Y buscaron una moza hermosa por todo el término de Israel, y hallaron á Abisag Sunamita, y trajéronla al rey."
+  },
+  {
+    "id": 31,
+    "type": "TRIVIA",
+    "reference": "Mateo 19:21",
+    "question": "¿Qué le dijo Jesús al joven rico que hiciera si quería ser perfecto?",
+    "options": [
+      "Que ayunara cuarenta días",
+      "Que vendiera sus posesiones y se las diera a los pobres",
+      "Que estudiara la ley de Moisés",
+      "Que edificara un templo"
+    ],
+    "correct_index": 1,
+    "explanation": "Dícele Jesús: Si quieres ser perfecto, anda, vende lo que tienes, y da lo á los pobres, y tendrás tesoro en el cielo; y ven, sígueme."
+  },
+  {
+    "id": 32,
+    "type": "TRIVIA",
+    "reference": "Números 22:28",
+    "question": "¿De quién era el asna que habló cuando vio el Ángel de Jehová?",
+    "options": [
+      "De Moisés",
+      "De Balaam",
+      "De Josué",
+      "De Aarón"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces Jehová abrió la boca al asna, la cual dijo á Balaam: ¿Qué te he hecho, que me has herido estas tres veces?"
+  },
+  {
+    "id": 33,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 21:1",
+    "question": "Huyendo de Saúl, David obtuvo la ayuda de los sacerdotes, ¿de qué ciudad?",
+    "options": [
+      "Sion",
+      "Hebrón",
+      "Nob",
+      "Jericó"
+    ],
+    "correct_index": 2,
+    "explanation": "Y vino David á Nob, á Ahimelech sacerdote: y sorprendióse Ahimelech de su encuentro, y díjole: ¿Cómo tú solo, y nadie contigo?"
+  },
+  {
+    "id": 34,
+    "type": "TRIVIA",
+    "reference": "Marcos 2:22",
+    "question": "¿Qué dijo Jesús que no echasen en odres viejos?",
+    "options": [
+      "Aceite nuevo",
+      "Vino nuevo",
+      "Agua fresca",
+      "Leche pura"
+    ],
+    "correct_index": 1,
+    "explanation": "Y nadie echa vino nuevo en odres viejos; de otra manera el vino nuevo rompe los odres, y se derrama el vino, y los odres se pierden."
+  },
+  {
+    "id": 35,
+    "type": "TRIVIA",
+    "reference": "Josué 1:1",
+    "question": "¿Cómo se llamaba el padre de Josué?",
+    "options": [
+      "Caleb",
+      "Nun",
+      "Isaí",
+      "Eleazar"
+    ],
+    "correct_index": 1,
+    "explanation": "Y aconteció después de la muerte de Moisés siervo de Jehová, que Jehová habló á Josué hijo de Nun, ministro de Moisés."
+  },
+  {
+    "id": 36,
+    "type": "TRIVIA",
+    "reference": "Ester 7:10",
+    "question": "¿Cómo murió Amán?",
+    "options": [
+      "Murió en batalla contra los judíos",
+      "Murió colgado en la horca que había preparado para Mardoqueo",
+      "Murió apedreado por el pueblo",
+      "Murió envenenado en un banquete"
+    ],
+    "correct_index": 1,
+    "explanation": "Así colgaron á Amán en la horca que él había hecho preparar para Mardoqueo; y se apaciguó la ira del rey."
+  },
+  {
+    "id": 37,
+    "type": "TRIVIA",
+    "reference": "Hechos 12:2",
+    "question": "¿Qué discípulo de Jesús fue muerto a espada por orden de Herodes?",
+    "options": [
+      "Pedro",
+      "Juan",
+      "Jacobo",
+      "Andrés"
+    ],
+    "correct_index": 2,
+    "explanation": "Y mató á espada á Jacobo, hermano de Juan."
+  },
+  {
+    "id": 38,
+    "type": "TRIVIA",
+    "reference": "Génesis 41:51-52",
+    "question": "¿Cómo se llamaron los hijos de José?",
+    "options": [
+      "Gersón y Eliezer",
+      "Manasés y Efraín",
+      "Rubén y Simeón",
+      "Judá y Benjamín"
+    ],
+    "correct_index": 1,
+    "explanation": "Y llamó José el nombre del primogénito Manasés; y el nombre del segundo llamólo Efraín."
+  },
+  {
+    "id": 39,
+    "type": "TRIVIA",
+    "reference": "Jeremías 3:7",
+    "question": "¿Quiénes son las dos hermanas infieles de quién en sentido figurado habla Jeremías?",
+    "options": [
+      "Judá e Israel",
+      "Sodoma y Gomorra",
+      "Babilonia y Asiria",
+      "Egipto y Canaán"
+    ],
+    "correct_index": 0,
+    "explanation": "Y dije después que hizo todo esto: Vuélvete á mí; mas no se volvió. Y vió la rebelde su hermana Judá."
+  },
+  {
+    "id": 40,
+    "type": "TRIVIA",
+    "reference": "Juan 9:34",
+    "question": "¿A quién expulsaron de la sinagoga por confesar que Jesús era profeta y que le había sanado?",
+    "options": [
+      "A un leproso",
+      "A un hombre ciego de nacimiento",
+      "A un paralítico",
+      "A un endemoniado"
+    ],
+    "correct_index": 1,
+    "explanation": "Respondieron y dijéronle: En pecados eres nacido todo tú, ¿y tú nos enseñas? Y echáronle fuera."
+  },
+  {
+    "id": 41,
+    "type": "TRIVIA",
+    "reference": "Éxodo 15:20",
+    "question": "¿Cómo se llamaba la hermana de Moisés?",
+    "options": [
+      "Séfora",
+      "María",
+      "Ana",
+      "Débora"
+    ],
+    "correct_index": 1,
+    "explanation": "Y María la profetisa, hermana de Aarón, tomó un pandero en su mano, y todas las mujeres salieron en pos de ella con panderos y danzas."
+  },
+  {
+    "id": 42,
+    "type": "TRIVIA",
+    "reference": "Génesis 23:16-17",
+    "question": "¿De quién era el campo dónde Abraham sepultó a Sara?",
+    "options": [
+      "De Efrón",
+      "De Melquisedec",
+      "De Abimelec",
+      "De Mambré"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Abraham pesó á Ephrón el dinero que dijo, oyéndolo los hijos de Heth, cuatrocientos siclos de plata. Y quedó la heredad de Ephrón que estaba en Macpela."
+  },
+  {
+    "id": 43,
+    "type": "TRIVIA",
+    "reference": "Mateo 27:8",
+    "question": "¿Cómo se denominó el campo dónde se suicidó Judas?",
+    "options": [
+      "Campo de sangre",
+      "Campo del alfarero",
+      "Campo de lágrimas",
+      "Campo de la traición"
+    ],
+    "correct_index": 0,
+    "explanation": "Por lo cual fué llamado aquel campo, Campo de sangre, hasta el día de hoy."
+  },
+  {
+    "id": 44,
+    "type": "TRIVIA",
+    "reference": "Mateo 27:57-60",
+    "question": "¿De quién era el sepulcro dónde fue enterrado Jesús?",
+    "options": [
+      "De Nicodemo",
+      "De José de Arimatea",
+      "De Simón el fariseo",
+      "De Lázaro"
+    ],
+    "correct_index": 1,
+    "explanation": "Y José tomando el cuerpo, lo envolvió en una sábana limpia, y lo puso en su sepulcro nuevo, que había labrado en la peña."
+  },
+  {
+    "id": 45,
+    "type": "TRIVIA",
+    "reference": "Sofonías 1:1",
+    "question": "¿En qué reinado profetizó Sofonías?",
+    "options": [
+      "En el de Ezequías",
+      "En el de Josías",
+      "En el de David",
+      "En el de Salomón"
+    ],
+    "correct_index": 1,
+    "explanation": "Palabra de Jehová que fué á Sofonías hijo de Cusi, en días de Josías hijo de Amón, rey de Judá."
+  },
+  {
+    "id": 46,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 15:8",
+    "question": "¿Qué pasó con el templo una vez que los siete ángeles recibieron las siete copas de oro?",
+    "options": [
+      "Se abrió el cielo y cayó fuego",
+      "El templo se llenó de humo por la gloria de Dios",
+      "Los ángeles rompieron las copas",
+      "Se derrumbaron las murallas del templo"
+    ],
+    "correct_index": 1,
+    "explanation": "Y fué el templo lleno de humo por la majestad de Dios, y por su potencia; y ninguno podía entrar en el templo."
+  },
+  {
+    "id": 47,
+    "type": "TRIVIA",
+    "reference": "Génesis 11:26",
+    "question": "¿Cómo se llamaba el padre de Abraham?",
+    "options": [
+      "Nacor",
+      "Taré",
+      "Sem",
+      "Heber"
+    ],
+    "correct_index": 1,
+    "explanation": "Y vivió Taré setenta años, y engendró á Abram, y á Nachôr, y á Harán."
+  },
+  {
+    "id": 48,
+    "type": "TRIVIA",
+    "reference": "Nehemías 2:10",
+    "question": "¿Cuáles fueron los dos grandes enemigos de Nehemías?",
+    "options": [
+      "Tobías y Sanbalat",
+      "Amán y Mardoqueo",
+      "Faraón y Goliat",
+      "Saúl y Absalón"
+    ],
+    "correct_index": 0,
+    "explanation": "Y oyéndolo Sanballat Horonita, y Tobías, el siervo Ammonita, disgustóles en extremo que viniese alguno para procurar el bien de los hijos de Israel."
+  },
+  {
+    "id": 49,
+    "type": "TRIVIA",
+    "reference": "Hechos 14:19",
+    "question": "¿En qué ciudad apedrearon a Pablo hasta creer que estaba muerto?",
+    "options": [
+      "En Listra",
+      "En Iconio",
+      "En Derbe",
+      "En Antioquía"
+    ],
+    "correct_index": 0,
+    "explanation": "Entonces vinieron unos Judíos de Antioquía y de Iconio, que persuadieron á la multitud, y habiendo apedreado á Pablo, le sacaron fuera de la ciudad, pensando que estaba muerto."
+  },
+  {
+    "id": 50,
+    "type": "TRIVIA",
+    "reference": "Lucas 3:38",
+    "question": "¿De qué hijo de Adán era descendiente José de Nazaret?",
+    "options": [
+      "De Caín",
+      "De Abel",
+      "De Set",
+      "De Enós"
+    ],
+    "correct_index": 2,
+    "explanation": "Hijo de Enós, hijo de Seth, hijo de Adam, hijo de Dios."
+  },
+  {
+    "id": 51,
+    "type": "TRIVIA",
+    "reference": "Hechos 18:26",
+    "question": "¿Quiénes predicaron de Jesús a Apolos?",
+    "options": [
+      "Priscila y Aquila",
+      "Pablo y Silas",
+      "Bernabé y Marcos",
+      "Pedro y Juan"
+    ],
+    "correct_index": 0,
+    "explanation": "Y comenzó á hablar confiadamente en la sinagoga: al cual como oyeron Priscila y Aquila, le tomaron, y le declararon más particularmente el camino de Dios."
+  },
+  {
+    "id": 52,
+    "type": "TRIVIA",
+    "reference": "Génesis 4:21",
+    "question": "¿Quién fue el primer músico que aparece en la Biblia?",
+    "options": [
+      "David",
+      "Jubal",
+      "Asaf",
+      "Moisés"
+    ],
+    "correct_index": 1,
+    "explanation": "Y el nombre de su hermano fué Jubal, el cual fué padre de todos los que manejan arpa y órgano."
+  },
+  {
+    "id": 53,
+    "type": "TRIVIA",
+    "reference": "Nehemías 2:1",
+    "question": "¿Qué rey envió a Nehemías a Jerusalén?",
+    "options": [
+      "Ciro",
+      "Darío",
+      "Artajerjes",
+      "Nabucodonosor"
+    ],
+    "correct_index": 2,
+    "explanation": "Y fué en el mes de Nisán, en el año veinte del rey Artajerjes, que estando el vino delante de él, tomé el vino, y dílo al rey."
+  },
+  {
+    "id": 54,
+    "type": "TRIVIA",
+    "reference": "Mateo 17:3",
+    "question": "¿Qué dos personajes del Antiguo Testamento aparecieron hablando con Jesús en la transfiguración?",
+    "options": [
+      "Abraham y David",
+      "Moisés y Elías",
+      "Isaías y Jeremías",
+      "Josué y Samuel"
+    ],
+    "correct_index": 1,
+    "explanation": "Y he aquí les aparecieron Moisés y Elías, hablando con él."
+  },
+  {
+    "id": 55,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 6:24",
+    "question": "¿Qué rey de Siria cercó Samaria en los tiempos de Eliseo?",
+    "options": [
+      "Ben-adad",
+      "Nabucodonosor",
+      "Ciro",
+      "Senaquerib"
+    ],
+    "correct_index": 0,
+    "explanation": "Y aconteció después de esto, que Ben-adad rey de Siria juntó todo su ejército, y subió, y puso cerco á Samaria."
+  },
+  {
+    "id": 56,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 22:17",
+    "question": "¿Qué predijo Micaías sobre Acab?",
+    "options": [
+      "Que conquistaría Siria",
+      "Su muerte en batalla",
+      "Que viviría largos años",
+      "Que construiría el templo"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces él dijo: He visto todo Israel esparcido por los montes, como ovejas que no tienen pastor; y Jehová dijo: Estos no tienen señor; vuélvanse cada uno á su casa en paz."
+  },
+  {
+    "id": 57,
+    "type": "TRIVIA",
+    "reference": "Hechos 18:3",
+    "question": "¿Cuál era el oficio de Pablo?",
+    "options": [
+      "Pescador",
+      "Recaudador de impuestos",
+      "Hacer tiendas",
+      "Escriba"
+    ],
+    "correct_index": 2,
+    "explanation": "Y porque era de su oficio, posó con ellos, y trabajaba; porque el oficio de ellos era hacer tiendas."
+  },
+  {
+    "id": 58,
+    "type": "TRIVIA",
+    "reference": "Tito 1:4-5",
+    "question": "¿A qué predicador en Creta escribió Pablo una carta?",
+    "options": [
+      "A Timoteo",
+      "A Tito",
+      "A Filemón",
+      "A Silas"
+    ],
+    "correct_index": 1,
+    "explanation": "A Tito, verdadero hijo en la común fe: Gracia, misericordia, y paz de Dios Padre, y del Señor Jesucristo Salvador nuestro."
+  },
+  {
+    "id": 59,
+    "type": "TRIVIA",
+    "reference": "Daniel 5:28",
+    "question": "¿Qué imperio conquistaría a los babilonios según la inscripción de la pared en la fiesta que organizó el rey Belsasar?",
+    "options": [
+      "Los egipcios",
+      "Los medos y los persas",
+      "Los romanos",
+      "Los asirios"
+    ],
+    "correct_index": 1,
+    "explanation": "PERES: Tu reino fué dividido, y es dado á los Medos y Persas."
+  },
+  {
+    "id": 60,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 16:18",
+    "question": "¿Qué rey prendió fuego al palacio dónde estaba y murió quemado?",
+    "options": [
+      "Omri",
+      "Zimri",
+      "Baasa",
+      "Elá"
+    ],
+    "correct_index": 1,
+    "explanation": "Y viendo Zimri tomada la ciudad, metióse en el palacio de la casa real, y pegó fuego á la casa consigo, y murió."
+  },
+  {
+    "id": 61,
+    "type": "TRIVIA",
+    "reference": "Isaías 6:2",
+    "question": "¿Qué criaturas angelicales vio Isaías en su visión y llamamiento?",
+    "options": [
+      "Querubines",
+      "Serafines",
+      "Arcángeles",
+      "Ángeles con trompetas"
+    ],
+    "correct_index": 1,
+    "explanation": "Y por encima de él estaban serafines: cada uno tenía seis alas; con dos cubrían sus rostros, y con dos cubrían sus pies, y con dos volaban."
+  },
+  {
+    "id": 62,
+    "type": "TRIVIA",
+    "reference": "Éxodo 15:1",
+    "question": "¿Quién escribió un cántico para celebrar que el pueblo hebreo había cruzado el mar Rojo?",
+    "options": [
+      "Aarón",
+      "Moisés",
+      "María",
+      "Josué"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces cantó Moisés y los hijos de Israel este cántico á Jehová, y dijeron: Cantaré yo á Jehová, porque se ha magnificado grandemente, echando en la mar al caballo y al que en él subía."
+  },
+  {
+    "id": 63,
+    "type": "TRIVIA",
+    "reference": "Génesis 15:2",
+    "question": "¿Cuál era el nombre del mayordomo de Abraham?",
+    "options": [
+      "Eliezer",
+      "Lot",
+      "Ismael",
+      "Isaac"
+    ],
+    "correct_index": 0,
+    "explanation": "Y respondió Abram: Señor Jehová ¿qué me has de dar, siendo así que yo ando solo, y el mayordomo de mi casa es ese Damasceno Eliezer?"
+  },
+  {
+    "id": 64,
+    "type": "TRIVIA",
+    "reference": "Hechos 17:22",
+    "question": "¿En qué lugar predicó Pablo en Atenas?",
+    "options": [
+      "En el templo de Zeus",
+      "En el areópago",
+      "En la sinagoga",
+      "En el mercado"
+    ],
+    "correct_index": 1,
+    "explanation": "Estando pues Pablo en medio del Areópago, dijo: Varones Atenienses, en todo os veo como más supersticiosos."
+  },
+  {
+    "id": 65,
+    "type": "TRIVIA",
+    "reference": "Génesis 29:32",
+    "question": "¿Quién fue el primogénito de Jacob?",
+    "options": [
+      "Simeón",
+      "Leví",
+      "Rubén",
+      "Judá"
+    ],
+    "correct_index": 2,
+    "explanation": "Y concibió Lea, y parió un hijo, y llamó su nombre Rubén, porque dijo: Ha mirado Jehová mi aflicción; ahora pues me amará mi marido."
+  },
+  {
+    "id": 66,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 5:1",
+    "question": "¿Cómo se llamaba el rey de Tiro con el que Salomón hizo alianza?",
+    "options": [
+      "Abimelec",
+      "Hiram",
+      "Ben-adad",
+      "Nabucodonosor"
+    ],
+    "correct_index": 1,
+    "explanation": "Hiram rey de Tiro envió también sus siervos á Salomón, luego que oyó que lo habían ungido por rey en lugar de su padre; porque Hiram había siempre amado á David."
+  },
+  {
+    "id": 67,
+    "type": "TRIVIA",
+    "reference": "Hechos 5:1-3",
+    "question": "¿Cuál fue el pecado de Ananías y Safira?",
+    "options": [
+      "Robar en el templo",
+      "Mentir sobre el precio de una heredad vendida",
+      "Adorar ídolos en secreto",
+      "Blasfemar contra el Espíritu Santo"
+    ],
+    "correct_index": 1,
+    "explanation": "Mas un varón llamado Ananías, con Safira su mujer, vendió una posesión, y defraudó del precio, sabiéndolo también su mujer; y trayendo una parte, púsola á los pies de los apóstoles."
+  },
+  {
+    "id": 68,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 12:9",
+    "question": "¿Quién hizo un agujero en la tapa de un arca para recibir ofrendas para reparar el templo?",
+    "options": [
+      "El rey Joás",
+      "Joiada, el sumo sacerdote",
+      "Eliseo el profeta",
+      "Salomón"
+    ],
+    "correct_index": 1,
+    "explanation": "Mas el pontífice Joiada tomó un arca, é hízole en la tapa un agujero, y púsola junto al altar, á la mano derecha de los que venían á la casa de Jehová."
+  },
+  {
+    "id": 69,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 17:16",
+    "question": "¿Qué dos alimentos no escasearon milagrosamente en casa de la viuda de Sarepta?",
+    "options": [
+      "La harina y el aceite",
+      "El pan y el vino",
+      "La leche y la miel",
+      "El trigo y la cebada"
+    ],
+    "correct_index": 0,
+    "explanation": "Y la harina de la tinaja no escaseó, ni el aceite de la vasija menguó, conforme á la palabra de Jehová que había dicho por Elías."
+  },
+  {
+    "id": 70,
+    "type": "TRIVIA",
+    "reference": "Lucas 22:8",
+    "question": "¿Qué dos discípulos envió Jesús a preparar el aposento para la última Cena?",
+    "options": [
+      "Juan y Pedro",
+      "Santiago y Andrés",
+      "Felipe y Tomás",
+      "Mateo y Bartolomé"
+    ],
+    "correct_index": 0,
+    "explanation": "Y envió á Pedro y á Juan, diciendo: Id, preparadnos la pascua para que la comamos."
+  },
+  {
+    "id": 71,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 16:20",
+    "question": "¿Quién reinó después de Acaz?",
+    "options": [
+      "Su hijo Ezequías",
+      "Su hijo Manasés",
+      "Su hijo Josías",
+      "Su hijo Amón"
+    ],
+    "correct_index": 0,
+    "explanation": "Y durmió el rey Achâz con sus padres, y fué sepultado con sus padres en la ciudad de David: y reinó en su lugar Ezechîas su hijo."
+  },
+  {
+    "id": 72,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 17:1",
+    "question": "¿Qué profetizó Elías a Acab?",
+    "options": [
+      "Que no habría lluvia ni rocío sino por su palabra",
+      "Que tendría victoria sobre sus enemigos",
+      "Que su reinado duraría cuarenta años",
+      "Que construiría un gran templo"
+    ],
+    "correct_index": 0,
+    "explanation": "Entonces Elías Thisbita dijo á Achâb: Vive Jehová Dios de Israel, delante del cual estoy, que no habrá lluvia ni rocío en estos años, sino por mi palabra."
+  },
+  {
+    "id": 73,
+    "type": "TRIVIA",
+    "reference": "Lucas 23:42",
+    "question": "¿Quién le dijo a Jesús: Acuérdate de mí cuando vengas en tu reino?",
+    "options": [
+      "Uno de los malhechores crucificados a su lado",
+      "Pedro antes de negarlo",
+      "Nicodemo en secreto",
+      "Zaqueo en el árbol"
+    ],
+    "correct_index": 0,
+    "explanation": "Y dijo á Jesús: Acuérdate de mí cuando vinieres en tu reino."
+  },
+  {
+    "id": 74,
+    "type": "TRIVIA",
+    "reference": "Éxodo 5:1",
+    "question": "¿De qué boca salieron las palabras 'deja ir a mi pueblo' y a quién se lo dijo?",
+    "options": [
+      "De Moisés a Faraón",
+      "De Aarón a Faraón",
+      "De Josué al pueblo",
+      "De Dios a Moisés"
+    ],
+    "correct_index": 1,
+    "explanation": "Y después Moisés y Aarón entraron, y dijeron á Faraón: Jehová, el Dios de Israel, dice así: Deja ir á mi pueblo."
+  },
+  {
+    "id": 75,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 4:12",
+    "question": "¿Cómo se llamaba el criado de Eliseo?",
+    "options": [
+      "Giezi",
+      "Baruc",
+      "Josué",
+      "Eliezer"
+    ],
+    "correct_index": 0,
+    "explanation": "Y dijo á Giezi su criado: Llama á esta Sunamita. Y él la llamó, y ella se paró delante de él."
+  },
+  {
+    "id": 76,
+    "type": "TRIVIA",
+    "reference": "Hechos 28:1-3",
+    "question": "A Pablo le mordió una serpiente mientras estaba en una isla. ¿En qué isla?",
+    "options": [
+      "En Malta",
+      "En Chipre",
+      "En Creta",
+      "En Sicilia"
+    ],
+    "correct_index": 0,
+    "explanation": "Y cuando escapamos, entonces supimos que la isla se llamaba Melita. Y los bárbaros nos mostraron no poca humanidad."
+  },
+  {
+    "id": 77,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 5:1",
+    "question": "¿Qué enfermedad padecía el general Naamán?",
+    "options": [
+      "Era leproso",
+      "Era ciego",
+      "Era paralítico",
+      "Era mudo"
+    ],
+    "correct_index": 0,
+    "explanation": "Naamán, general del ejército del rey de Siria, era gran varón delante de su señor, y en alta estima, porque por medio de él había dado Jehová salvamento á la Siria. Era este hombre valeroso, pero leproso."
+  },
+  {
+    "id": 78,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 5:5",
+    "question": "¿Con qué animal se identifica a Jesús en Apocalipsis 5:5?",
+    "options": [
+      "Con un león",
+      "Con un cordero",
+      "Con un águila",
+      "Con un toro"
+    ],
+    "correct_index": 0,
+    "explanation": "Y uno de los ancianos me dice: No llores: he aquí el León de la tribu de Judá, la Raíz de David, ha vencido para abrir el libro, y desatar sus siete sellos."
+  },
+  {
+    "id": 79,
+    "type": "TRIVIA",
+    "reference": "Nahúm 1:1",
+    "question": "¿Sobre qué ciudad iban dirigidas las profecías de Nahúm?",
+    "options": [
+      "Sobre Nínive",
+      "Sobre Babilonia",
+      "Sobre Jerusalén",
+      "Sobre Samaria"
+    ],
+    "correct_index": 0,
+    "explanation": "Carga de Nínive. Libro de la profecía de Nahum de Elkhosh."
+  },
+  {
+    "id": 80,
+    "type": "TRIVIA",
+    "reference": "Mateo 2:22",
+    "question": "¿Quién sucedió a Herodes el Grande?",
+    "options": [
+      "Arquelao",
+      "Herodes Antipas",
+      "Felipe",
+      "Agripa"
+    ],
+    "correct_index": 0,
+    "explanation": "Y oyendo que Arquelao reinaba en Judea en lugar de Herodes su padre, temió ir allá."
+  },
+  {
+    "id": 81,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 16:3",
+    "question": "¿Qué rey de Judá hizo pasar por fuego a su hijo?",
+    "options": [
+      "Ezequías",
+      "Josías",
+      "Acaz",
+      "Salomón"
+    ],
+    "correct_index": 2,
+    "explanation": "Antes anduvo en el camino de los reyes de Israel, y aun hizo pasar por fuego á su hijo, según las abominaciones de las gentes."
+  },
+  {
+    "id": 82,
+    "type": "TRIVIA",
+    "reference": "Lucas 23:38",
+    "question": "¿Qué idiomas se usaron en la inscripción de la cruz de Cristo?",
+    "options": [
+      "Hebreo, griego y latín",
+      "Arameo, hebreo y latín",
+      "Griego, latín y egipcio",
+      "Hebreo, latín y persa"
+    ],
+    "correct_index": 0,
+    "explanation": "Y había también sobre él un título escrito con letras griegas, y latinas, y hebraicas: ESTE ES EL REY DE LOS JUDÍOS."
+  },
+  {
+    "id": 83,
+    "type": "TRIVIA",
+    "reference": "Lucas 1:5",
+    "question": "¿Qué cargo ostentaba Herodes en el momento que nació Jesús?",
+    "options": [
+      "Rey de Judea",
+      "Emperador de Roma",
+      "Gobernador de Siria",
+      "Sumo sacerdote"
+    ],
+    "correct_index": 0,
+    "explanation": "Hubo en los días de Herodes, rey de Judea, un sacerdote llamado Zacarías."
+  },
+  {
+    "id": 84,
+    "type": "TRIVIA",
+    "reference": "Daniel 2:32",
+    "question": "¿De qué metal era la cabeza de la imagen que soñó Nabucodonosor?",
+    "options": [
+      "De plata",
+      "De bronce",
+      "De oro",
+      "De hierro"
+    ],
+    "correct_index": 2,
+    "explanation": "La cabeza de esta imagen era de fino oro; sus pechos y sus brazos, de plata; su vientre y sus muslos, de bronce."
+  },
+  {
+    "id": 85,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 22:2",
+    "question": "¿Dónde estará el árbol cuyas hojas son para sanidad de las naciones?",
+    "options": [
+      "En el huerto del Edén",
+      "En el monte de los Olivos",
+      "En la nueva Jerusalén",
+      "En el río Jordán"
+    ],
+    "correct_index": 2,
+    "explanation": "En el medio de la plaza de ella, y de la una y de la otra parte del río, estaba el árbol de vida, y las hojas del árbol eran para la sanidad de las naciones."
+  },
+  {
+    "id": 86,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 18:4",
+    "question": "¿Quién escondió en cuevas a cien profetas y los sustentó?",
+    "options": [
+      "Elías",
+      "Abdías",
+      "Eliseo",
+      "Micaías"
+    ],
+    "correct_index": 1,
+    "explanation": "Porque cuando Jezabel destruía á los profetas de Jehová, Abdías tomó cien profetas, los cuales escondió en cuevas de cincuenta en cincuenta, y los sustentó á pan y agua."
+  },
+  {
+    "id": 87,
+    "type": "TRIVIA",
+    "reference": "Rut 4:7",
+    "question": "¿Cuál era la costumbre para confirmar cualquier contrato en Israel en los tiempos de Rut?",
+    "options": [
+      "Intercambiarse un zapato",
+      "Firmar un documento",
+      "Hacer un juramento",
+      "Encender una lámpara"
+    ],
+    "correct_index": 0,
+    "explanation": "Y había ya de largo tiempo esta costumbre en Israel en la redención ó contrato, que para la confirmación de cualquier negocio, el uno se quitaba el zapato y lo daba á su compañero."
+  },
+  {
+    "id": 88,
+    "type": "TRIVIA",
+    "reference": "Hechos 2:16-17",
+    "question": "Cuando vino el Espíritu Santo, el día de Pentecostés, se cumplió la profecía ¿de cuál de los profetas?",
+    "options": [
+      "Isaías",
+      "Joel",
+      "Jeremías",
+      "Ezequiel"
+    ],
+    "correct_index": 1,
+    "explanation": "Mas esto es lo dicho por el profeta Joel: Y será en los postreros días, dice Dios, Derramaré de mi Espíritu sobre toda carne."
+  },
+  {
+    "id": 89,
+    "type": "TRIVIA",
+    "reference": "Números 3:4",
+    "question": "¿Quiénes ofrecieron fuego extraño delante de Jehová?",
+    "options": [
+      "Nadab y Abiú, hijos de Aarón",
+      "Coré, Datán y Abiram",
+      "Moisés y Aarón",
+      "Los hijos de Elí"
+    ],
+    "correct_index": 0,
+    "explanation": "Mas Nadab y Abiú murieron delante de Jehová, cuando ofrecieron fuego extraño delante de Jehová, en el desierto de Sinaí."
+  },
+  {
+    "id": 90,
+    "type": "TRIVIA",
+    "reference": "Josué 10:12-13",
+    "question": "¿Qué milagro realizó Dios a través de Josué en Gabaón?",
+    "options": [
+      "Dividió el Jordán",
+      "Derribó los muros",
+      "Detuvo el sol",
+      "Hizo llover pan del cielo"
+    ],
+    "correct_index": 2,
+    "explanation": "Entonces Josué habló á Jehová, y dijo: Sol, detente en Gabaón; Y tú, Luna, en el valle de Ajalón. Y el sol se detuvo, y la luna se paró."
+  },
+  {
+    "id": 91,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 8:1",
+    "question": "¿Qué sucedió cuando el cordero abrió el séptimo sello?",
+    "options": [
+      "Se hizo media hora de silencio en el cielo",
+      "Cayeron estrellas del cielo",
+      "Sonaron siete trompetas",
+      "Se abrió el abismo"
+    ],
+    "correct_index": 0,
+    "explanation": "Y cuando él abrió el séptimo sello, fué hecho silencio en el cielo casi por media hora."
+  },
+  {
+    "id": 92,
+    "type": "TRIVIA",
+    "reference": "Jueces 3:17",
+    "question": "¿Qué rey, que nos dice la Biblia que era muy gordo, oprimía a los israelitas?",
+    "options": [
+      "Eglón, rey de Moab",
+      "Sisara, general cananeo",
+      "Abimelec, rey de Gerar",
+      "Faraón, rey de Egipto"
+    ],
+    "correct_index": 0,
+    "explanation": "Y el rey Eglón era hombre muy grueso."
+  },
+  {
+    "id": 93,
+    "type": "TRIVIA",
+    "reference": "Jueces 7:1",
+    "question": "¿Contra qué poderoso ejército luchó Gedeón?",
+    "options": [
+      "Contra los madianitas",
+      "Contra los filisteos",
+      "Contra los amonitas",
+      "Contra los egipcios"
+    ],
+    "correct_index": 0,
+    "explanation": "Levantándose pues de mañana Jerobaal, el cual es Gedeón, y todo el pueblo que estaba con él, asentaron el campo junto á la fuente de Harod."
+  },
+  {
+    "id": 94,
+    "type": "TRIVIA",
+    "reference": "Mateo 22:37-38",
+    "question": "¿Cuál dijo Jesús que era el mandamiento más importante?",
+    "options": [
+      "Amar a tu prójimo como a ti mismo",
+      "Amarás al Señor tu Dios con todo tu corazón, alma y mente",
+      "No tendrás dioses ajenos delante de mí",
+      "Honra a tu padre y a tu madre"
+    ],
+    "correct_index": 1,
+    "explanation": "Y Jesús le dijo: Amarás al Señor tu Dios de todo tu corazón, y de toda tu alma, y de toda tu mente. Este es el primero y el grande mandamiento."
+  },
+  {
+    "id": 95,
+    "type": "TRIVIA",
+    "reference": "Jeremías 2:13",
+    "question": "¿Quién comparó los israelitas a cisternas rotas que no detienen el agua?",
+    "options": [
+      "Isaías",
+      "Jeremías",
+      "Ezequiel",
+      "Oseas"
+    ],
+    "correct_index": 1,
+    "explanation": "Porque dos males ha hecho mi pueblo: dejáronme á mí, fuente de agua viva, por cavar para sí cisternas, cisternas rotas que no detienen aguas."
+  },
+  {
+    "id": 96,
+    "type": "TRIVIA",
+    "reference": "Génesis 37:28",
+    "question": "¿Por cuánto vendieron a José sus hermanos?",
+    "options": [
+      "Por diez piezas de plata",
+      "Por veinte piezas de plata",
+      "Por treinta piezas de plata",
+      "Por cincuenta piezas de plata"
+    ],
+    "correct_index": 1,
+    "explanation": "Y como pasaban los Midianitas mercaderes, sacaron ellos á José de la cisterna, y trajéronle, y vendiéronle á los Ismaelitas por veinte piezas de plata."
+  },
+  {
+    "id": 97,
+    "type": "TRIVIA",
+    "reference": "Mateo 2:14",
+    "question": "¿Dónde huyeron José y su familia cuando Herodes decidió matar a todos los niños?",
+    "options": [
+      "A Nazaret",
+      "A Egipto",
+      "A Babilonia",
+      "A Samaria"
+    ],
+    "correct_index": 1,
+    "explanation": "Y despertando él, tomó al niño y á su madre de noche, y se fué á Egipto."
+  },
+  {
+    "id": 98,
+    "type": "TRIVIA",
+    "reference": "Génesis 4:19",
+    "question": "¿Quién es la segunda mujer mencionada en la Biblia?",
+    "options": [
+      "Eva",
+      "Sara",
+      "Ada",
+      "Sila"
+    ],
+    "correct_index": 2,
+    "explanation": "Y tomó para sí Lamech dos mujeres; el nombre de la una fué Ada, y el nombre de la otra Silla."
+  },
+  {
+    "id": 99,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 9:1",
+    "question": "¿De qué tribu era Saúl?",
+    "options": [
+      "De Judá",
+      "De Benjamín",
+      "De Efraín",
+      "De Leví"
+    ],
+    "correct_index": 1,
+    "explanation": "Y había un varón de Benjamín, hombre valeroso, el cual se llamaba Cis, hijo de Abiel."
+  },
+  {
+    "id": 100,
+    "type": "TRIVIA",
+    "reference": "Juan 13:8",
+    "question": "¿Qué discípulo no quiso que Jesús le lavara los pies?",
+    "options": [
+      "Pedro",
+      "Juan",
+      "Tomás",
+      "Andrés"
+    ],
+    "correct_index": 0,
+    "explanation": "Dícele Pedro: No me lavarás los pies jamás. Respondióle Jesús: Si no te lavare, no tendrás parte conmigo."
+  },
+  {
+    "id": 101,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 1:1-2",
+    "question": "¿Quién fue Elcana?",
+    "options": [
+      "El hijo de Samuel",
+      "El marido de Ana y padre de Samuel",
+      "El sumo sacerdote de Silo",
+      "El profeta que ungió a Saúl"
+    ],
+    "correct_index": 1,
+    "explanation": "Y tenía él dos mujeres; el nombre de la una era Anna, y el nombre de la otra Peninna."
+  },
+  {
+    "id": 102,
+    "type": "TRIVIA",
+    "reference": "Números 12:1",
+    "question": "¿A causa de qué murmuraron María y Aarón contra Moisés en el desierto?",
+    "options": [
+      "A causa de la mujer cusita que había tomado",
+      "Porque Moisés no les dejaba entrar al tabernáculo",
+      "Porque no tenían suficiente agua",
+      "Porque Moisés nombró a Josué como sucesor"
+    ],
+    "correct_index": 0,
+    "explanation": "Y hablaron María y Aarón contra Moisés á causa de la mujer Ethiope que había tomado."
+  },
+  {
+    "id": 103,
+    "type": "TRIVIA",
+    "reference": "Lucas 1:17",
+    "question": "¿De quién se profetizó que tendría el espíritu y virtud de Elías?",
+    "options": [
+      "De Jesús",
+      "De Juan el Bautista",
+      "De Pedro",
+      "De Pablo"
+    ],
+    "correct_index": 1,
+    "explanation": "Porque él irá delante de él con el espíritu y virtud de Elías, para convertir los corazones de los padres á los hijos."
+  },
+  {
+    "id": 104,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 17:23",
+    "question": "¿Dónde fueron llevados en cautividad las dos naciones del pueblo de Dios?",
+    "options": [
+      "Israel a Asiria y Judá a Babilonia",
+      "Israel a Egipto y Judá a Asiria",
+      "Israel a Babilonia y Judá a Persia",
+      "Israel a Roma y Judá a Grecia"
+    ],
+    "correct_index": 0,
+    "explanation": "E Israel fué trasportado de su tierra á Asiria, hasta hoy. Y Judá fué trasportado de su tierra á Babilonia."
+  },
+  {
+    "id": 105,
+    "type": "TRIVIA",
+    "reference": "Números 20:28",
+    "question": "¿Quién fue el sucesor de Aarón como sumo sacerdote?",
+    "options": [
+      "Nadab",
+      "Abiú",
+      "Eleazar, su hijo",
+      "Itamar"
+    ],
+    "correct_index": 2,
+    "explanation": "Y Moisés desnudó á Aarón de sus vestidos, y vistiólos á Eleazar su hijo; y Aarón murió allí en la cumbre del monte."
+  },
+  {
+    "id": 106,
+    "type": "TRIVIA",
+    "reference": "Jonás 4:6",
+    "question": "¿Qué hortaliza usó Dios para ilustrar a Jonás su misericordia con Nínive?",
+    "options": [
+      "Una calabacera",
+      "Una vid",
+      "Una higuera",
+      "Una palmera"
+    ],
+    "correct_index": 0,
+    "explanation": "Y preparó Jehová Dios una calabacera, la cual creció sobre Jonás para que hiciese sombra sobre su cabeza."
+  },
+  {
+    "id": 107,
+    "type": "TRIVIA",
+    "reference": "Apocalipsis 2:4",
+    "question": "¿Qué iglesia de Asia había abandonado su primer amor?",
+    "options": [
+      "Éfeso",
+      "Esmirna",
+      "Pérgamo",
+      "Laodicea"
+    ],
+    "correct_index": 0,
+    "explanation": "Empero tengo contra ti que has dejado tu primer amor."
+  },
+  {
+    "id": 108,
+    "type": "TRIVIA",
+    "reference": "Ezequiel 37:1-2",
+    "question": "¿Qué profeta vio una visión de huesos secos?",
+    "options": [
+      "Isaías",
+      "Jeremías",
+      "Ezequiel",
+      "Daniel"
+    ],
+    "correct_index": 2,
+    "explanation": "Y la mano de Jehová fué sobre mí, y sacóme en espíritu de Jehová, y púsome en medio de un campo que estaba lleno de huesos."
+  },
+  {
+    "id": 109,
+    "type": "TRIVIA",
+    "reference": "Daniel 1:1",
+    "question": "¿Qué rey de Babilonia sitió y conquistó Jerusalén en tiempos de Daniel?",
+    "options": [
+      "Nabucodonosor",
+      "Belsasar",
+      "Darío",
+      "Ciro"
+    ],
+    "correct_index": 0,
+    "explanation": "En el año tercero del reinado de Joacim rey de Judá, vino Nabucodonosor rey de Babilonia á Jerusalem, y cercóla."
+  },
+  {
+    "id": 110,
+    "type": "TRIVIA",
+    "reference": "Amós 7:14",
+    "question": "¿Qué profeta nos dice que fue boyero y cogedor de cabrahigos?",
+    "options": [
+      "Oseas",
+      "Amós",
+      "Miqueas",
+      "Abdías"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces respondió Amós, y dijo á Amasías: No soy profeta, ni soy hijo de profeta, sino que soy boyero, y cogedor de cabrahigos."
+  },
+  {
+    "id": 111,
+    "type": "TRIVIA",
+    "reference": "Números 21:9",
+    "question": "¿Qué hizo construir Moisés para que el pueblo de Israel se sanara de las mordeduras venenosas de las serpientes?",
+    "options": [
+      "Un becerro de oro",
+      "Una serpiente de bronce",
+      "Un altar de piedra",
+      "Una fuente de agua"
+    ],
+    "correct_index": 1,
+    "explanation": "Y Moisés hizo una serpiente de metal, y púsola sobre un asta; y era, que cuando alguna serpiente mordía á alguno, miraba á la serpiente de metal, y vivía."
+  },
+  {
+    "id": 112,
+    "type": "TRIVIA",
+    "reference": "Marcos 10:46",
+    "question": "¿Cómo se llamaba el ciego a quién Jesús sanó a la salida de Jericó?",
+    "options": [
+      "Zaqueo",
+      "Bartimeo",
+      "Lázaro",
+      "Simón"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces vienen á Jericó; y saliendo él de Jericó y sus discípulos y una gran compañía, Bartimeo el ciego, hijo de Timeo, estaba sentado junto al camino mendigando."
+  },
+  {
+    "id": 113,
+    "type": "TRIVIA",
+    "reference": "Mateo 27:32",
+    "question": "Rumbo a la crucifixión, ¿quién ayudó a cargar la cruz de Jesús?",
+    "options": [
+      "Simón de Cirene",
+      "José de Arimatea",
+      "Pedro el apóstol",
+      "Juan el discípulo"
+    ],
+    "correct_index": 0,
+    "explanation": "Y saliendo, hallaron á un Cireneo, que se llamaba Simón: á éste cargaron para que llevase su cruz."
+  },
+  {
+    "id": 114,
+    "type": "TRIVIA",
+    "reference": "2 Samuel 2:11",
+    "question": "¿Cuál era la capital de Israel antes que David la trasladara a Jerusalén?",
+    "options": [
+      "Siquem",
+      "Hebrón",
+      "Belén",
+      "Gabaón"
+    ],
+    "correct_index": 1,
+    "explanation": "Y fué el número de los días que David reinó en Hebrón sobre la casa de Judá, siete años y seis meses."
+  },
+  {
+    "id": 115,
+    "type": "TRIVIA",
+    "reference": "Juan 12:4-5",
+    "question": "¿Qué discípulo se ofendió porque una mujer ungió a Jesús con un perfume muy caro?",
+    "options": [
+      "Judas Iscariote",
+      "Pedro",
+      "Tomás",
+      "Santiago"
+    ],
+    "correct_index": 0,
+    "explanation": "Y dijo uno de sus discípulos, Judas Iscariote, hijo de Simón, el que le había de entregar: ¿Por qué no se ha vendido este ungüento por trescientos dineros?"
+  },
+  {
+    "id": 116,
+    "type": "TRIVIA",
+    "reference": "Hechos 8:18-19",
+    "question": "¿Quién quería comprar con dinero el poder del Espíritu Santo?",
+    "options": [
+      "Ananías",
+      "Simón el mago",
+      "Barjesús",
+      "Felipe"
+    ],
+    "correct_index": 1,
+    "explanation": "Cuando vió Simón que por la imposición de las manos de los apóstoles se daba el Espíritu Santo, les ofreció dinero."
+  },
+  {
+    "id": 117,
+    "type": "TRIVIA",
+    "reference": "Marcos 6:24",
+    "question": "¿Quién instigó la decapitación de Juan el Bautista?",
+    "options": [
+      "Herodes Antipas",
+      "Herodías",
+      "Salomé",
+      "Poncio Pilato"
+    ],
+    "correct_index": 1,
+    "explanation": "Y saliendo ella, dijo á su madre: ¿Qué pediré? Y ella dijo: La cabeza de Juan Bautista."
+  },
+  {
+    "id": 118,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 2:34",
+    "question": "¿Cuál era el nombre de los dos hijos de Elí?",
+    "options": [
+      "Ofni y Finees",
+      "Nadab y Abiú",
+      "Gersón y Eliezer",
+      "Manasés y Efraín"
+    ],
+    "correct_index": 0,
+    "explanation": "Y vendrá un varón de los tuyos, á quien no habré yo cortado de mi altar, para consumir tus ojos, y henchir tu ánimo de dolor; mas todos los nacidos en tu casa morirán en la edad varonil."
+  },
+  {
+    "id": 119,
+    "type": "TRIVIA",
+    "reference": "Hechos 16:16-18",
+    "question": "¿Por qué encarcelaron a Pablo y Silas en Filipos?",
+    "options": [
+      "Porque Pablo sanó a una muchacha con espíritu de adivinación",
+      "Por predicar en el templo",
+      "Por bautizar a un centurión romano",
+      "Por negarse a adorar al emperador"
+    ],
+    "correct_index": 0,
+    "explanation": "Y aconteció que yendo nosotros á la oración, una muchacha que tenía espíritu pitónico nos salió al encuentro... Y esto hacía por muchos días. Mas desagradando á Pablo, se volvió y dijo al espíritu: Te mando en el nombre de Jesucristo, que salgas de ella. Y salió en aquella hora."
+  },
+  {
+    "id": 120,
+    "type": "TRIVIA",
+    "reference": "Juan 1:46",
+    "question": "¿Quién dijo: 'De Nazaret puede salir algo bueno'?",
+    "options": [
+      "Natanael",
+      "Pedro",
+      "Felipe",
+      "Tomás"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Natanael le dijo: ¿De Nazaret puede haber algo de bueno? Dícele Felipe: Ven y ve."
+  },
+  {
+    "id": 121,
+    "type": "TRIVIA",
+    "reference": "Rut 1:4",
+    "question": "¿Cuál era la tierra de nacimiento de Rut?",
+    "options": [
+      "Moab",
+      "Canaán",
+      "Egipto",
+      "Edom"
+    ],
+    "correct_index": 0,
+    "explanation": "Y tomaron para sí mujeres de Moab; el nombre de la una era Orpha, y el nombre de la otra Ruth."
+  },
+  {
+    "id": 122,
+    "type": "TRIVIA",
+    "reference": "Lucas 13:18-19",
+    "question": "¿El reino de los cielos es como qué semilla pequeña?",
+    "options": [
+      "Semilla de mostaza",
+      "Semilla de trigo",
+      "Semilla de cebada",
+      "Semilla de higo"
+    ],
+    "correct_index": 0,
+    "explanation": "Y dijo: ¿A qué es semejante el reino de Dios, y á qué le compararé? Semejante es al grano de la mostaza."
+  },
+  {
+    "id": 123,
+    "type": "TRIVIA",
+    "reference": "Jueces 4:21",
+    "question": "¿Qué mujer mató a un general usando una estaca?",
+    "options": [
+      "Débora",
+      "Jael",
+      "Ester",
+      "Judit"
+    ],
+    "correct_index": 1,
+    "explanation": "Entonces Jael, mujer de Heber, tomó la estaca de la tienda, y poniendo un mazo en su mano, vino á él calladamente, y metióle la estaca por las sienes."
+  },
+  {
+    "id": 124,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 28:11",
+    "question": "¿A quién quiso hacer venir de entre los muertos Saúl a través de la adivina de Endor?",
+    "options": [
+      "A Samuel",
+      "A David",
+      "A Moisés",
+      "A Elías"
+    ],
+    "correct_index": 0,
+    "explanation": "La mujer entonces dijo: ¿A quién te haré venir? Y él respondió: Hazme venir á Samuel."
+  },
+  {
+    "id": 125,
+    "type": "TRIVIA",
+    "reference": "Lucas 1:20",
+    "question": "¿Qué le sucedió a Zacarías después de su encuentro con el Ángel?",
+    "options": [
+      "Se quedó mudo",
+      "Se quedó ciego",
+      "Se quedó paralítico",
+      "Se quedó dormido"
+    ],
+    "correct_index": 0,
+    "explanation": "Y he aquí, estarás mudo y no podrás hablar, hasta el día que esto sea hecho, por cuanto no creíste á mis palabras."
+  },
+  {
+    "id": 126,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 11:1",
+    "question": "¿Qué abuela de la Biblia asesinó a sus nietos?",
+    "options": [
+      "Atalía",
+      "Jezabel",
+      "Mical",
+      "Raquel"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Atalía madre de Ochôzías, viendo que su hijo era muerto, levantóse, y destruyó toda la simiente real."
+  },
+  {
+    "id": 127,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 10:22",
+    "question": "¿Qué animales traía Salomón en barco de Tarsis a Jerusalén?",
+    "options": [
+      "Monos y pavos reales",
+      "Leones y tigres",
+      "Camellos y dromedarios",
+      "Caballos y mulas"
+    ],
+    "correct_index": 0,
+    "explanation": "Porque el rey tenía la flota que salía á la mar, á Tharsis, con la flota de Hiram: una vez en cada tres años venía la flota de Tharsis, y traía oro, plata, marfil, simios, y pavos."
+  },
+  {
+    "id": 128,
+    "type": "TRIVIA",
+    "reference": "2 Timoteo 1:5",
+    "question": "¿Cómo se llamaba la madre de Timoteo?",
+    "options": [
+      "Eunice",
+      "Loida",
+      "Priscila",
+      "María"
+    ],
+    "correct_index": 0,
+    "explanation": "Trayendo á la memoria la fe no fingida que hay en ti, la cual residió primero en tu abuela Loida, y en tu madre Eunice."
+  },
+  {
+    "id": 129,
+    "type": "TRIVIA",
+    "reference": "1 Reyes 21:2",
+    "question": "¿De quién era la viña que robaron Acab y Jezabel?",
+    "options": [
+      "De Nabot",
+      "De Elías",
+      "De Micaías",
+      "De Jehú"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Achâb habló á Naboth, diciendo: Dame tu viña para un huerto de legumbres, porque está cercana, junto á mi casa."
+  },
+  {
+    "id": 130,
+    "type": "TRIVIA",
+    "reference": "1 Samuel 24:10",
+    "question": "¿Cuántas veces perdonó David la vida a Saúl?",
+    "options": [
+      "Una vez",
+      "Dos veces",
+      "Tres veces",
+      "Cuatro veces"
+    ],
+    "correct_index": 1,
+    "explanation": "David perdonó la vida a Saúl en dos ocasiones: en la cueva de En-gadi (1 Samuel 24) y en el desierto de Zif (1 Samuel 26)."
+  },
+  {
+    "id": 131,
+    "type": "TRIVIA",
+    "reference": "Éxodo 2:21",
+    "question": "¿Quién fue Séfora?",
+    "options": [
+      "La esposa de Moisés",
+      "La hija de Faraón",
+      "La profetisa de Israel",
+      "La madre de Samuel"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Moisés acordó en morar con aquel varón; y él dió á Moisés á su hija Séphora."
+  },
+  {
+    "id": 132,
+    "type": "TRIVIA",
+    "reference": "1 Crónicas 2:15",
+    "question": "¿De qué tribu de Israel era David?",
+    "options": [
+      "De Judá",
+      "De Benjamín",
+      "De Efraín",
+      "De Leví"
+    ],
+    "correct_index": 0,
+    "explanation": "David era de la tribu de Judá, hijo de Isaí, de Belén de Judá."
+  },
+  {
+    "id": 133,
+    "type": "TRIVIA",
+    "reference": "Lucas 2:42",
+    "question": "¿Cuántos años tenía Jesús cuando se perdió en el templo?",
+    "options": [
+      "Doce años",
+      "Diez años",
+      "Quince años",
+      "Ocho años"
+    ],
+    "correct_index": 0,
+    "explanation": "Y cuando fué de doce años, subieron ellos á Jerusalem conforme á la costumbre del día de la fiesta."
+  },
+  {
+    "id": 134,
+    "type": "TRIVIA",
+    "reference": "Génesis 32:25",
+    "question": "¿Quién luchó toda la noche con el Señor y quedó cojeando permanentemente?",
+    "options": [
+      "Abraham",
+      "Moisés",
+      "Jacob",
+      "Josué"
+    ],
+    "correct_index": 2,
+    "explanation": "Y como vió que no podía con él, tocó en el sitio del muslo, y descoyuntóse el muslo de Jacob mientras con él luchaba."
+  },
+  {
+    "id": 135,
+    "type": "TRIVIA",
+    "reference": "Éxodo 8:17",
+    "question": "¿Cuál fue la tercera plaga que Dios envió a Faraón?",
+    "options": [
+      "La de los piojos",
+      "La de las ranas",
+      "La de las tinieblas",
+      "La del granizo"
+    ],
+    "correct_index": 0,
+    "explanation": "Y Aarón extendió su mano con su vara, é hirió el polvo de la tierra, el cual se volvió en piojos en los hombres y en las bestias."
+  },
+  {
+    "id": 136,
+    "type": "TRIVIA",
+    "reference": "Lucas 2:1",
+    "question": "¿Quién era el emperador del imperio romano cuando nació Jesús?",
+    "options": [
+      "Tiberio",
+      "César Augusto",
+      "Claudio",
+      "Nerón"
+    ],
+    "correct_index": 1,
+    "explanation": "Y aconteció en aquellos días que salió edicto de parte de César Augusto, que toda la tierra fuese empadronada."
+  },
+  {
+    "id": 137,
+    "type": "TRIVIA",
+    "reference": "Lucas 2:25",
+    "question": "¿Qué hombre de Jerusalén bendijo a Jesús cuando era niño?",
+    "options": [
+      "Simeón",
+      "Nicodemo",
+      "Gamaliel",
+      "Anás"
+    ],
+    "correct_index": 0,
+    "explanation": "Y he aquí, había un hombre en Jerusalem, llamado Simeón, y este hombre, justo y pío, esperaba la consolación de Israel; y el Espíritu Santo era sobre él."
+  },
+  {
+    "id": 138,
+    "type": "TRIVIA",
+    "reference": "Daniel 1:7",
+    "question": "¿Qué nombre puso el jefe de los eunucos a Daniel?",
+    "options": [
+      "Sadrac",
+      "Mesac",
+      "Abed-nego",
+      "Beltsasar"
+    ],
+    "correct_index": 3,
+    "explanation": "A los cuales el príncipe de los eunucos puso nombres: y puso á Daniel, Beltsasar; y á Ananías, Sadrach; y á Misael, Mesach; y á Azarías, Abed-nego."
+  },
+  {
+    "id": 139,
+    "type": "TRIVIA",
+    "reference": "Hechos 13:4",
+    "question": "¿Cuál fue la primera parada que hicieron Bernabé y Pablo en su primer viaje misionero?",
+    "options": [
+      "Seleucia",
+      "Chipre",
+      "Listra",
+      "Antioquía"
+    ],
+    "correct_index": 0,
+    "explanation": "Y ellos, enviados así por el Espíritu Santo, descendieron á Seleucia: y de allí navegaron á Chipre."
+  },
+  {
+    "id": 140,
+    "type": "TRIVIA",
+    "reference": "Juan 18:10",
+    "question": "¿Cómo se llamaba el siervo del sumo sacerdote a quién Pedro le cortó la oreja derecha?",
+    "options": [
+      "Malco",
+      "Barrabás",
+      "Nicodemo",
+      "Anás"
+    ],
+    "correct_index": 0,
+    "explanation": "Entonces Simón Pedro, que tenía espada, sacóla, é hirió al siervo del pontífice, y le cortó la oreja derecha. Y el siervo se llamaba Malco."
+  },
+  {
+    "id": 141,
+    "type": "TRIVIA",
+    "reference": "Josué 9:3-6",
+    "question": "¿Qué pueblo engañó a Josué haciéndose pasar por gente de tierras lejanas para hacer alianza con el pueblo de Dios?",
+    "options": [
+      "Los gabaonitas",
+      "Los madianitas",
+      "Los filisteos",
+      "Los amonitas"
+    ],
+    "correct_index": 0,
+    "explanation": "Y ellos respondieron á Josué: Tus siervos somos. Y Josué les dijo: ¿Quién sois vosotros y de dónde venís?"
+  },
+  {
+    "id": 142,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 2:23-24",
+    "question": "¿De qué profeta se burlaron unos muchachos diciéndole: 'Calvo, sube'?",
+    "options": [
+      "De Eliseo",
+      "De Elías",
+      "De Samuel",
+      "De Isaías"
+    ],
+    "correct_index": 0,
+    "explanation": "Saliendo luego de allí, subió por el camino de Beth-el; y subiendo por el camino, salieron los muchachos de la ciudad, y se burlaban de él, diciendo: ¡Calvo, sube! ¡calvo, sube!"
+  },
+  {
+    "id": 143,
+    "type": "TRIVIA",
+    "reference": "2 Reyes 25:8-9",
+    "question": "¿En qué año tuvo lugar la conquista de Jerusalén por los babilonios y el posterior cautiverio?",
+    "options": [
+      "En el 722 a.C.",
+      "En el 586 a.C.",
+      "En el 930 a.C.",
+      "En el 516 a.C."
+    ],
+    "correct_index": 1,
+    "explanation": "Y en el mes quinto, á los siete del mes, siendo el año diecinueve de Nabucodonosor rey de Babilonia, vino á Jerusalem Nabuzaradán, capitán de la guardia, y quemó la casa de Jehová, y la casa del rey."
   }
 ]
