@@ -25,6 +25,8 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -323,6 +325,14 @@ fun ReaderScreen(
                     }
                 },
                 actions = {
+                    val isRead by viewModel.currentChapterIsRead.collectAsState()
+                    IconButton(onClick = { viewModel.toggleCurrentChapterRead() }) {
+                        Icon(
+                            imageVector = if (isRead) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
+                            contentDescription = if (isRead) "Marcar como no leído" else "Marcar como leído",
+                            tint = if (isRead) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                     IconButton(onClick = { viewModel.toggleSpeaking(verses) }) {
                         Icon(
                             imageVector = if (isSpeaking) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,

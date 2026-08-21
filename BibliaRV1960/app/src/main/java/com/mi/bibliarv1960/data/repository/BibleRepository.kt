@@ -1,13 +1,15 @@
 package com.mi.bibliarv1960.data.repository
 
 import com.mi.bibliarv1960.data.local.dao.BibleContentDao
+import com.mi.bibliarv1960.data.local.dao.ReadingProgressDao
 import com.mi.bibliarv1960.data.local.dao.UserDataDao
 import com.mi.bibliarv1960.data.local.entities.*
 import kotlinx.coroutines.flow.Flow
 
 class BibleRepository(
     private val contentDao: BibleContentDao,
-    private val userDataDao: UserDataDao
+    private val userDataDao: UserDataDao,
+    private val readingProgressDao: ReadingProgressDao
 ) {
     // Content Data
     val allBooks: Flow<List<BookEntity>> = contentDao.getAllBooks()
@@ -30,6 +32,12 @@ class BibleRepository(
 
     val allChallenges: Flow<List<ChallengeEntity>> = contentDao.getAllChallenges()
 
+    fun getChapterCountForBook(bookId: Int): Flow<Int> = contentDao.getChapterCountForBook(bookId)
+    
+    fun getTotalChapterCount(): Flow<Int> = contentDao.getTotalChapterCount()
+
+    fun getChapterCountsByBook(): Flow<List<BookChapterCount>> = contentDao.getChapterCountsByBook()
+
     // User Data
     val allCategories: Flow<List<BookmarkCategoryEntity>> = userDataDao.getAllCategories()
     
@@ -48,4 +56,31 @@ class BibleRepository(
 
     fun getBookmarkCategoryId(bookId: Int, chapter: Int, verse: Int): Flow<Int?> =
         userDataDao.getBookmarkCategoryId(bookId, chapter, verse)
+
+    // Reading Progress
+    fun getProgressForBook(bookId: Int): Flow<List<ReadingProgressEntity>> =
+        readingProgressDao.getProgressForBook(bookId)
+
+    fun getAllProgress(): Flow<List<ReadingProgressEntity>> =
+        readingProgressDao.getAllProgress()
+
+    fun getLastRead(): Flow<ReadingProgressEntity?> =
+        readingProgressDao.getLastRead()
+
+    fun getProgress(bookId: Int, chapter: Int): Flow<ReadingProgressEntity?> =
+        readingProgressDao.getProgress(bookId, chapter)
+
+    suspend fun markChapterAsRead(bookId: Int, chapter: Int) {
+        val progress = ReadingProgressEntity(
+            bookId = bookId,
+            chapter = chapter,
+            isRead = true,
+            readAt = System.currentTimeMillis()
+        )
+        readingProgressDao.upsertProgress(progress)
+    }
+
+    suspend fun unmarkChapter(bookId: Int, chapter: Int) {
+        readingProgressDao.deleteProgress(bookId, chapter)
+    }
 }

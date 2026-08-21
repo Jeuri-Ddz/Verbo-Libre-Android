@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ fun HomeScreen(
 ) {
     val allBooks by viewModel.allBooks.collectAsState()
     val todayVerse by viewModel.displayDailyVerse.collectAsState()
+    val bookProgress by viewModel.bookProgress.collectAsState()
     
     var selectedTab by remember { mutableIntStateOf(0) }
     var selectedBook by remember { mutableStateOf<BookEntity?>(null) }
@@ -229,7 +231,13 @@ fun HomeScreen(
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 items(filteredBooks) { book ->
-                    BookRow(book = book) { selectedBook = book }
+                    val progress = bookProgress[book.id] ?: Pair(0, book.chaptersCount)
+                    BookRow(
+                        book = book,
+                        readChapters = progress.first,
+                        totalChapters = progress.second,
+                        onClick = { selectedBook = book }
+                    )
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 22.dp),
                         thickness = 0.5.dp,
@@ -309,15 +317,60 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearchAction: ()
 }
 
 @Composable
-fun BookRow(book: BookEntity, onClick: () -> Unit) {
+fun BookRow(book: BookEntity, readChapters: Int, totalChapters: Int, onClick: () -> Unit) {
+    val progress = if (totalChapters > 0) readChapters.toFloat() / totalChapters.toFloat() else 0f
+    val isComplete = readChapters == totalChapters && totalChapters > 0
+    val percentage = (progress * 100).toInt()
+
     Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 22.dp, vertical = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 22.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = book.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Text(text = "${book.chaptersCount} capítulos", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = book.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "$percentage%",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (isComplete) Color(0xFF3C9D6B) else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Text(
+                text = "$totalChapters capítulos · $readChapters/$totalChapters leídos",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 2.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            // Barra de progreso personalizada sin decoraciones (puntos) en los extremos
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(progress)
+                        .fillMaxHeight()
+                        .background(if (isComplete) Color(0xFF3C9D6B) else Color(0xFF33506E))
+                )
+            }
         }
+        Spacer(modifier = Modifier.width(16.dp))
         Text(text = "›", fontSize = 20.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

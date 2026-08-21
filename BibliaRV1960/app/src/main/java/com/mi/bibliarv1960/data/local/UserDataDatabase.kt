@@ -7,10 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mi.bibliarv1960.data.local.dao.NoteDao
+import com.mi.bibliarv1960.data.local.dao.ReadingProgressDao
 import com.mi.bibliarv1960.data.local.dao.UserDataDao
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.BookmarkEntity
 import com.mi.bibliarv1960.data.local.entities.NoteEntity
+import com.mi.bibliarv1960.data.local.entities.ReadingProgressEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,18 +21,27 @@ import kotlinx.coroutines.launch
     entities = [
         BookmarkEntity::class, 
         BookmarkCategoryEntity::class,
-        NoteEntity::class
+        NoteEntity::class,
+        ReadingProgressEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class UserDataDatabase : RoomDatabase() {
     abstract fun userDataDao(): UserDataDao
     abstract fun noteDao(): NoteDao
+    abstract fun readingProgressDao(): ReadingProgressDao
 
     companion object {
         @Volatile
         private var INSTANCE: UserDataDatabase? = null
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS `reading_progress` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `bookId` INTEGER NOT NULL, `chapter` INTEGER NOT NULL, `isRead` INTEGER NOT NULL, `readAt` INTEGER)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_reading_progress_bookId_chapter` ON `reading_progress` (`bookId`, `chapter`)")
+            }
+        }
 
         fun getDatabase(context: Context): UserDataDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -39,6 +50,7 @@ abstract class UserDataDatabase : RoomDatabase() {
                     UserDataDatabase::class.java,
                     "user_data_v2.db",
                 )
+                    .addMigrations(MIGRATION_2_3)
                     .fallbackToDestructiveMigration()
                     // No createFromAsset here as it's user-generated
                     .addCallback(object : Callback() {

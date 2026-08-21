@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,8 +21,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
@@ -229,6 +234,67 @@ class MainActivity : ComponentActivity() {
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
+
+                            // --- TARJETA DE PROGRESO GLOBAL ---
+                            val globalProgress by viewModel.globalProgressPercent.collectAsState()
+                            val allProgress by viewModel.allProgress.collectAsState()
+                            val totalChapters by viewModel.globalChapterCount.collectAsState()
+                            
+                            Surface(
+                                color = MaterialTheme.colorScheme.surface,
+                                shape = RoundedCornerShape(16.dp),
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp, 
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                ),
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                append("Has leído ")
+                                                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                                    append("${allProgress.size}")
+                                                }
+                                                append(" capítulos")
+                                            },
+                                            fontSize = 13.sp,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Text(
+                                            text = "${(globalProgress * 100).toInt()}%",
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFF33506E)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    // Barra de progreso personalizada sin decoraciones (puntos) en los extremos
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(6.dp)
+                                            .clip(RoundedCornerShape(3.dp))
+                                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth(globalProgress)
+                                                .fillMaxHeight()
+                                                .background(Color(0xFF33506E))
+                                        )
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
 
                             // --- MODO OSCURO TOGGLE ---
                             Surface(

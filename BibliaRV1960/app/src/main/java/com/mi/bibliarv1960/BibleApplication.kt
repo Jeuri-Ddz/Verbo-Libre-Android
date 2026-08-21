@@ -14,6 +14,7 @@ class BibleApplication : Application() {
         BibleRepository(
             contentDatabase.bibleContentDao(),
             userDataDatabase.userDataDao(),
+            userDataDatabase.readingProgressDao()
         ) 
     }
     val noteRepository by lazy { NoteRepository(userDataDatabase.noteDao()) }

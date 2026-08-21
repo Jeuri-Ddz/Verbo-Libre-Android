@@ -1,0 +1,140 @@
+ESTADO ACTUAL DEL PROYECTO: BIBLIA RV1960 (VERBO LIBRE)
+Fecha: 2026-08-21
+----------------------------------------------------------------------
+
+1. ESTRUCTURA DEL PROYECTO
+--------------------------
+app/
+├── src/
+│   ├── main/
+│   │   ├── assets/
+│   │   │   ├── data/
+│   │   │   │   ├── challenges.json
+│   │   │   │   ├── daily_verses.json
+│   │   │   │   ├── devotionals.json
+│   │   │   │   └── new.json (y otros auxiliares)
+│   │   │   └── sqlite/
+│   │   │       ├── rv1960.db
+│   │   │       └── bible_multi.db
+│   │   ├── java/com/mi/bibliarv1960/
+│   │   │   ├── data/
+│   │   │   │   ├── local/ (Room Databases, Daos, Entities)
+│   │   │   │   ├── preferences/ (DataStoreManager)
+│   │   │   │   └── repository/ (BibleRepository, NoteRepository)
+│   │   │   ├── ui/
+│   │   │   │   ├── challenges/ (ChallengeScreen, ViewModel)
+│   │   │   │   ├── components/ (Custom UI components)
+│   │   │   │   ├── navigation/ (Screen routes)
+│   │   │   │   ├── notes/ (Notes management)
+│   │   │   │   ├── screens/ (Home, Reader, Search, etc.)
+│   │   │   │   ├── theme/ (Material 3 Theme)
+│   │   │   │   └── viewmodel/ (BibleViewModel)
+│   │   │   ├── utils/ (Speech, Share, DataImport)
+│   │   │   ├── MainActivity.kt
+│   │   │   └── BibleApplication.kt
+│   │   └── res/ (Drawables con fondos, layouts, etc.)
+│   └── test/
+└── build.gradle.kts
+
+2. ESTADO DE AVANCE
+-------------------
+FUNCIONALIDADES IMPLEMENTADAS:
+- Navegación base con Navigation Drawer (Inicio, Devocional, Versículo, Marcadores, Notas, Retos).
+- Lector Bíblico (ReaderScreen) con selección de libro y capítulo.
+- Sistema de Devocionales Diarios con fondos dinámicos.
+- Versículo del Día con capacidad de compartir.
+- Gestión de Notas Personales (Crear, Editar, Listar).
+- Marcadores de versículos.
+- Retos Diarios (ChallengeScreen) con lógica de auto-inicio al detectar cambio de día.
+- Modo Oscuro/Claro persistente via DataStore.
+- Soporte para Texto a Voz (SpeechManager).
+- Búsqueda de versículos funcional.
+
+PENDIENTES:
+- gpt.json está vacío (posible integración futura con IA).
+- Refinamiento de la UI en tablets/pantallas grandes.
+- Implementación de categorías de marcadores (entidad existe pero falta UI completa).
+
+3. BASES DE DATOS (ESQUEMA ROOM INFERIDO)
+-----------------------------------------
+TABLA 'verses' (BibleContentDatabase):
+  - id: INTEGER (PK)
+  - book_id: INTEGER
+  - chapter: INTEGER
+  - verse: INTEGER
+  - text: TEXT
+  - translation_id: TEXT
+
+TABLA 'notes' (UserDataDatabase):
+  - id: INTEGER (PK AUTOINCREMENT)
+  - verseKey: TEXT (UNIQUE INDEX, ej: "1_1")
+  - bookId: INTEGER
+  - chapter: INTEGER
+  - verseNumber: INTEGER
+  - text: TEXT
+  - createdAt: LONG
+  - updatedAt: LONG
+
+TABLA 'bookmarks' (UserDataDatabase):
+  - id: INTEGER (PK AUTOINCREMENT)
+  - bookId: INTEGER
+  - bookName: TEXT
+  - chapter: INTEGER
+  - verse: INTEGER
+  - text: TEXT
+  - categoryId: INTEGER (FK a bookmark_categories)
+  - timestamp: LONG
+
+4. ARCHIVOS JSON (EJEMPLOS)
+---------------------------
+devotionals.json:
+  [
+    {
+      "id": 1,
+      "book_id": 23,
+      "chapter": 41,
+      "verse": 10,
+      "reference": "Isaías 41:10",
+      "verse_text": "No temas...",
+      "topic": "Confianza",
+      "reflection": "..."
+    }
+  ]
+
+challenges.json (Trivia):
+  [
+    {
+      "id": 1,
+      "type": "TRIVIA",
+      "reference": "Job 2:11",
+      "question": "¿Cómo se llamaban los tres amigos de Job...?",
+      "options": ["...", "...", "...", "..."],
+      "correct_index": 0,
+      "explanation": "..."
+    }
+  ]
+
+5. VIEWMODELS Y NAVEGACIÓN
+--------------------------
+VIEWMODELS:
+- BibleViewModel: Maneja lectura, versículo diario, devocional y preferencias.
+- NotesViewModel: CRUD de notas personales.
+- ChallengeViewModel: Lógica del reto diario y estado de completitud.
+
+NAVEGACIÓN (Screen.kt):
+- home, reader/{bookId}/{chapter}, search, purpose, daily_verse, devotional, challenge, bookmarks.
+
+6. DEPENDENCIAS CLAVE
+---------------------
+- Jetpack Compose (BOM 2026.08.00, Material 3)
+- Navigation Compose (2.9.8)
+- Room (2.8.4) para persistencia local.
+- DataStore Preferences (1.2.1)
+- Kotlinx Serialization para JSON.
+- Google Fonts para tipografía Inter y Plus Jakarta Sans.
+
+7. ÚLTIMO CAMBIO REALIZADO
+--------------------------
+- Generación de resumen completo del proyecto para transferencia de contexto.
+- Revisión de la integración de Devotionals y Challenges.
+- Sincronización de índices de fondo para el Versículo del Día y Devocionales en BibleViewModel.

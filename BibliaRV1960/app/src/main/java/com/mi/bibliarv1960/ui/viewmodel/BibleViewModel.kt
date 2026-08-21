@@ -499,6 +499,95 @@ class BibleViewModel(
     fun selectChapter(chapter: Int) {
         _currentChapter.value = chapter
     }
+
+    // --- Manual Reading Progress ---
+    val allProgress: StateFlow<List<ReadingProgressEntity>> = repository.getAllProgress().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    val lastReadChapter: StateFlow<ReadingProgressEntity?> = repository.getLastRead().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
+
+    val globalChapterCount: StateFlow<Int> = repository.getTotalChapterCount().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 1189
+    )
+
+    val bookChapterCounts: StateFlow<List<BookChapterCount>> = repository.getChapterCountsByBook().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    val globalProgressPercent: StateFlow<Float> = combine(
+        allProgress,
+        globalChapterCount
+    ) { progress, total ->
+        if (total == 0) 0f else progress.size.toFloat() / total.toFloat()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 0f
+    )
+
+    val bookProgress: StateFlow<Map<Int, Pair<Int, Int>>> = combine(
+        allBooks,
+        allProgress,
+        bookChapterCounts
+    ) { books, progress, counts ->
+        val progressMap = progress.groupBy { it.bookId }
+        val countsMap = counts.associate { it.bookId to it.chapterCount }
+        books.associate { book ->
+            val readCount = progressMap[book.id]?.size ?: 0
+            val totalCount = countsMap[book.id] ?: book.chaptersCount
+            book.id to Pair(readCount, totalCount)
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyMap()
+    )
+
+    val currentChapterIsRead: StateFlow<Boolean> = combine(
+        _currentBookId,
+        _currentChapter,
+        allProgress
+    ) { bookId, chapter, progress ->
+        progress.any { it.bookId == bookId && it.chapter == chapter }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false
+    )
+
+    fun markChapterAsRead(bookId: Int, chapter: Int) {
+        viewModelScope.launch {
+            repository.markChapterAsRead(bookId, chapter)
+        }
+    }
+
+    fun unmarkChapter(bookId: Int, chapter: Int) {
+        viewModelScope.launch {
+            repository.unmarkChapter(bookId, chapter)
+        }
+    }
+
+    fun toggleCurrentChapterRead() {
+        val bookId = _currentBookId.value
+        val chapter = _currentChapter.value
+        val isRead = currentChapterIsRead.value
+        if (isRead) {
+            unmarkChapter(bookId, chapter)
+        } else {
+            markChapterAsRead(bookId, chapter)
+        }
+    }
 }
 
 class BibleViewModelFactory(
