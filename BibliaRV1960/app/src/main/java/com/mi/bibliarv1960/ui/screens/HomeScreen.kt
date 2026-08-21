@@ -230,7 +230,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
-                items(filteredBooks) { book ->
+                items(filteredBooks, key = { it.id }) { book ->
                     val progress = bookProgress[book.id] ?: Pair(0, book.chaptersCount)
                     BookRow(
                         book = book,
@@ -249,11 +249,38 @@ fun HomeScreen(
     }
 
     selectedBook?.let { book ->
+        val progressByBook by viewModel.progressByBook.collectAsState()
+        val allProgress by viewModel.allProgress.collectAsState()
+        
+        val bookReadChapters = remember(book.id, progressByBook) {
+            progressByBook[book.id] ?: emptySet()
+        }
+        
+        val lastReadInBook = remember(book.id, allProgress) {
+            allProgress
+                .filter { it.bookId == book.id && it.isRead }
+                .maxByOrNull { it.readAt ?: 0L }
+                ?.chapter
+        }
+
         ChapterSelectionDialog(
             book = book,
+            readChapters = bookReadChapters,
+            lastReadChapter = lastReadInBook,
             onChapterSelected = { chapter ->
                 selectedBook = null
                 onChapterSelected(book.id, chapter, null)
+            },
+            onContinueReading = {
+                val nextChapter = if (lastReadInBook != null && lastReadInBook < book.chaptersCount) {
+                    lastReadInBook + 1
+                } else if (lastReadInBook == book.chaptersCount) {
+                    book.chaptersCount
+                } else {
+                    1
+                }
+                selectedBook = null
+                onChapterSelected(book.id, nextChapter, null)
             }
         ) { selectedBook = null }
     }
