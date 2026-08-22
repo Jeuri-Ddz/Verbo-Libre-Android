@@ -1,26 +1,32 @@
 package com.mi.bibliarv1960.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mi.bibliarv1960.DebugConfig
 import com.mi.bibliarv1960.data.repository.BibleRepository
-import com.mi.bibliarv1960.data.repository.NoteRepository
 import com.mi.bibliarv1960.data.local.entities.*
 import com.mi.bibliarv1960.data.preferences.DataStoreManager
-import com.mi.bibliarv1960.ui.notes.NotesViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
+import com.mi.bibliarv1960.utils.SpeechManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import javax.inject.Inject
+
 @OptIn(ExperimentalCoroutinesApi::class)
-class BibleViewModel(
+@HiltViewModel
+class BibleViewModel @Inject constructor(
     private val repository: BibleRepository,
     private val dataStoreManager: DataStoreManager,
+    private val speechManager: SpeechManager
 ) : ViewModel() {
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     private val _todayDevotional = MutableStateFlow<DevotionalEntity?>(null)
 
@@ -46,7 +52,7 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
+        initialValue = null,
     )
 
     private val _todayVerse = MutableStateFlow<DailyVerseEntity?>(null)
@@ -54,7 +60,7 @@ class BibleViewModel(
     val allDailyVerses: StateFlow<List<DailyVerseEntity>> = repository.allDailyVerses.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     private val _previewVerseIndex = MutableStateFlow<Int?>(null)
@@ -73,7 +79,7 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
+        initialValue = null,
     )
 
     // Índices de fondo calculados centralmente
@@ -88,43 +94,65 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 1
+        initialValue = 1,
     )
 
     private val _todayDevotionalBgIndex = MutableStateFlow(6)
     val todayDevotionalBgIndex: StateFlow<Int> = _todayDevotionalBgIndex
 
-    val displayDevotionalBgIndex: StateFlow<Int> = combine(
-        _todayDevotionalBgIndex,
-        _previewDevotionalBgIndex
-    ) { todayBg, previewBg ->
-        previewBg ?: todayBg
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 6
-    )
-
     val currentStreak: StateFlow<Int> = dataStoreManager.currentStreak.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0
+        initialValue = 0,
     )
 
     val lastReadDate: StateFlow<String?> = dataStoreManager.lastReadDate.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
+        initialValue = null,
     )
 
     val isDarkMode: StateFlow<Boolean> = dataStoreManager.isDarkMode.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = false
+        initialValue = false,
+    )
+
+    val tooltipReaderRead: StateFlow<Boolean> = dataStoreManager.tooltipReaderRead.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipReaderVerse: StateFlow<Boolean> = dataStoreManager.tooltipReaderVerse.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipHomeSearch: StateFlow<Boolean> = dataStoreManager.tooltipHomeSearch.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipNotesSearch: StateFlow<Boolean> = dataStoreManager.tooltipNotesSearch.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipBookmarksFilter: StateFlow<Boolean> = dataStoreManager.tooltipBookmarksFilter.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
     )
 
     init {
         initializeDailyData()
+        speechManager.setOnVerseCompleteListener { _ ->
+            speakNext()
+        }
     }
 
     private fun initializeDailyData() {
@@ -136,7 +164,7 @@ class BibleViewModel(
                 newSeed
             }
 
-            val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val todayDate = LocalDate.now().format(dateFormatter)
 
             // 2. Sorteo de Contenido Devocional
             launch {
@@ -176,28 +204,56 @@ class BibleViewModel(
 
     fun markAsRead() {
         viewModelScope.launch {
-            val today = Calendar.getInstance()
-            val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(today.time)
+            val todayDate = LocalDate.now().format(dateFormatter)
             val lastRead = dataStoreManager.lastReadDate.first()
             
-            if (lastRead == todayStr) return@launch 
+            if (lastRead == todayDate) return@launch 
 
-            val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
-            val yesterdayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(yesterday.time)
+            val yesterdayDate = LocalDate.now().minusDays(1).format(dateFormatter)
 
             val currentStreakValue = currentStreak.value
-            val newStreak = if (lastRead == yesterdayStr) {
+            val newStreak = if (lastRead == yesterdayDate) {
                 currentStreakValue + 1
             } else {
                 1
             }
-            dataStoreManager.updateStreak(newStreak, todayStr)
+            dataStoreManager.updateStreak(newStreak, todayDate)
         }
     }
 
     fun toggleDarkMode() {
         viewModelScope.launch {
             dataStoreManager.toggleDarkMode(!isDarkMode.value)
+        }
+    }
+
+    fun dismissReaderTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipReaderRead(true)
+        }
+    }
+
+    fun dismissReaderVerseTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipReaderVerse(true)
+        }
+    }
+
+    fun dismissHomeSearchTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipHomeSearch(true)
+        }
+    }
+
+    fun dismissNotesSearchTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipNotesSearch(true)
+        }
+    }
+
+    fun dismissBookmarksFilterTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipBookmarksFilter(true)
         }
     }
 
@@ -358,15 +414,6 @@ class BibleViewModel(
 
     private var speakingList: List<VerseEntity> = emptyList()
     private var currentVerseIndex: Int = -1
-    private var speechManager: com.mi.bibliarv1960.utils.SpeechManager? = null
-
-    fun initSpeechManager(context: android.content.Context) {
-        if (speechManager == null) {
-            speechManager = com.mi.bibliarv1960.utils.SpeechManager(context) { _ ->
-                speakNext()
-            }
-        }
-    }
 
     fun toggleSpeaking(verses: List<VerseEntity>) {
         if (_isSpeaking.value) {
@@ -382,7 +429,7 @@ class BibleViewModel(
             speakCurrent()
         } else {
             _isPaused.value = true
-            speechManager?.pause()
+            speechManager.pause()
         }
     }
 
@@ -392,11 +439,15 @@ class BibleViewModel(
         val nextIndex = (currentIndex + 1) % speeds.size
         val nextSpeed = speeds[nextIndex]
         _playbackSpeed.value = nextSpeed
-        speechManager?.setSpeed(nextSpeed)
+        speechManager.setSpeed(nextSpeed)
     }
 
     fun openVoiceSettings() {
-        speechManager?.openSystemSettings()
+        speechManager.openSystemSettings()
+    }
+
+    fun speakTooltip(text: String) {
+        speechManager.speakVerse(0, text) // Usamos ID 0 para tooltips
     }
 
     private fun startSpeaking(verses: List<VerseEntity>) {
@@ -412,7 +463,7 @@ class BibleViewModel(
         if (currentVerseIndex in speakingList.indices) {
             val verse = speakingList[currentVerseIndex]
             _currentSpeakingVerse.value = verse.verse
-            speechManager?.speakVerse(verse.verse, verse.text)
+            speechManager.speakVerse(verse.verse, verse.text)
         } else {
             stopSpeaking()
         }
@@ -426,7 +477,7 @@ class BibleViewModel(
     }
 
     fun stopSpeaking() {
-        speechManager?.stop()
+        speechManager.stop()
         _isSpeaking.value = false
         _isPaused.value = false
         _currentSpeakingVerse.value = null
@@ -434,7 +485,7 @@ class BibleViewModel(
     }
 
     override fun onCleared() {
-        speechManager?.shutdown()
+        speechManager.shutdown()
     }
 
     fun loadChapter(bookId: Int, chapter: Int) {
@@ -504,7 +555,7 @@ class BibleViewModel(
     val allProgress: StateFlow<List<ReadingProgressEntity>> = repository.getAllProgress().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     // Mapa optimizado para consultas rápidas: BookId -> Set de capítulos leídos
@@ -513,25 +564,19 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyMap()
-    )
-
-    val lastReadChapter: StateFlow<ReadingProgressEntity?> = repository.getLastRead().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
+        initialValue = emptyMap(),
     )
 
     val globalChapterCount: StateFlow<Int> = repository.getTotalChapterCount().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 1189
+        initialValue = 1189,
     )
 
     val bookChapterCounts: StateFlow<List<BookChapterCount>> = repository.getChapterCountsByBook().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     val globalProgressPercent: StateFlow<Float> = combine(
@@ -542,7 +587,7 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0f
+        initialValue = 0f,
     )
 
     val bookProgress: StateFlow<Map<Int, Pair<Int, Int>>> = combine(
@@ -556,10 +601,11 @@ class BibleViewModel(
             val totalCount = countsMap[book.id] ?: book.chaptersCount
             book.id to Pair(readCount, totalCount)
         }
-    }.stateIn(
+    }.flowOn(kotlinx.coroutines.Dispatchers.Default)
+    .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyMap()
+        initialValue = emptyMap(),
     )
 
     val currentChapterIsRead: StateFlow<Boolean> = combine(
@@ -571,7 +617,7 @@ class BibleViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = false
+        initialValue = false,
     )
 
     fun markChapterAsRead(bookId: Int, chapter: Int) {
@@ -594,30 +640,6 @@ class BibleViewModel(
             unmarkChapter(bookId, chapter)
         } else {
             markChapterAsRead(bookId, chapter)
-        }
-    }
-}
-
-class BibleViewModelFactory(
-    private val repository: BibleRepository,
-    private val noteRepository: NoteRepository,
-    private val dataStoreManager: DataStoreManager,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return when {
-            modelClass.isAssignableFrom(BibleViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                BibleViewModel(repository, dataStoreManager) as T
-            }
-            modelClass.isAssignableFrom(NotesViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                NotesViewModel(noteRepository) as T
-            }
-            modelClass.isAssignableFrom(com.mi.bibliarv1960.ui.challenges.ChallengeViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                com.mi.bibliarv1960.ui.challenges.ChallengeViewModel(repository, dataStoreManager) as T
-            }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
 }

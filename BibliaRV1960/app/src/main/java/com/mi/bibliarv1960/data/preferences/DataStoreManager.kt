@@ -16,6 +16,12 @@ class DataStoreManager(private val context: Context) {
         val LAST_READ_DATE = stringPreferencesKey("last_read_date")
         val CURRENT_STREAK = intPreferencesKey("current_streak")
         val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
+        val HAS_SEEN_ONBOARDING = booleanPreferencesKey("has_seen_onboarding")
+        val TOOLTIP_READER_READ = booleanPreferencesKey("tooltip_seen_reader_leido")
+        val TOOLTIP_READER_VERSE = booleanPreferencesKey("tooltip_seen_reader_verse")
+        val TOOLTIP_HOME_SEARCH = booleanPreferencesKey("tooltip_seen_home_search")
+        val TOOLTIP_NOTES_SEARCH = booleanPreferencesKey("tooltip_seen_notes_search")
+        val TOOLTIP_BOOKMARKS_FILTER = booleanPreferencesKey("tooltip_seen_bookmarks_filter")
 
         // Reto del día
         val CHALLENGE_COMPLETED_COUNT = intPreferencesKey("challenge_completed_count")
@@ -31,6 +37,12 @@ class DataStoreManager(private val context: Context) {
     val lastReadDate: Flow<String?> = context.dataStore.data.map { it[LAST_READ_DATE] }
     val currentStreak: Flow<Int> = context.dataStore.data.map { it[CURRENT_STREAK] ?: 0 }
     val isDarkMode: Flow<Boolean> = context.dataStore.data.map { it[IS_DARK_MODE] ?: false }
+    val hasSeenOnboarding: Flow<Boolean> = context.dataStore.data.map { it[HAS_SEEN_ONBOARDING] ?: false }
+    val tooltipReaderRead: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_READER_READ] ?: false }
+    val tooltipReaderVerse: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_READER_VERSE] ?: false }
+    val tooltipHomeSearch: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_HOME_SEARCH] ?: false }
+    val tooltipNotesSearch: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_NOTES_SEARCH] ?: false }
+    val tooltipBookmarksFilter: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_FILTER] ?: false }
 
     val challengeCompletedCount: Flow<Int> = context.dataStore.data.map { it[CHALLENGE_COMPLETED_COUNT] ?: 0 }
     val lastChallengeDate: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_DATE] }
@@ -46,6 +58,30 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun toggleDarkMode(isDark: Boolean) {
         context.dataStore.edit { it[IS_DARK_MODE] = isDark }
+    }
+
+    suspend fun saveHasSeenOnboarding(hasSeen: Boolean) {
+        context.dataStore.edit { it[HAS_SEEN_ONBOARDING] = hasSeen }
+    }
+
+    suspend fun saveTooltipReaderRead(seen: Boolean) {
+        context.dataStore.edit { it[TOOLTIP_READER_READ] = seen }
+    }
+
+    suspend fun saveTooltipReaderVerse(seen: Boolean) {
+        context.dataStore.edit { it[TOOLTIP_READER_VERSE] = seen }
+    }
+
+    suspend fun saveTooltipHomeSearch(seen: Boolean) {
+        context.dataStore.edit { it[TOOLTIP_HOME_SEARCH] = seen }
+    }
+
+    suspend fun saveTooltipNotesSearch(seen: Boolean) {
+        context.dataStore.edit { it[TOOLTIP_NOTES_SEARCH] = seen }
+    }
+
+    suspend fun saveTooltipBookmarksFilter(seen: Boolean) {
+        context.dataStore.edit { it[TOOLTIP_BOOKMARKS_FILTER] = seen }
     }
 
     suspend fun updateStreak(streak: Int, date: String) {

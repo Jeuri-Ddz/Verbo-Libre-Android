@@ -1,13 +1,9 @@
 package com.mi.bibliarv1960.ui.notes
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -15,7 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,31 +20,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.BookEntity
 import com.mi.bibliarv1960.data.local.entities.NoteEntity
-import com.mi.bibliarv1960.data.local.entities.TranslationEntity
+import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.theme.LinoIcons
+import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllNotesScreen(
     notes: List<NoteEntity>,
     books: List<BookEntity>,
-    translations: List<TranslationEntity>,
+    viewModel: BibleViewModel,
     onNoteClick: (NoteEntity) -> Unit,
     onOpenDrawer: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var query by remember { mutableStateOf("") }
-    var selectedTranslations by remember { mutableStateOf(setOf<String>()) }
 
-    val filtered = remember(notes, query, selectedTranslations) {
+    // --- Tooltip Contextual ---
+    val tooltipSeen by viewModel.tooltipNotesSearch.collectAsState()
+    var searchBarCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    val tooltipText = "Usa el buscador para filtrar tus notas por cualquier palabra o frase que hayas escrito."
+
+    LaunchedEffect(tooltipSeen, searchBarCoordinates) {
+        if (!tooltipSeen && (searchBarCoordinates != null)) {
+            kotlinx.coroutines.delay(1000.milliseconds)
+            viewModel.speakTooltip(tooltipText)
+        }
+    }
+
+    val filtered = remember(notes, query) {
         notes.filter { note ->
-            val matchesQuery = if (query.isBlank()) true else note.text.contains(query, ignoreCase = true)
-            val translationId = note.verseKey.split("_").firstOrNull() ?: ""
-            val matchesTranslation = if (selectedTranslations.isEmpty()) true else selectedTranslations.contains(translationId)
-            matchesQuery && matchesTranslation
+            if (query.isBlank()) true else note.text.contains(query, ignoreCase = true)
         }
     }
 
@@ -70,7 +77,7 @@ fun AllNotesScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 ),
                 windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
@@ -90,7 +97,8 @@ fun AllNotesScreen(
                 onValueChange = { query = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
+                    .onGloballyPositioned { searchBarCoordinates = it },
                 placeholder = { Text("Buscar en mis notas...", fontSize = 14.sp) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(20.dp)) },
                 singleLine = true,
@@ -104,30 +112,6 @@ fun AllNotesScreen(
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                 )
             )
-
-            // Version Filters
-            if (translations.isNotEmpty()) {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    items(translations) { translation ->
-                        val isSelected = selectedTranslations.contains(translation.id)
-                        TranslationFilterChip(
-                            translation = translation,
-                            isSelected = isSelected,
-                            onClick = {
-                                selectedTranslations = if (isSelected) {
-                                    selectedTranslations - translation.id
-                                } else {
-                                    selectedTranslations + translation.id
-                                }
-                            }
-                        )
-                    }
-                }
-            }
 
             if (filtered.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -144,25 +128,28 @@ fun AllNotesScreen(
                 ) {
                     items(filtered, key = { it.id }) { note ->
                         val bookName = books.find { it.id == note.bookId }?.name ?: "Libro ${note.bookId}"
-                        val translationId = note.verseKey.split("_").firstOrNull()
-                        val translation = translations.find { it.id == translationId }
-                        val translationName = translation?.abbreviation ?: translation?.name
 
                         NoteListItem(
                             note = note, 
-                            bookName = bookName,
-                            translationName = translationName,
-                            onClick = { onNoteClick(note) }
-                        )
+                            bookName = bookName
+                        ) { onNoteClick(note) }
                     }
                 }
             }
         }
     }
+
+    if (!tooltipSeen && (searchBarCoordinates != null)) {
+        ContextualTooltip(
+            targetCoordinates = searchBarCoordinates,
+            text = tooltipText,
+            onDismiss = { viewModel.dismissNotesSearchTooltip() }
+        )
+    }
 }
 
 @Composable
-private fun NoteListItem(note: NoteEntity, bookName: String, translationName: String?, onClick: () -> Unit) {
+private fun NoteListItem(note: NoteEntity, bookName: String, onClick: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("d MMM", Locale("es", "ES")) }
 
     Surface(
@@ -178,31 +165,14 @@ private fun NoteListItem(note: NoteEntity, bookName: String, translationName: St
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "$bookName ${note.chapter}:${note.verseNumber}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    if (translationName != null) {
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Surface(
-                            color = MaterialTheme.colorScheme.secondary,
-                            shape = RoundedCornerShape(4.dp)
-                        ) {
-                            Text(
-                                text = translationName,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondary
-                            )
-                        }
-                    }
-                }
+                Text(
+                    text = "$bookName ${note.chapter}:${note.verseNumber}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Text(
                     text = dateFormat.format(Date(note.updatedAt)).lowercase(),
                     fontSize = 12.sp,
@@ -221,47 +191,6 @@ private fun NoteListItem(note: NoteEntity, bookName: String, translationName: St
     }
 }
 
-@Composable
-private fun TranslationFilterChip(
-    translation: TranslationEntity,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val colorAccent = MaterialTheme.colorScheme.primary
-    
-    val backgroundColor = if (isSelected) colorAccent.copy(alpha = 0.15f) else Color.Transparent
-    val borderColor = if (isSelected) colorAccent else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
-    val textColor = if (isSelected) colorAccent else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-
-    Surface(
-        onClick = onClick,
-        shape = RoundedCornerShape(20.dp),
-        color = backgroundColor,
-        border = androidx.compose.foundation.BorderStroke(1.dp, borderColor),
-        modifier = Modifier.padding(vertical = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (isSelected) {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(colorAccent, CircleShape)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-            }
-            Text(
-                text = translation.abbreviation,
-                fontSize = 12.sp,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                color = textColor
-            )
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun NoteListItemPreview() {
@@ -269,7 +198,7 @@ fun NoteListItemPreview() {
         NoteListItem(
             note = NoteEntity(
                 id = 1,
-                verseKey = "rv1960_1_1_1",
+                verseKey = "1_1_1",
                 bookId = 1,
                 chapter = 1,
                 verseNumber = 1,
@@ -278,7 +207,6 @@ fun NoteListItemPreview() {
                 updatedAt = System.currentTimeMillis()
             ),
             bookName = "Génesis",
-            translationName = "RV1960",
             onClick = {}
         )
     }

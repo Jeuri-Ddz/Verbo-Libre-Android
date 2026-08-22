@@ -4,10 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -34,6 +32,7 @@ import com.mi.bibliarv1960.ui.components.DevotionalCard
 import com.mi.bibliarv1960.ui.components.LinoButton
 import com.mi.bibliarv1960.ui.components.LinoButtonVariant
 import com.mi.bibliarv1960.ui.components.ShareableVerseCard
+import com.mi.bibliarv1960.ui.navigation.Screen
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import com.mi.bibliarv1960.utils.ShareUtils
 import kotlinx.coroutines.launch
@@ -53,13 +52,14 @@ fun DevotionalScreen(
     val coroutineScope = rememberCoroutineScope()
     val graphicsLayer = rememberGraphicsLayer()
 
-    val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    val todayStr = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
     val isReadToday = lastReadDate == todayStr
 
     @Suppress("DiscouragedApi")
-    val bgResName = "devotional_bg_$dailyBgIndex"
-    @Suppress("DiscouragedApi")
-    val bgResourceId = context.resources.getIdentifier(bgResName, "drawable", context.packageName)
+    val bgResourceId = remember(dailyBgIndex) {
+        val bgResName = "devotional_bg_$dailyBgIndex"
+        context.resources.getIdentifier(bgResName, "drawable", context.packageName)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // --- 1. CAPA INVISIBLE PARA CAPTURA (OFF-SCREEN) ---
@@ -193,14 +193,14 @@ fun DevotionalScreen(
                     )
                     LinoButton(
                         text = "↗ Compartir",
-                        variant = LinoButtonVariant.GHOST,
                         onClick = {
                             coroutineScope.launch {
                                 val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
                                 val shareText = "*${dev.topic}*\n\"${dev.verseText}\"\n— ${dev.reference}\n\n${dev.reflection}\n\nCompartido desde Verbo Libre"
                                 ShareUtils.shareBitmap(context, bitmap, shareText)
                             }
-                        }
+                        },
+                        variant = LinoButtonVariant.GHOST
                     )
                 }
 

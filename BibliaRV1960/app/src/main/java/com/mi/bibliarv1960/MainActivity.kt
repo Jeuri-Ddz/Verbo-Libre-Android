@@ -36,6 +36,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.mi.bibliarv1960.ui.notes.AllNotesScreen
 import com.mi.bibliarv1960.ui.notes.NotesViewModel
@@ -47,26 +48,15 @@ import com.mi.bibliarv1960.ui.screens.*
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
 import com.mi.bibliarv1960.ui.theme.BibliaRV1960Theme
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
-import com.mi.bibliarv1960.ui.viewmodel.BibleViewModelFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
 
+@dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: BibleViewModel by viewModels {
-        val app = application as BibleApplication
-        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
-    }
-
-    private val notesViewModel: NotesViewModel by viewModels {
-        val app = application as BibleApplication
-        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
-    }
-
-    private val challengeViewModel: ChallengeViewModel by viewModels {
-        val app = application as BibleApplication
-        BibleViewModelFactory(app.repository, app.noteRepository, app.dataStoreManager)
-    }
+    private val viewModel: BibleViewModel by viewModels()
+    private val notesViewModel: NotesViewModel by viewModels()
+    private val challengeViewModel: ChallengeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,13 +93,16 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                // --- Auto-start Reto del Día ---
+                // --- Onboarding & Challenge Logic ---
                 LaunchedEffect(Unit) {
-                    val todayDate = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
-                    // Usamos un pequeño delay para asegurar que el NavHost esté listo
-                    kotlinx.coroutines.delay(100)
-                    val status = challengeViewModel.challengeStatus.first()
-                    if (status == null || status.date != todayDate) {
+                    challengeViewModel.isStatusLoaded.first { it }
+                    kotlinx.coroutines.delay(150)
+                    
+                    val todayDate = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    val status = challengeViewModel.challengeStatus.value
+                    val currentDestination = navController.currentBackStackEntry?.destination?.route
+                    
+                    if (currentDestination == Screen.Home.route && (status == null || status.date != todayDate)) {
                         navController.navigate(Screen.Challenge.route)
                     }
                 }
@@ -197,7 +190,8 @@ class MainActivity : ComponentActivity() {
                                     scope.launch { drawerState.close() }
                                     safeNavigate("bookmarks")
                                 },
-                                modifier = Modifier.padding(horizontal = 12.dp)
+                                modifier = Modifier
+                                    .padding(horizontal = 12.dp)
                             )
 
                             NavigationDrawerItem(
@@ -389,7 +383,6 @@ class MainActivity : ComponentActivity() {
                                 viewModel = viewModel,
                                 notesViewModel = notesViewModel,
                                 targetVerse = if (verse != -1) verse else null,
-                                onBack = { safePopBack() },
                                 onOpenDrawer = {
                                     scope.launch { drawerState.open() }
                                 }
@@ -407,11 +400,10 @@ class MainActivity : ComponentActivity() {
                         composable("all_notes") {
                             val notes by notesViewModel.allNotes.collectAsState()
                             val allBooks by viewModel.allBooks.collectAsState()
-                            val allTranslations by viewModel.allTranslations.collectAsState()
                             AllNotesScreen(
                                 notes = notes,
                                 books = allBooks,
-                                translations = allTranslations,
+                                viewModel = viewModel,
                                 onNoteClick = { note ->
                                     safeNavigate(Screen.Reader.createRoute(note.bookId, note.chapter, note.verseNumber))
                                 },

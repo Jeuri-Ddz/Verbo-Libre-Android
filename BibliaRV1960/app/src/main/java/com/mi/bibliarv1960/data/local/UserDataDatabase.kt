@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
         NoteEntity::class,
         ReadingProgressEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class UserDataDatabase : RoomDatabase() {
@@ -43,6 +43,45 @@ abstract class UserDataDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Para limpiar el prefijo de traducción (ej: "rv1960_1_1_1" -> "1_1_1")
+                // y manejar posibles duplicados de forma destructiva simple (quedarse con la última nota editada)
+                
+                // 1. Crear tabla temporal con el nuevo esquema conceptual
+                db.execSQL("""
+                    CREATE TABLE notes_new (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        verseKey TEXT NOT NULL,
+                        bookId INTEGER NOT NULL,
+                        chapter INTEGER NOT NULL,
+                        verseNumber INTEGER NOT NULL,
+                        text TEXT NOT NULL,
+                        createdAt INTEGER NOT NULL,
+                        updatedAt INTEGER NOT NULL
+                    )
+                """.trimIndent())
+                
+                // 2. Insertar datos quitando el prefijo. Si hay colisión de verseKey, 
+                // INSERT OR REPLACE se queda con la más reciente si ordenamos por updatedAt.
+                // Pero como es un INSERT masivo, mejor un paso previo para elegir.
+                db.execSQL("""
+                    INSERT INTO notes_new (verseKey, bookId, chapter, verseNumber, text, createdAt, updatedAt)
+                    SELECT substr(verseKey, instr(verseKey, '_') + 1), bookId, chapter, verseNumber, text, createdAt, updatedAt
+                    FROM notes
+                    GROUP BY substr(verseKey, instr(verseKey, '_') + 1)
+                    HAVING updatedAt = MAX(updatedAt)
+                """.trimIndent())
+
+                // 3. Reemplazar tabla vieja
+                db.execSQL("DROP TABLE notes")
+                db.execSQL("ALTER TABLE notes_new RENAME TO notes")
+                
+                // 4. Recrear el índice único
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_notes_verseKey` ON `notes` (`verseKey`)")
+            }
+        }
+
         fun getDatabase(context: Context): UserDataDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -50,7 +89,7 @@ abstract class UserDataDatabase : RoomDatabase() {
                     UserDataDatabase::class.java,
                     "user_data_v2.db",
                 )
-                    .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
                     .fallbackToDestructiveMigration()
                     // No createFromAsset here as it's user-generated
                     .addCallback(object : Callback() {

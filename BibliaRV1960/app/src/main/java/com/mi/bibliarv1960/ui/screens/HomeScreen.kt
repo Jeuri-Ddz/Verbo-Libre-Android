@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,11 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.BookEntity
 import com.mi.bibliarv1960.ui.components.ChapterSelectionDialog
+import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import java.text.Normalizer
 import java.util.regex.Pattern
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.navigation.Screen
+
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,12 +52,26 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     var searchError by remember { mutableStateOf<String?>(null) }
 
-    val filteredBooks = allBooks.filter { book ->
+    // --- Tooltip Contextual ---
+    val tooltipSeen by viewModel.tooltipHomeSearch.collectAsState()
+    var searchBarCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    val tooltipText = "Escribe un libro y capítulo aquí (ej. 'Juan 3') para saltar directamente al lector sin navegar por la lista."
+
+    LaunchedEffect(tooltipSeen, searchBarCoordinates) {
+        if (!tooltipSeen && (searchBarCoordinates != null)) {
+            kotlinx.coroutines.delay(1200.milliseconds)
+            viewModel.speakTooltip(tooltipText)
+        }
+    }
+
+    val filteredBooks = remember(allBooks, searchQuery, selectedTab) {
         val normalizedSearch = searchQuery.normalize()
-        val normalizedBookName = book.name.normalize()
-        val testamentFilter = if (selectedTab == 0) book.testament == 0 else book.testament == 1
-        val searchFilter = normalizedBookName.contains(normalizedSearch, ignoreCase = true)
-        if (searchQuery.isEmpty()) testamentFilter else searchFilter
+        allBooks.filter { book ->
+            val normalizedBookName = book.name.normalize()
+            val testamentFilter = if (selectedTab == 0) book.testament == 0 else book.testament == 1
+            val searchFilter = normalizedBookName.contains(normalizedSearch, ignoreCase = true)
+            if (searchQuery.isEmpty()) testamentFilter else searchFilter
+        }
     }
 
     fun performSearch() {
@@ -105,11 +124,11 @@ fun HomeScreen(
                             imageVector = LinoIcons.MenuAsymmetric,
                             contentDescription = "Menú",
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
                 ),
                 windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
@@ -133,7 +152,9 @@ fun HomeScreen(
                     searchError = null 
                 },
                 onSearchAction = { performSearch() },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .onGloballyPositioned { searchBarCoordinates = it }
             )
 
             if (searchError != null) {
@@ -214,15 +235,13 @@ fun HomeScreen(
                     SegmentedTab(
                         text = "Antiguo Testamento",
                         isSelected = selectedTab == 0,
-                        modifier = Modifier.weight(1f),
-                        onClick = { selectedTab = 0 }
-                    )
+                        modifier = Modifier.weight(1f)
+                    ) { selectedTab = 0 }
                     SegmentedTab(
                         text = "Nuevo Testamento",
                         isSelected = selectedTab == 1,
-                        modifier = Modifier.weight(1f),
-                        onClick = { selectedTab = 1 }
-                    )
+                        modifier = Modifier.weight(1f)
+                    ) { selectedTab = 1 }
                 }
             }
 
@@ -232,12 +251,15 @@ fun HomeScreen(
             ) {
                 items(filteredBooks, key = { it.id }) { book ->
                     val progress = bookProgress[book.id] ?: Pair(0, book.chaptersCount)
+                    val onClick = remember(book.id, book) { { selectedBook = book } }
+                    
                     BookRow(
                         book = book,
                         readChapters = progress.first,
                         totalChapters = progress.second,
-                        onClick = { selectedBook = book }
+                        onClick = onClick
                     )
+
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 22.dp),
                         thickness = 0.5.dp,
@@ -258,7 +280,7 @@ fun HomeScreen(
         
         val lastReadInBook = remember(book.id, allProgress) {
             allProgress
-                .filter { it.bookId == book.id && it.isRead }
+                .filter { (it.bookId == book.id) && it.isRead }
                 .maxByOrNull { it.readAt ?: 0L }
                 ?.chapter
         }
@@ -283,6 +305,14 @@ fun HomeScreen(
                 onChapterSelected(book.id, nextChapter, null)
             }
         ) { selectedBook = null }
+    }
+
+    if (!tooltipSeen && (searchBarCoordinates != null)) {
+        ContextualTooltip(
+            targetCoordinates = searchBarCoordinates,
+            text = tooltipText,
+            onDismiss = { viewModel.dismissHomeSearchTooltip() }
+        )
     }
 }
 
@@ -345,9 +375,17 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearchAction: ()
 
 @Composable
 fun BookRow(book: BookEntity, readChapters: Int, totalChapters: Int, onClick: () -> Unit) {
-    val progress = if (totalChapters > 0) readChapters.toFloat() / totalChapters.toFloat() else 0f
-    val isComplete = readChapters == totalChapters && totalChapters > 0
-    val percentage = (progress * 100).toInt()
+    val progress = remember(readChapters, totalChapters) {
+        if (totalChapters > 0) readChapters.toFloat() / totalChapters.toFloat() else 0f
+    }
+    val isComplete = remember(readChapters, totalChapters) {
+        readChapters == totalChapters && totalChapters > 0
+    }
+    val percentage = remember(progress) {
+        (progress * 100).toInt()
+    }
+    val successColor = Color(0xFF3C9D6B)
+    val navyColor = Color(0xFF33506E)
 
     Row(
         modifier = Modifier
@@ -371,7 +409,7 @@ fun BookRow(book: BookEntity, readChapters: Int, totalChapters: Int, onClick: ()
                     text = "$percentage%",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (isComplete) Color(0xFF3C9D6B) else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (isComplete) successColor else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Text(
@@ -393,7 +431,7 @@ fun BookRow(book: BookEntity, readChapters: Int, totalChapters: Int, onClick: ()
                     modifier = Modifier
                         .fillMaxWidth(progress)
                         .fillMaxHeight()
-                        .background(if (isComplete) Color(0xFF3C9D6B) else Color(0xFF33506E))
+                        .background(if (isComplete) successColor else navyColor)
                 )
             }
         }
@@ -402,8 +440,9 @@ fun BookRow(book: BookEntity, readChapters: Int, totalChapters: Int, onClick: ()
     }
 }
 
+private val DIACRITICS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+
 private fun String.normalize(): String {
     val normalized = Normalizer.normalize(this, Normalizer.Form.NFD)
-    val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
-    return pattern.matcher(normalized).replaceAll("")
+    return DIACRITICS_PATTERN.matcher(normalized).replaceAll("")
 }

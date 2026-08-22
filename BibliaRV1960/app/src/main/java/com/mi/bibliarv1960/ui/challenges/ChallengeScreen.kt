@@ -30,14 +30,14 @@ import com.mi.bibliarv1960.ui.theme.BibliaRV1960Theme
 @Composable
 fun ChallengeScreen(
     viewModel: ChallengeViewModel,
-    onClose: () -> Unit
+    onClose: () -> Unit,
 ) {
     val challenge by viewModel.currentChallenge.collectAsState()
     val status by viewModel.challengeStatus.collectAsState()
     val completedCount by viewModel.completedCount.collectAsState()
     val isStatusLoaded by viewModel.isStatusLoaded.collectAsState()
 
-    if (!isStatusLoaded || challenge == null) {
+    if (!isStatusLoaded || (challenge == null)) {
         // Loading state (Solo cabecera mínima o Box vacío para evitar parpadeo)
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -53,9 +53,8 @@ fun ChallengeScreen(
             onCheckTrivia = { index -> 
                 val correct = index == challenge?.correctIndex
                 viewModel.submitResult(ChallengeResult.Trivia(index), correct)
-            },
-            onNextChallengePreview = { viewModel.nextChallengePreview() }
-        )
+            }
+        ) { viewModel.nextChallengePreview() }
     }
 }
 
@@ -68,11 +67,8 @@ private fun ChallengeScreenContent(
     onCheckTrivia: (Int) -> Unit,
     onNextChallengePreview: () -> Unit
 ) {
-    var selectedTriviaIndex by remember(challenge) {
-        val result = status?.result
-        val initial = if (result is ChallengeResult.Trivia) result.selectedIndex else -1
-        mutableStateOf(initial)
-    }
+    val initial = (status?.result as? ChallengeResult.Trivia)?.selectedIndex ?: -1
+    var selectedTriviaIndex by remember(challenge) { mutableIntStateOf(initial) }
 
     val isLocked = status?.isCompleted == true
 
@@ -105,10 +101,9 @@ private fun ChallengeScreenContent(
                         challenge = ch,
                         status = status,
                         selectedIndex = selectedTriviaIndex,
-                        onSelect = { index ->
-                            if (!isLocked) selectedTriviaIndex = index
-                        }
-                    )
+                    ) { index ->
+                        if (!isLocked) selectedTriviaIndex = index
+                    }
                 }
             }
 
@@ -119,14 +114,15 @@ private fun ChallengeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (!isLocked && challenge != null) {
+                if (!isLocked && (challenge != null)) {
                     LinoButton(
                         text = "Comprobar respuesta",
                         onClick = { onCheckTrivia(selectedTriviaIndex) },
                         variant = LinoButtonVariant.ACCENT,
                         enabled = selectedTriviaIndex != -1,
                         fixedHeight = 44.dp,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                 }
@@ -141,7 +137,7 @@ private fun ChallengeScreenContent(
 private fun ChallengeHeader(
     challenge: ChallengeEntity?,
     completedCount: Int,
-    onClose: () -> Unit
+    onClose: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(

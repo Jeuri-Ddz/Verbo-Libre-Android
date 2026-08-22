@@ -7,11 +7,9 @@ import androidx.room.Index
 /**
  * Nota personal ligada a un versículo específico.
  *
- * verseKey sigue la misma convención usada en el resto del proyecto:
- * "translationId_verseId" (ej: "1_1" para el versículo 1 en la traducción 1).
- * Esto permite que el mismo versículo en RV1960 y VBL tengan notas 
- * independientes si el usuario quiere, ya que translationId forma parte 
- * de la clave.
+ * verseKey sigue la convención: "bookId_chapter_verseNumber" (ej: "1_1_1").
+ * Se eliminó el translationId de la clave para que la nota sea universal
+ * al versículo, independientemente de la traducción que se esté leyendo.
  */
 @Entity(
     tableName = "notes",
@@ -20,7 +18,7 @@ import androidx.room.Index
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val verseKey: String,       // ej: "1_1"
+    val verseKey: String,       // ej: "1_1_1"
     val bookId: Int,            // para poder listar/filtrar notas por libro sin parsear verseKey
     val chapter: Int,
     val verseNumber: Int,

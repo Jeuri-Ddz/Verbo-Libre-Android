@@ -11,11 +11,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-/**
- * IA: reemplaza NoteRepository por como se inyecte en el resto del proyecto
- * (Hilt, constructor manual, ServiceLocator, lo que ya estén usando).
- */
-class NotesViewModel(
+@dagger.hilt.android.lifecycle.HiltViewModel
+class NotesViewModel @javax.inject.Inject constructor(
     private val repository: NoteRepository
 ) : ViewModel() {
 

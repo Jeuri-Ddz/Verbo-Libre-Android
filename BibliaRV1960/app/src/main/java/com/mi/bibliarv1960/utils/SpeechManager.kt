@@ -4,12 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SpeechManager(private val context: Context, private val onVerseComplete: (Int) -> Unit) {
+@Singleton
+class SpeechManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
     private var tts: TextToSpeech? = null
     private var isInitialized = false
     private var currentSpeed = 1.0f
+    private var onVerseCompleteListener: ((Int) -> Unit)? = null
 
     init {
         tts = TextToSpeech(context) { status ->
@@ -25,11 +32,15 @@ class SpeechManager(private val context: Context, private val onVerseComplete: (
             override fun onStart(utteranceId: String?) {}
             override fun onDone(utteranceId: String?) {
                 val verseNum = utteranceId?.toIntOrNull() ?: -1
-                onVerseComplete(verseNum)
+                onVerseCompleteListener?.invoke(verseNum)
             }
             @Deprecated("Deprecated in Java")
             override fun onError(utteranceId: String?) {}
         })
+    }
+
+    fun setOnVerseCompleteListener(listener: (Int) -> Unit) {
+        onVerseCompleteListener = listener
     }
 
     fun setSpeed(speed: Float) {

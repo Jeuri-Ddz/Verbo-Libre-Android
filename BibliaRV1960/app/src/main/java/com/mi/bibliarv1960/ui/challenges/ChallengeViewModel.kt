@@ -10,9 +10,10 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.abs
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @Serializable
 sealed class ChallengeResult {
@@ -28,10 +29,13 @@ data class DailyChallengeStatus(
     val result: ChallengeResult? = null
 )
 
-class ChallengeViewModel(
+@HiltViewModel
+class ChallengeViewModel @Inject constructor(
     private val repository: BibleRepository,
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     private val _currentChallenge = MutableStateFlow<ChallengeEntity?>(null)
     val currentChallenge: StateFlow<ChallengeEntity?> = _currentChallenge.asStateFlow()
@@ -78,7 +82,7 @@ class ChallengeViewModel(
     private fun loadChallengeStatus() {
         viewModelScope.launch {
             try {
-                val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                val todayDate = LocalDate.now().format(dateFormatter)
                 val lastDate = dataStoreManager.lastChallengeDate.firstOrNull()
                 
                 if (lastDate == todayDate) {
@@ -104,8 +108,7 @@ class ChallengeViewModel(
     }
 
     private fun selectDailyChallenge(challenges: List<ChallengeEntity>) {
-        // Capturar fecha UNA SOLA VEZ al inicio
-        val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val todayDate = LocalDate.now().format(dateFormatter)
         
         // Verificar si ya tenemos un reto para hoy
         val savedDate = _challengeStatus.value?.date
@@ -118,14 +121,14 @@ class ChallengeViewModel(
         
         if (pool.isNotEmpty()) {
             val combinedSeed = "global_challenge_$todayDate"
-            val index = abs(combinedSeed.hashCode()) % pool.size
+            val index = kotlin.math.abs(combinedSeed.hashCode()) % pool.size
             _currentChallenge.value = pool[index]
         }
     }
 
     fun submitResult(result: ChallengeResult, isCorrect: Boolean) {
         viewModelScope.launch {
-            val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val todayDate = LocalDate.now().format(dateFormatter)
             val status = DailyChallengeStatus(
                 date = todayDate,
                 isCompleted = true,

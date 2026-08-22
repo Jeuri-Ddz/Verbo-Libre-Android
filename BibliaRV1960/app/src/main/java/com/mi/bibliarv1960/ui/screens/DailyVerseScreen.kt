@@ -184,7 +184,7 @@ fun DailyVerseScreen(
                                     val shareText = "\"${dv.verseText}\"\n— ${dv.reference}\n\nCompartido desde Verbo Libre"
                                     ShareUtils.shareBitmap(context, bitmap, shareText)
                                 }
-                            }
+                            },
                         )
                     }
                 }

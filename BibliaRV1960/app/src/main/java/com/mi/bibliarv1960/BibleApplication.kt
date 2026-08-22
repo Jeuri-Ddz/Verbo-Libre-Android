@@ -1,22 +1,7 @@
 package com.mi.bibliarv1960
 
 import android.app.Application
-import com.mi.bibliarv1960.data.local.BibleContentDatabase
-import com.mi.bibliarv1960.data.local.UserDataDatabase
-import com.mi.bibliarv1960.data.repository.BibleRepository
-import com.mi.bibliarv1960.data.repository.NoteRepository
-import com.mi.bibliarv1960.data.preferences.DataStoreManager
+import dagger.hilt.android.HiltAndroidApp
 
-class BibleApplication : Application() {
-    val contentDatabase by lazy { BibleContentDatabase.getDatabase(this) }
-    val userDataDatabase by lazy { UserDataDatabase.getDatabase(this) }
-    val repository by lazy { 
-        BibleRepository(
-            contentDatabase.bibleContentDao(),
-            userDataDatabase.userDataDao(),
-            userDataDatabase.readingProgressDao()
-        ) 
-    }
-    val noteRepository by lazy { NoteRepository(userDataDatabase.noteDao()) }
-    val dataStoreManager by lazy { DataStoreManager(this) }
-}
+@HiltAndroidApp
+class BibleApplication : Application()

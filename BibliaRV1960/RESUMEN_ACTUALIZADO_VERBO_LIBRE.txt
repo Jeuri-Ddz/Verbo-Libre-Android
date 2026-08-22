@@ -1,0 +1,54 @@
+RESUMEN ACTUALIZADO DEL PROYECTO: VERBO LIBRE (Android)
+Fecha: 2026-08-21
+----------------------------------------------------------------------
+
+1. HISTORIAL DE LECTURA (FEATURE RECIÉN IMPLEMENTADA)
+----------------------------------------------------
+- IMPLEMENTACIÓN 'lastReadChapter':
+  * Se implementó exitosamente. El botón "Continuar lectura" quedó ubicado como botón principal (confirmButton) en el 'ChapterSelectionDialog' (el diálogo que aparece al pulsar sobre un libro en el inicio).
+  * Lógica: Si el usuario ya leyó capítulos en ese libro, el botón le lleva automáticamente al siguiente capítulo pendiente. Si terminó el libro, le lleva al último.
+- COLORES DE PROGRESO (0%, Parcial, 100%):
+  * 0% / Parcial: Se utiliza 'Color(0xFF33506E)' (Navy Accent) para la barra de progreso.
+  * 100% (Completado): Se utiliza 'Color(0xFF3C9D6B)' (Verde Éxito) tanto para la barra como para el texto del porcentaje.
+  * Verificado en Modo Claro y Oscuro: En modo oscuro, las barras parciales usan una variante más suave para mantener el contraste, y los cuadros del selector de capítulos usan transparencias controladas para evitar el lag de renderizado.
+- MIGRACIÓN DE BASE DE DATOS (MIGRATION_2_3):
+  * Se implementó 'MIGRATION_2_3' en 'UserDataDatabase.kt' para añadir la tabla 'reading_progress' sin borrar los datos existentes.
+  * Resultado: Las notas ('notes') y marcadores ('bookmarks') previos quedaron intactos tras la actualización, ya que la migración es aditiva y no destructiva (siempre que se use el número de versión correcto).
+- ACTUALIZACIÓN EN TIEMPO REAL:
+  * El porcentaje de lectura (del libro y global en el Drawer) se actualiza instantáneamente sin recargar la pantalla gracias al uso de 'StateFlow' y la recolección de estados en los ViewModels. Al desmarcar un capítulo desde el lector, el cambio se refleja de inmediato en el Inicio.
+
+2. CUALQUIER OTRO CAMBIO NO SOLICITADO EXPLÍCITAMENTE
+------------------------------------------------------
+- MIGRACIÓN INTEGRAL A HILT:
+  * Se migró toda la Inyección de Dependencias a Dagger Hilt (v2.60.1).
+  * Motivo: Eliminar el código repetitivo de factorías manuales y centralizar la gestión de bases de datos y repositorios.
+- ACTUALIZACIÓN DE JAVA Y SDK:
+  * El proyecto se subió a Java 17 y compileSdk 37. Se habilitó 'coreLibraryDesugaring' para soportar APIs modernas de fecha en dispositivos antiguos.
+- REFACTORIZACIÓN DE AUDIO (TTS):
+  * 'SpeechManager' ahora es un Singleton inyectado por Hilt. Se eliminó el paso del contexto de la actividad al ViewModel para prevenir fugas de memoria (Memory Leaks).
+- OPTIMIZACIÓN DE RENDIMIENTO EN READER SCREEN:
+  * Se implementó un sistema de "Geometría Pre-calculada" para los marcadores y notas en el 'Canvas'. Esto eliminó el lag de scroll que ocurría al tener muchos versículos marcados.
+- REDISEÑO DE TOPAPPBAR (READER):
+  * Se eliminó el botón de "Back" (flecha derecha) para ganar espacio.
+  * Se centró el título (Libro + Cap) y se ancló el selector de versión (RVA/VBL) justo al lado del nombre del libro.
+  * Se corrigió el posicionamiento del popup de traducción para que aparezca centrado sobre su botón.
+
+3. ESTADO GENERAL DEL PROYECTO
+------------------------------
+- ERRORES/WARNINGS:
+  * No hay errores de compilación ('Build successful').
+  * Existe un warning menor en 'ReaderScreen' sobre el parámetro 'onBack' que ya no se usa (por la eliminación del botón), pendiente de limpieza final.
+- DEPENDENCIAS NUEVAS:
+  * 'com.google.dagger:hilt-android'
+  * 'com.android.tools:desugar_jdk_libs' (para APIs de fecha).
+- ESTRUCTURA DE CARPETAS:
+  * Se añadió el paquete 'com.mi.bibliarv1960.di' para los módulos de Hilt.
+  * Se eliminó 'ic_launcher-playstore.png' y 'assets/data/gpt.json' (archivos pesados/vacíos) para optimizar el APK.
+
+4. BASE DE DATOS
+----------------
+- TABLA 'reading_progress' [NUEVA]:
+  * id (PK), bookId, chapter, isRead (Int/Bool), readAt (Long).
+  * Posee un índice único por (bookId, chapter) para evitar duplicados.
+- TABLAS 'notes', 'bookmarks', 'verses':
+  * NO han sufrido cambios en su esquema. Sus datos son compatibles con las versiones anteriores.

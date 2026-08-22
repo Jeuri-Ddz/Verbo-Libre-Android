@@ -16,10 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
@@ -72,10 +70,10 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.style.TextDecoration
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.VerseEntity
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
+import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import com.mi.bibliarv1960.ui.notes.NotesViewModel
@@ -90,7 +88,6 @@ fun ReaderScreen(
     viewModel: BibleViewModel,
     notesViewModel: NotesViewModel,
     targetVerse: Int? = null,
-    onBack: () -> Unit,
     onOpenDrawer: () -> Unit,
 ) {
     val currentBook by viewModel.currentBook.collectAsState()
@@ -107,7 +104,18 @@ fun ReaderScreen(
     val currentSpeakingVerse by viewModel.currentSpeakingVerse.collectAsState()
     val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
 
-    val GoldColor = Color(0xFFB9915A)
+    // --- Tooltip Contextual ---
+    val tooltipSeen by viewModel.tooltipReaderRead.collectAsState()
+    var checkButtonCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    val tooltipText = "Usa el botón ✓ para marcar un capítulo como leído solo cuando lo hayas terminado completo. Si te quedas a la mitad, guarda un marcador en el último versículo que leíste."
+
+    LaunchedEffect(tooltipSeen, checkButtonCoordinates) {
+        if (!tooltipSeen && (checkButtonCoordinates != null)) {
+            delay(800.milliseconds)
+            viewModel.speakTooltip(tooltipText)
+        }
+    }
+
     val noteIndicatorColor = MaterialTheme.colorScheme.primary
 
     val context = LocalContext.current
@@ -123,7 +131,7 @@ fun ReaderScreen(
     var lastChapterSeen by remember { mutableStateOf<Int?>(null) }
     var lastScrolledVerse by remember { mutableStateOf<Int?>(null) }
     var flashingVerse by remember { mutableStateOf<Int?>(null) }
-    var isManualChapterChange by remember { mutableStateOf(false) }
+    var isManualChapterChange by remember { mutableStateOf(value = false) }
 
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val pulseAlpha by infiniteTransition.animateFloat(
@@ -137,10 +145,6 @@ fun ReaderScreen(
     )
 
     val bookName = currentBook?.name ?: ""
-
-    LaunchedEffect(Unit) {
-        viewModel.initSpeechManager(context)
-    }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -164,7 +168,7 @@ fun ReaderScreen(
                 flashingVerse = null
                 lastChapterSeen = currentChapter
                 isManualChapterChange = false
-            } else if (targetVerse != null && (targetVerse != lastScrolledVerse || currentChapter != lastChapterSeen)) {
+            } else if ((targetVerse != null) && ((targetVerse != lastScrolledVerse) || (currentChapter != lastChapterSeen))) {
                 val annotations = textLayoutResult!!.layoutInput.text.getStringAnnotations("VERSE", 0, textLayoutResult!!.layoutInput.text.length)
                 val targetAnnotation = annotations.find { it.item == targetVerse.toString() }
                 if (targetAnnotation != null) {
@@ -186,124 +190,133 @@ fun ReaderScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
                         Text(
                             text = "$bookName ${verses.firstOrNull()?.chapter ?: ""}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false),
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
                         
-                        Surface(
-                            onClick = { showTranslationSelector = true },
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = CircleShape,
-                            modifier = Modifier.height(24.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(horizontal = 9.dp)
-                            ) {
-                                val currentAbbr = translations.find { it.id == selectedTranslationId }?.abbreviation ?: "..."
-                                Text(
-                                    text = currentAbbr,
-                                    fontSize = 10.5.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowDown,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(9.dp),
-                                    tint = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
-                            }
-                        }
+                        Spacer(modifier = Modifier.width(6.dp))
 
-                        if (showTranslationSelector) {
-                            Popup(
-                                alignment = Alignment.TopCenter,
-                                onDismissRequest = { showTranslationSelector = false },
-                                properties = PopupProperties(focusable = true)
+                        Box {
+                            Surface(
+                                onClick = { showTranslationSelector = true },
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = CircleShape,
+                                modifier = Modifier.height(24.dp),
                             ) {
-                                Surface(
-                                    modifier = Modifier
-                                        .padding(top = 52.dp)
-                                        .width(280.dp),
-                                    shape = RoundedCornerShape(16.dp),
-                                    color = MaterialTheme.colorScheme.surface,
-                                    tonalElevation = 8.dp,
-                                    shadowElevation = 8.dp,
-                                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(horizontal = 9.dp)
                                 ) {
-                                    Column(modifier = Modifier.padding(8.dp)) {
-                                        Text(
-                                            text = "ELEGIR TRADUCCIÓN",
-                                            fontSize = 10.5.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            letterSpacing = 1.sp,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.padding(10.dp)
-                                        )
-                                        
-                                        translations.forEach { translation ->
-                                            val isSelected = translation.id == selectedTranslationId
-                                            val desc = when(translation.id) {
-                                                "rv1909" -> "Revisión clásica"
-                                                "vbl" -> "Lenguaje moderno"
-                                                else -> "Traducción bíblica"
-                                            }
-                                            
-                                            Row(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .background(
-                                                        if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
-                                                        RoundedCornerShape(10.dp)
-                                                    )
-                                                    .clickable { 
-                                                        viewModel.selectTranslation(translation.id)
-                                                        showTranslationSelector = false
-                                                    }
-                                                    .padding(10.dp),
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Column(modifier = Modifier.weight(1f)) {
-                                                    Text(
-                                                        text = translation.name,
-                                                        fontSize = 14.sp,
-                                                        fontWeight = FontWeight.SemiBold,
-                                                        color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurface
-                                                    )
-                                                    Text(
-                                                        text = "${translation.abbreviation} · $desc",
-                                                        fontSize = 11.sp,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                    )
+                                    val currentAbbr = translations.find { it.id == selectedTranslationId }?.abbreviation ?: "..."
+                                    Text(
+                                        text = currentAbbr,
+                                        fontSize = 10.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowDown,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(9.dp),
+                                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                }
+                            }
+
+                            if (showTranslationSelector) {
+                                Popup(
+                                    alignment = Alignment.TopCenter,
+                                    onDismissRequest = { showTranslationSelector = false },
+                                    properties = PopupProperties(focusable = true)
+                                ) {
+                                    Surface(
+                                        modifier = Modifier
+                                            .padding(top = 32.dp)
+                                            .width(280.dp),
+                                        shape = RoundedCornerShape(16.dp),
+                                        color = MaterialTheme.colorScheme.surface,
+                                        tonalElevation = 8.dp,
+                                        shadowElevation = 8.dp,
+                                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                                    ) {
+                                        Column(modifier = Modifier.padding(8.dp)) {
+                                            Text(
+                                                text = "ELEGIR TRADUCCIÓN",
+                                                fontSize = 10.5.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = 1.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.padding(10.dp)
+                                            )
+
+                                            translations.forEach { translation ->
+                                                val isSelected = translation.id == selectedTranslationId
+                                                val desc = when(translation.id) {
+                                                    "rv1909" -> "Revisión clásica"
+                                                    "vbl" -> "Lenguaje moderno"
+                                                    else -> "Traducción bíblica"
                                                 }
-                                                
-                                                Box(
+
+                                                Row(
                                                     modifier = Modifier
-                                                        .size(18.dp)
-                                                        .border(
-                                                            1.5.dp, 
-                                                            if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant, 
-                                                            CircleShape
-                                                        )
+                                                        .fillMaxWidth()
                                                         .background(
-                                                            if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                            CircleShape
-                                                        ),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    if (isSelected) {
-                                                        Icon(
-                                                            imageVector = Icons.Default.Check,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(12.dp),
-                                                            tint = MaterialTheme.colorScheme.onPrimary
+                                                            if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+                                                            RoundedCornerShape(10.dp)
                                                         )
+                                                        .clickable {
+                                                            viewModel.selectTranslation(translation.id)
+                                                            showTranslationSelector = false
+                                                        }
+                                                        .padding(10.dp),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Column(modifier = Modifier.weight(1f)) {
+                                                        Text(
+                                                            text = translation.name,
+                                                            fontSize = 14.sp,
+                                                            fontWeight = FontWeight.SemiBold,
+                                                            color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurface
+                                                        )
+                                                        Text(
+                                                            text = "${translation.abbreviation} · $desc",
+                                                            fontSize = 11.sp,
+                                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                        )
+                                                    }
+
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .size(18.dp)
+                                                            .border(
+                                                                1.5.dp,
+                                                                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                                                                CircleShape
+                                                            )
+                                                            .background(
+                                                                if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                                                CircleShape
+                                                            ),
+                                                        contentAlignment = Alignment.Center
+                                                    ) {
+                                                        if (isSelected) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.Check,
+                                                                contentDescription = null,
+                                                                modifier = Modifier.size(12.dp),
+                                                                tint = MaterialTheme.colorScheme.onPrimary
+                                                            )
+                                                        }
                                                     }
                                                 }
                                             }
@@ -326,34 +339,44 @@ fun ReaderScreen(
                 },
                 actions = {
                     val isRead by viewModel.currentChapterIsRead.collectAsState()
-                    IconButton(onClick = { viewModel.toggleCurrentChapterRead() }) {
-                        Icon(
-                            imageVector = if (isRead) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
-                            contentDescription = if (isRead) "Marcar como no leído" else "Marcar como leído",
-                            tint = if (isRead) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    IconButton(onClick = { viewModel.toggleSpeaking(verses) }) {
-                        Icon(
-                            imageVector = if (isSpeaking) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
-                            contentDescription = "Escuchar",
-                            tint = if (isSpeaking) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    ThemeToggleButton(
-                        isDark = isDarkMode,
-                        onClick = { viewModel.toggleDarkMode() },
-                        size = 32.dp
-                    )
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack, 
-                            contentDescription = "Volver",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
+                    
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(0.dp)
+                    ) {
+                        IconButton(
+                            onClick = { viewModel.toggleCurrentChapterRead() },
+                            modifier = Modifier.onGloballyPositioned { checkButtonCoordinates = it }
+                        ) {
+                            Icon(
+                                imageVector = if (isRead) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
+                                contentDescription = if (isRead) "Marcar como no leído" else "Marcar como leído",
+                                tint = if (isRead) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        
+                        IconButton(onClick = { viewModel.toggleSpeaking(verses) }) {
+                            Icon(
+                                imageVector = if (isSpeaking) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
+                                contentDescription = "Escuchar",
+                                tint = if (isSpeaking) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        // Envolver el botón de tema para que tenga el mismo "footprint" (48dp) que un IconButton
+                        Box(
+                            modifier = Modifier.size(48.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            ThemeToggleButton(
+                                isDark = isDarkMode,
+                                onClick = { viewModel.toggleDarkMode() },
+                                size = 30.dp
+                            )
+                        }
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 ),
                 windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
@@ -504,62 +527,93 @@ fun ReaderScreen(
                 textAlign = TextAlign.Center
             )
 
-            fun buildVerseKey(translationId: String, bookId: Int, chapter: Int, verseNumber: Int): String =
-                "${translationId}_${bookId}_${chapter}_${verseNumber}"
+            fun buildVerseKey(bookId: Int, chapter: Int, verseNumber: Int): String =
+                "${bookId}_${chapter}_$verseNumber"
 
-            val annotatedString = buildAnnotatedString {
-                verses.forEach { verse ->
-                    pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
-                    
-                    val verseKey = buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
-                    val hasNote = notedVerseKeys.contains(verseKey)
+            val primaryColor = MaterialTheme.colorScheme.primary
+            val onBackgroundColor = MaterialTheme.colorScheme.onBackground
 
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = (fontSize * 0.7f).sp,
-                            baselineShift = BaselineShift.Superscript
-                        )
-                    ) {
-                        append("${verse.verse} ")
-                    }
-                    val isDisputed = verse.text.contains("[No incluido en los manuscritos más antiguos]")
-                    withStyle(
-                        style = SpanStyle(
-                            fontSize = fontSize.sp,
-                            color = if (isDisputed) Color.Gray else MaterialTheme.colorScheme.onBackground,
-                            fontStyle = if (isDisputed) FontStyle.Italic else null,
-                            textDecoration = null
-                        )
-                    ) {
-                        append("${verse.text} ")
-                    }
-                    if (hasNote) {
-                        pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
-                        appendInlineContent("note_icon", "[nota]")
+            val annotatedString = remember(verses, fontSize, notedVerseKeys, selectedTranslationId, primaryColor, onBackgroundColor) {
+                buildAnnotatedString {
+                    verses.forEach { verse ->
+                        pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
+                        
+                        val verseKey = buildVerseKey(verse.book_id, verse.chapter, verse.verse)
+                        val hasNote = notedVerseKeys.contains(verseKey)
+
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                color = primaryColor,
+                                fontSize = (fontSize * 0.7f).sp,
+                                baselineShift = BaselineShift.Superscript
+                            )
+                        ) {
+                            append("${verse.verse} ")
+                        }
+                        val isDisputed = verse.text.contains("[No incluido en los manuscritos más antiguos]")
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = fontSize.sp,
+                                color = if (isDisputed) Color.Gray else onBackgroundColor,
+                                fontStyle = if (isDisputed) FontStyle.Italic else null,
+                                textDecoration = null
+                            )
+                        ) {
+                            append("${verse.text} ")
+                        }
+                        if (hasNote) {
+                            pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
+                            appendInlineContent("note_icon", "[nota]")
+                            pop()
+                        }
                         pop()
                     }
-                    pop()
                 }
             }
 
-            val inlineContent = mapOf(
-                "note_icon" to InlineTextContent(
-                    Placeholder(
-                        width = (fontSize * 1.6f).sp,
-                        height = (fontSize * 1.6f).sp,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.EditNote,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.fillMaxSize()
-                    )
+            // --- OPTIMIZACIÓN: Pre-cálculo de Geometría ---
+            val verseGeometries = remember(annotatedString, textLayoutResult) {
+                val layout = textLayoutResult ?: return@remember emptyMap<Int, List<Rect>>()
+                val map = mutableMapOf<Int, List<Rect>>()
+                
+                val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
+                annotations.forEach { annotation ->
+                    val verseNum = annotation.item.toIntOrNull() ?: return@forEach
+                    val rects = mutableListOf<Rect>()
+                    val firstLine = layout.getLineForOffset(annotation.start)
+                    val lastLine = layout.getLineForOffset(annotation.end)
+                    
+                    for (lineIndex in firstLine..lastLine) {
+                        val left = if (lineIndex == firstLine) layout.getHorizontalPosition(annotation.start, true) else layout.getLineLeft(lineIndex)
+                        val right = if (lineIndex == lastLine) layout.getHorizontalPosition(annotation.end, true) else layout.getLineRight(lineIndex)
+                        val top = layout.getLineTop(lineIndex)
+                        val bottom = layout.getLineBottom(lineIndex)
+                        rects.add(Rect(left, top, right, bottom))
+                    }
+                    map[verseNum] = rects
                 }
-            )
+                map
+            }
+
+            val inlineContent = remember(fontSize) {
+                mapOf(
+                    "note_icon" to InlineTextContent(
+                        Placeholder(
+                            width = (fontSize * 1.6f).sp,
+                            height = (fontSize * 1.6f).sp,
+                            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.EditNote,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                )
+            }
 
             Box(
                 modifier = Modifier
@@ -569,116 +623,74 @@ fun ReaderScreen(
                 val speakingHighlightColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                 
                 Canvas(modifier = Modifier.matchParentSize()) {
-                    val layout = textLayoutResult ?: return@Canvas
+                    if (verseGeometries.isEmpty()) return@Canvas
+                    
                     val currentChapter = verses.firstOrNull()?.chapter ?: -1
                     val currentBookId = currentBook?.id ?: -1
                     
-                    bookmarks.asSequence()
-                        .filter { it.bookId == currentBookId && it.chapter == currentChapter }
-                        .distinctBy { it.verse }
-                        .forEach { bookmark ->
+                    // 1. Dibujar Marcadores
+                    bookmarks.forEach { bookmark ->
+                        if (bookmark.bookId == currentBookId && bookmark.chapter == currentChapter) {
                             val category = categories.find { it.id == bookmark.categoryId }
-                            if (category != null) {
+                            val rects = verseGeometries[bookmark.verse]
+                            if (category != null && rects != null) {
                                 val color = parseColor(category.colorHex).copy(alpha = 0.32f)
-                                val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
-                                val range = annotations.find { it.item == bookmark.verse.toString() }
-                                
-                                if (range != null) {
-                                    val firstLine = layout.getLineForOffset(range.start)
-                                    val lastLine = layout.getLineForOffset(range.end)
-                                    
-                                    for (lineIndex in firstLine..lastLine) {
-                                        val left = if (lineIndex == firstLine) layout.getHorizontalPosition(range.start, true) else layout.getLineLeft(lineIndex)
-                                        val right = if (lineIndex == lastLine) layout.getHorizontalPosition(range.end, true) else layout.getLineRight(lineIndex)
-                                        val top = layout.getLineTop(lineIndex)
-                                        val bottom = layout.getLineBottom(lineIndex)
-                                        val height = bottom - top
-                                        drawRoundRect(
-                                            color = color,
-                                            topLeft = Offset(left, top + height * 0.15f),
-                                            size = Size(right - left, height * 0.7f),
-                                            cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-                    // --- SUBRAYADO DE NOTAS (Doble línea Navy/Primary) ---
-                    verses.forEach { verse ->
-                        val vKey = buildVerseKey(selectedTranslationId, verse.book_id, verse.chapter, verse.verse)
-                        if (notedVerseKeys.contains(vKey)) {
-                            val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
-                            val range = annotations.find { it.item == verse.verse.toString() }
-                            
-                            if (range != null) {
-                                val firstLine = layout.getLineForOffset(range.start)
-                                val lastLine = layout.getLineForOffset(range.end)
-                                val lineThickness = 1.dp.toPx()
-                                val spacing = 1.dp.toPx()
-                                
-                                for (lineIndex in firstLine..lastLine) {
-                                    val left = if (lineIndex == firstLine) layout.getHorizontalPosition(range.start, true) else layout.getLineLeft(lineIndex)
-                                    val right = if (lineIndex == lastLine) layout.getHorizontalPosition(range.end, true) else layout.getLineRight(lineIndex)
-                                    val bottom = layout.getLineBottom(lineIndex) - 2.dp.toPx() // Ajuste para no chocar con la siguiente línea
-                                    
-                                    // Línea superior del doble subrayado
-                                    drawRect(
-                                        color = noteIndicatorColor,
-                                        topLeft = Offset(left, bottom - lineThickness * 2 - spacing),
-                                        size = Size(right - left, lineThickness)
-                                    )
-                                    // Línea inferior del doble subrayado
-                                    drawRect(
-                                        color = noteIndicatorColor,
-                                        topLeft = Offset(left, bottom - lineThickness),
-                                        size = Size(right - left, lineThickness)
+                                rects.forEach { rect ->
+                                    val height = rect.height
+                                    drawRoundRect(
+                                        color = color,
+                                        topLeft = Offset(rect.left, rect.top + height * 0.15f),
+                                        size = Size(rect.width, height * 0.7f),
+                                        cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
                                     )
                                 }
                             }
                         }
                     }
 
-                    currentSpeakingVerse?.let { sVerse ->
-                        val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
-                        val range = annotations.find { it.item == sVerse.toString() }
-                        if (range != null) {
-                            val firstLine = layout.getLineForOffset(range.start)
-                            val lastLine = layout.getLineForOffset(range.end)
-                            for (lineIndex in firstLine..lastLine) {
-                                val left = if (lineIndex == firstLine) layout.getHorizontalPosition(range.start, true) else layout.getLineLeft(lineIndex)
-                                val right = if (lineIndex == lastLine) layout.getHorizontalPosition(range.end, true) else layout.getLineRight(lineIndex)
-                                val top = layout.getLineTop(lineIndex)
-                                val bottom = layout.getLineBottom(lineIndex)
+                    // 2. Dibujar Subrayado de Notas
+                    verseGeometries.forEach { (verseNum, rects) ->
+                        val vKey = buildVerseKey(currentBookId, currentChapter, verseNum)
+                        if (vKey in notedVerseKeys) {
+                            val lineThickness = 1.dp.toPx()
+                            val spacing = 1.dp.toPx()
+                            rects.forEach { rect ->
+                                val bottom = rect.bottom - 2.dp.toPx()
                                 drawRect(
-                                    color = speakingHighlightColor,
-                                    topLeft = Offset(left - 4.dp.toPx(), top),
-                                    size = Size(right - left + 8.dp.toPx(), bottom - top)
+                                    color = noteIndicatorColor,
+                                    topLeft = Offset(rect.left, bottom - lineThickness * 2 - spacing),
+                                    size = Size(rect.width, lineThickness)
+                                )
+                                drawRect(
+                                    color = noteIndicatorColor,
+                                    topLeft = Offset(rect.left, bottom - lineThickness),
+                                    size = Size(rect.width, lineThickness)
                                 )
                             }
                         }
                     }
 
+                    // 3. Dibujar Versículo en Reproducción
+                    currentSpeakingVerse?.let { sVerse ->
+                        verseGeometries[sVerse]?.forEach { rect ->
+                            drawRect(
+                                color = speakingHighlightColor,
+                                topLeft = Offset(rect.left - 4.dp.toPx(), rect.top),
+                                size = Size(rect.width + 8.dp.toPx(), rect.height)
+                            )
+                        }
+                    }
+
+                    // 4. Dibujar Versículo Parpadeante (Búsqueda)
                     flashingVerse?.let { fVerse ->
-                        val annotations = layout.layoutInput.text.getStringAnnotations("VERSE", 0, layout.layoutInput.text.length)
-                        val range = annotations.find { it.item == fVerse.toString() }
-                        if (range != null) {
-                            val flashColor = Color(0xFFFFE047).copy(alpha = pulseAlpha)
-                            val firstLine = layout.getLineForOffset(range.start)
-                            val lastLine = layout.getLineForOffset(range.end)
-                            for (lineIndex in firstLine..lastLine) {
-                                val left = if (lineIndex == firstLine) layout.getHorizontalPosition(range.start, true) else layout.getLineLeft(lineIndex)
-                                val right = if (lineIndex == lastLine) layout.getHorizontalPosition(range.end, true) else layout.getLineRight(lineIndex)
-                                val top = layout.getLineTop(lineIndex)
-                                val bottom = layout.getLineBottom(lineIndex)
-                                val height = bottom - top
-                                drawRoundRect(
-                                    color = flashColor,
-                                    topLeft = Offset(left, top + height * 0.1f),
-                                    size = Size(right - left, height * 0.8f),
-                                    cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
-                                )
-                            }
+                        verseGeometries[fVerse]?.forEach { rect ->
+                            val height = rect.height
+                            drawRoundRect(
+                                color = Color(0xFFFFE047).copy(alpha = pulseAlpha),
+                                topLeft = Offset(rect.left, rect.top + height * 0.1f),
+                                size = Size(rect.width, height * 0.8f),
+                                cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx())
+                            )
                         }
                     }
                 }
@@ -719,14 +731,14 @@ fun ReaderScreen(
                                         }
 
                                         // 2. Si hay una nota cerca (Hit Slop), siempre tiene prioridad
-                                        if (closestNote != null) {
-                                            val noteParts = closestNote!!.split("_")
-                                            if (noteParts.size == 4) {
+                                        closestNote?.let { noteKey ->
+                                            val noteParts = noteKey.split("_")
+                                            if (noteParts.size == 3) {
                                                 notesViewModel.openEditor(
-                                                    verseKey = closestNote!!,
-                                                    bookId = noteParts[1].toInt(),
-                                                    chapter = noteParts[2].toInt(),
-                                                    verseNumber = noteParts[3].toInt()
+                                                    verseKey = noteKey,
+                                                    bookId = noteParts[0].toInt(),
+                                                    chapter = noteParts[1].toInt(),
+                                                    verseNumber = noteParts[2].toInt()
                                                 )
                                                 return@detectTapGestures
                                             }
@@ -759,7 +771,7 @@ fun ReaderScreen(
                     }
                     
                     val verseKey = remember(verse) {
-                        "${selectedTranslationId}_${verse.book_id}_${verse.chapter}_${verse.verse}"
+                        "${verse.book_id}_${verse.chapter}_${verse.verse}"
                     }
                     val hasNote = verseKey in notedVerseKeys
 
@@ -887,16 +899,45 @@ fun ReaderScreen(
                 val editorState by notesViewModel.editorState.collectAsState()
                 editorState?.let { state ->
                     val verse = verses.find { it.verse == state.verseNumber }
-                    val translation = translations.find { it.id == selectedTranslationId }
+                    val translation = remember(translations, selectedTranslationId) {
+                        translations.find { it.id == selectedTranslationId }
+                    }
                     NoteEditorSheet(
                         state = state,
                         verseText = verse?.text.orEmpty(),
                         reference = "$bookName ${state.chapter}:${state.verseNumber}",
-                        translationName = translation?.abbreviation ?: translation?.name,
+                        translationName = translation?.abbreviation ?: (translation?.name ?: ""),
                         onTextChange = notesViewModel::updateDraftText,
                         onSave = notesViewModel::saveCurrentNote,
                         onDelete = notesViewModel::deleteCurrentNote,
                         onDismiss = notesViewModel::closeEditor
+                    )
+                }
+
+                if (!tooltipSeen && checkButtonCoordinates != null) {
+                    ContextualTooltip(
+                        targetCoordinates = checkButtonCoordinates,
+                        text = tooltipText,
+                        onDismiss = { viewModel.dismissReaderTooltip() }
+                    )
+                }
+
+                // --- Tooltip Versículo (Tocar Texto) ---
+                val tooltipVerseSeen by viewModel.tooltipReaderVerse.collectAsState()
+                val tooltipVerseText = "Toca cualquier versículo para añadir una nota, un marcador de color o compartirlo con alguien."
+
+                LaunchedEffect(tooltipVerseSeen, textBlockCoordinates) {
+                    if (!tooltipVerseSeen && (textBlockCoordinates != null)) {
+                        delay(2000.milliseconds) 
+                        viewModel.speakTooltip(tooltipVerseText)
+                    }
+                }
+
+                if (tooltipSeen && !tooltipVerseSeen && (textBlockCoordinates != null)) {
+                    ContextualTooltip(
+                        targetCoordinates = textBlockCoordinates,
+                        text = tooltipVerseText,
+                        onDismiss = { viewModel.dismissReaderVerseTooltip() }
                     )
                 }
             }

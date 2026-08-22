@@ -1,5 +1,7 @@
 package com.mi.bibliarv1960.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +49,20 @@ fun ChapterSelectionDialog(
     onContinueReading: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    // OPTIMIZACIÓN: Detectar modo y preparar colores UNA SOLA VEZ para todo el diálogo
+    val isLight = MaterialTheme.colorScheme.background == Color(0xFFFAFAF7)
+    val themeColors = remember(isLight) {
+        ChapterThemeColors(
+            isLight = isLight,
+            primary = if (isLight) Color(0xFF33506E) else Color(0xFF6E93B8), // LinoAccent vs DarkAccent
+            onPrimary = if (isLight) Color.White else Color(0xFF1A1B1D),
+            secondaryContainer = if (isLight) Color(0xFFD8E1E8) else Color(0xFF2A3B52),
+            onSecondaryContainer = if (isLight) Color(0xFF33506E) else Color(0xFF6E93B8),
+            success = Color(0xFF3C9D6B),
+            lastReadBorder = Color(0xFFB9915A)
+        )
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -66,7 +83,7 @@ fun ChapterSelectionDialog(
                         .fillMaxWidth()
                         .heightIn(max = 400.dp)
                 ) {
-                    items(book.chaptersCount) { index ->
+                    items(book.chaptersCount, key = { it }) { index ->
                         val chapter = index + 1
                         val isRead = readChapters.contains(chapter)
                         val isLastRead = chapter == lastReadChapter
@@ -74,7 +91,8 @@ fun ChapterSelectionDialog(
                         ChapterItem(
                             chapter = chapter,
                             isRead = isRead,
-                            isLastRead = isLastRead
+                            isLastRead = isLastRead,
+                            theme = themeColors
                         ) { onChapterSelected(chapter) }
                     }
                 }
@@ -89,7 +107,7 @@ fun ChapterSelectionDialog(
             Button(
                 onClick = onContinueReading,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF33506E)
+                    containerColor = themeColors.primary
                 ),
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp)
@@ -100,65 +118,70 @@ fun ChapterSelectionDialog(
     )
 }
 
+data class ChapterThemeColors(
+    val isLight: Boolean,
+    val primary: Color,
+    val onPrimary: Color,
+    val secondaryContainer: Color,
+    val onSecondaryContainer: Color,
+    val success: Color,
+    val lastReadBorder: Color
+)
+
 @Composable
 fun ChapterItem(
     chapter: Int,
     isRead: Boolean,
     isLastRead: Boolean,
+    theme: ChapterThemeColors,
     onClick: () -> Unit
 ) {
-    val successColor = Color(0xFF3C9D6B) 
-    val lastReadBorderColor = Color(0xFFB9915A)
-    
-    // Detectamos modo claro/oscuro de forma robusta
-    val isLight = MaterialTheme.colorScheme.background == Color(0xFFFAFAF7)
-
-    val backgroundColor = when {
-        isRead -> {
-            if (isLight) MaterialTheme.colorScheme.primary // Azul Oscuro Navy
-            else successColor.copy(alpha = 0.15f) // Verde en modo oscuro
-        }
-        else -> {
-            if (isLight) MaterialTheme.colorScheme.secondaryContainer // El azul clarito base
-            else MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f) // Base oscura
+    // OPTIMIZACIÓN: Cálculos de color simplificados y jerarquía de UI plana
+    val backgroundColor = remember(isRead, theme) {
+        if (isRead) {
+            if (theme.isLight) theme.primary
+            else theme.success.copy(alpha = 0.15f)
+        } else {
+            if (theme.isLight) theme.secondaryContainer
+            else theme.secondaryContainer.copy(alpha = 0.5f)
         }
     }
     
-    val contentColor = when {
-        isRead -> {
-            if (isLight) MaterialTheme.colorScheme.onPrimary // Blanco sobre Navy
-            else successColor // Verde sobre oscuro
-        }
-        else -> {
-            MaterialTheme.colorScheme.onSecondaryContainer
+    val contentColor = remember(isRead, theme) {
+        if (isRead) {
+            if (theme.isLight) theme.onPrimary
+            else theme.success
+        } else {
+            theme.onSecondaryContainer
         }
     }
 
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = backgroundColor,
-        border = if (isLastRead) androidx.compose.foundation.BorderStroke(2.dp, lastReadBorderColor) else null,
+    Box(
         modifier = Modifier
             .aspectRatio(1f)
             .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
+            .background(backgroundColor)
+            .then(
+                if (isLastRead) Modifier.border(2.dp, theme.lastReadBorder, RoundedCornerShape(12.dp))
+                else Modifier
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = chapter.toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = if (isRead || isLastRead) FontWeight.ExtraBold else FontWeight.Bold,
-                    color = contentColor
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = chapter.toString(),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = if (isRead || isLastRead) FontWeight.ExtraBold else FontWeight.Bold,
+                color = contentColor
+            )
+            if (isRead) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(12.dp),
+                    tint = if (theme.isLight) Color.White else theme.success
                 )
-                if (isRead) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(12.dp),
-                        tint = if (isLight) Color.White else successColor
-                    )
-                }
             }
         }
     }
