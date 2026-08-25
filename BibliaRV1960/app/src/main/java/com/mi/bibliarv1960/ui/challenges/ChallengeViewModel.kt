@@ -46,6 +46,9 @@ class ChallengeViewModel @Inject constructor(
     private val _isStatusLoaded = MutableStateFlow(false)
     val isStatusLoaded: StateFlow<Boolean> = _isStatusLoaded.asStateFlow()
 
+    private val _triviaStepCompleted = MutableStateFlow(false)
+    val triviaStepCompleted: StateFlow<Boolean> = _triviaStepCompleted.asStateFlow()
+
     private var allChallengesList: List<ChallengeEntity> = emptyList()
     private var isInitialized = false
 
@@ -100,6 +103,10 @@ class ChallengeViewModel @Inject constructor(
                     _challengeStatus.value = null  // Nuevo día, limpiar estado
                 }
                 _isStatusLoaded.value = true
+                // Si la trivia ya está hecha, marcamos el paso como completado
+                if (lastDate == todayDate) {
+                    _triviaStepCompleted.value = true
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _isStatusLoaded.value = true
@@ -138,7 +145,12 @@ class ChallengeViewModel @Inject constructor(
             val resultJson = Json.encodeToString(status)
             dataStoreManager.saveChallengeResult(todayDate, resultJson, isCorrect)
             _challengeStatus.value = status
+            _triviaStepCompleted.value = true
         }
+    }
+
+    fun dismissTriviaStep() {
+        _triviaStepCompleted.value = true
     }
 
     private var previewIndex = -1

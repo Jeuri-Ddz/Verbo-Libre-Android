@@ -11,22 +11,39 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.platform.LocalContext
+import android.view.View
+import android.app.Activity
+import com.mi.bibliarv1960.R
 import com.mi.bibliarv1960.data.local.entities.BookEntity
 import com.mi.bibliarv1960.data.local.entities.NoteEntity
-import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.theme.LinoIcons
+import com.mi.bibliarv1960.utils.findActivity
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
+import android.content.Context
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.clickable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,17 +57,14 @@ fun AllNotesScreen(
 ) {
     var query by remember { mutableStateOf("") }
 
-    // --- Tooltip Contextual ---
-    val tooltipSeen by viewModel.tooltipNotesSearch.collectAsState()
-    var searchBarCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-    val tooltipText = "Usa el buscador para filtrar tus notas por cualquier palabra o frase que hayas escrito."
-
-    LaunchedEffect(tooltipSeen, searchBarCoordinates) {
-        if (!tooltipSeen && (searchBarCoordinates != null)) {
-            kotlinx.coroutines.delay(1000.milliseconds)
-            viewModel.speakTooltip(tooltipText)
-        }
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val sharedPrefs = remember { context.getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE) }
+    var showNotesOnboarding by remember { 
+        mutableStateOf(!sharedPrefs.getBoolean("onboarding_notes_shown", false)) 
     }
+    
+    var searchBarRect by remember { mutableStateOf(Rect.Zero) }
 
     val filtered = remember(notes, query) {
         notes.filter { note ->
@@ -58,93 +72,160 @@ fun AllNotesScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { 
-                    Text(
-                        "Mis notas", 
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground
-                    ) 
-                },
-                navigationIcon = {
-                    IconButton(onClick = onOpenDrawer) {
-                        Icon(
-                            imageVector = LinoIcons.MenuAsymmetric, 
-                            contentDescription = "Menú", 
-                            tint = MaterialTheme.colorScheme.onBackground
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { 
+                        Text(
+                            "Mis notas", 
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        ) 
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onOpenDrawer) {
+                            Icon(
+                                imageVector = LinoIcons.MenuAsymmetric, 
+                                contentDescription = "Menú", 
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    ),
+                    windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.background,
+            contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
+        ) { innerPadding ->
+            Column(
+                modifier = modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .onGloballyPositioned { coordinates ->
+                            searchBarRect = coordinates.boundsInWindow()
+                        },
+                    placeholder = { Text("Buscar en mis notas...", fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(20.dp)) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    )
+                )
+
+                if (filtered.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(
+                            text = if (query.isBlank()) "Aún no has escrito notas" else "Sin resultados",
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                            fontFamily = FontFamily.Serif
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
-    ) { innerPadding ->
-        Column(
-            modifier = modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 8.dp)
-                    .onGloballyPositioned { searchBarCoordinates = it },
-                placeholder = { Text("Buscar en mis notas...", fontSize = 14.sp) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(20.dp)) },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
-                    focusedContainerColor = MaterialTheme.colorScheme.surface,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                )
-            )
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(filtered, key = { it.id }) { note ->
+                            val bookName = books.find { it.id == note.bookId }?.name ?: "Libro ${note.bookId}"
 
-            if (filtered.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = if (query.isBlank()) "Aún no has escrito notas" else "Sin resultados",
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                        fontFamily = FontFamily.Serif
-                    )
-                }
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(filtered, key = { it.id }) { note ->
-                        val bookName = books.find { it.id == note.bookId }?.name ?: "Libro ${note.bookId}"
-
-                        NoteListItem(
-                            note = note, 
-                            bookName = bookName
-                        ) { onNoteClick(note) }
+                            NoteListItem(
+                                note = note, 
+                                bookName = bookName
+                            ) { onNoteClick(note) }
+                        }
                     }
                 }
             }
         }
-    }
 
-    if (!tooltipSeen && (searchBarCoordinates != null)) {
-        ContextualTooltip(
-            targetCoordinates = searchBarCoordinates,
-            text = tooltipText,
-            onDismiss = { viewModel.dismissNotesSearchTooltip() }
-        )
+        // Custom Rectangular Onboarding Overlay
+        if (showNotesOnboarding && searchBarRect != Rect.Zero) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                    .clickable(enabled = true, onClick = { /* Consumir clicks */ })
+            ) {
+                val tooltipBgColor = colorResource(id = R.color.tooltip_bg).copy(alpha = 0.90f)
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    drawRect(color = tooltipBgColor)
+                    
+                    drawRoundRect(
+                        color = Color.Transparent,
+                        topLeft = searchBarRect.topLeft.copy(
+                            x = searchBarRect.left - 4.dp.toPx(),
+                            y = searchBarRect.top - 4.dp.toPx()
+                        ),
+                        size = searchBarRect.size.copy(
+                            width = searchBarRect.width + 8.dp.toPx(),
+                            height = searchBarRect.height + 8.dp.toPx()
+                        ),
+                        cornerRadius = CornerRadius(16.dp.toPx()),
+                        blendMode = BlendMode.Clear
+                    )
+                }
+                
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 32.dp)
+                        .padding(top = with(density) { (searchBarRect.bottom + 32.dp.toPx()).toDp() })
+                        .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Buscador",
+                        color = Color.White,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Usa el buscador para filtrar tus notas por palabra clave.",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 22.sp
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Button(
+                        onClick = {
+                            sharedPrefs.edit().putBoolean("onboarding_notes_shown", true).apply()
+                            showNotesOnboarding = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White.copy(alpha = 0.2f),
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
+                        modifier = Modifier.height(40.dp)
+                    ) {
+                        Text("Entendido", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
     }
 }
 

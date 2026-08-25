@@ -25,9 +25,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
-import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.platform.LocalContext
+import android.view.View
+import android.app.Activity
+import com.mi.bibliarv1960.R
+import com.mi.bibliarv1960.ui.components.BookmarksOnboarding
+import com.mi.bibliarv1960.utils.findActivity
+import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,15 +48,20 @@ fun BookmarksScreen(
     val categories by viewModel.allCategories.collectAsState()
     val activeFilters by viewModel.activeCategoryFilters.collectAsState()
 
-    // --- Tooltip Contextual ---
-    val tooltipSeen by viewModel.tooltipBookmarksFilter.collectAsState()
-    var filterBarCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-    val tooltipText = "Toca las categorías para filtrar tus marcadores por color. Puedes seleccionar varias a la vez."
+    val context = LocalContext.current
+    val bookmarksOnboarding = remember { 
+        val activity = context.findActivity()
+        if (activity != null) BookmarksOnboarding(activity) else null
+    }
 
-    LaunchedEffect(tooltipSeen, filterBarCoordinates) {
-        if (!tooltipSeen && (filterBarCoordinates != null)) {
-            kotlinx.coroutines.delay(1000.milliseconds)
-            viewModel.speakTooltip(tooltipText)
+    var categoriesAnchor by remember { mutableStateOf<View?>(null) }
+    var editAnchor by remember { mutableStateOf<View?>(null) }
+    var fabAnchor by remember { mutableStateOf<View?>(null) }
+
+    LaunchedEffect(categoriesAnchor, editAnchor, fabAnchor) {
+        if (categoriesAnchor != null && editAnchor != null && fabAnchor != null && bookmarksOnboarding != null && !bookmarksOnboarding.isShown()) {
+            delay(600)
+            bookmarksOnboarding.start(categoriesAnchor!!, editAnchor!!, fabAnchor!!)
         }
     }
     
@@ -77,11 +89,22 @@ fun BookmarksScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { isEditMode = !isEditMode }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit, 
-                            contentDescription = "Editar categorías",
-                            tint = if (isEditMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                    Box(contentAlignment = Alignment.Center) {
+                        IconButton(onClick = { isEditMode = !isEditMode }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit, 
+                                contentDescription = "Editar categorías",
+                                tint = if (isEditMode) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        AndroidView(
+                            factory = { ctx ->
+                                View(ctx).apply {
+                                    visibility = View.INVISIBLE
+                                    editAnchor = this
+                                }
+                            },
+                            modifier = Modifier.size(1.dp)
                         )
                     }
                 },
@@ -92,36 +115,65 @@ fun BookmarksScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddCategory = true },
-                containerColor = Color(0xFF33506E),
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Nueva categoría")
+            Box(contentAlignment = Alignment.Center) {
+                FloatingActionButton(
+                    onClick = { showAddCategory = true },
+                    containerColor = Color(0xFF33506E),
+                    contentColor = Color.White,
+                    shape = CircleShape
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Nueva categoría")
+                }
+                AndroidView(
+                    factory = { ctx ->
+                        View(ctx).apply {
+                            visibility = View.INVISIBLE
+                            fabAnchor = this
+                        }
+                    },
+                    modifier = Modifier.size(1.dp)
+                )
             }
         },
         containerColor = MaterialTheme.colorScheme.background,
         contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(top = innerPadding.calculateTopPadding())) {
+        Column(
+            modifier = Modifier
+                .padding(top = innerPadding.calculateTopPadding())
+        ) {
             // Category Filters
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.onGloballyPositioned { filterBarCoordinates = it }
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 items(categories, key = { it.id }) { category ->
                     val currentFilters = activeFilters
                     val isActive = currentFilters == null || category.id in currentFilters
-                    CategoryChip(
-                        category = category,
-                        isActive = isActive,
-                        isEditMode = isEditMode,
-                        onClick = { viewModel.toggleCategoryFilter(category.id) },
-                        onEditClick = { categoryToEdit = category }
-                    )
+                    
+                    Box {
+                        CategoryChip(
+                            category = category,
+                            isActive = isActive,
+                            isEditMode = isEditMode,
+                            onClick = { viewModel.toggleCategoryFilter(category.id) },
+                            onEditClick = { categoryToEdit = category }
+                        )
+                        
+                        // Si es la primera categoría (generalmente Favoritos), ponemos el ancla
+                        if (categories.indexOf(category) == 0) {
+                            AndroidView(
+                                factory = { ctx ->
+                                    View(ctx).apply {
+                                        visibility = View.INVISIBLE
+                                        categoriesAnchor = this
+                                    }
+                                },
+                                modifier = Modifier.size(1.dp).align(Alignment.Center)
+                            )
+                        }
+                    }
                 }
             }
 
@@ -182,14 +234,6 @@ fun BookmarksScreen(
                 viewModel.addCategory(name, colorHex)
                 showAddCategory = false
             }
-        )
-    }
-
-    if (!tooltipSeen && (filterBarCoordinates != null)) {
-        ContextualTooltip(
-            targetCoordinates = filterBarCoordinates,
-            text = tooltipText,
-            onDismiss = { viewModel.dismissBookmarksFilterTooltip() }
         )
     }
 }
@@ -361,26 +405,4 @@ fun AddCategoryDialog(
             }
         }
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
-@Composable
-fun BookmarksScreenPreview() {
-    MaterialTheme {
-        Scaffold(
-            topBar = {
-                CenterAlignedTopAppBar(
-                    title = { 
-                        Text(
-                            "Marcadores", 
-                            style = MaterialTheme.typography.titleLarge
-                        ) 
-                    }
-                )
-            }
-        ) { padding ->
-            Box(Modifier.padding(padding))
-        }
-    }
 }

@@ -34,6 +34,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
@@ -58,6 +61,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.savedstate.ktx)
     
+    // TapTargetView for Onboarding
+    implementation("com.getkeepsafe.taptargetview:taptargetview:1.15.0")
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 

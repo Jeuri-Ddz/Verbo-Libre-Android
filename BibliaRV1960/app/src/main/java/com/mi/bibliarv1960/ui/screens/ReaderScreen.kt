@@ -72,9 +72,16 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
 import com.mi.bibliarv1960.data.local.entities.VerseEntity
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.app.Activity
+import androidx.compose.ui.viewinterop.AndroidView
+import com.mi.bibliarv1960.R
 import com.mi.bibliarv1960.ui.components.ThemeToggleButton
-import com.mi.bibliarv1960.ui.components.ContextualTooltip
+import com.mi.bibliarv1960.ui.components.ReaderOnboarding
 import com.mi.bibliarv1960.ui.theme.LinoIcons
+import com.mi.bibliarv1960.utils.findActivity
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import com.mi.bibliarv1960.ui.notes.NotesViewModel
 import com.mi.bibliarv1960.ui.notes.NoteEditorSheet
@@ -104,27 +111,41 @@ fun ReaderScreen(
     val currentSpeakingVerse by viewModel.currentSpeakingVerse.collectAsState()
     val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
 
-    // --- Tooltip Contextual ---
-    val tooltipSeen by viewModel.tooltipReaderRead.collectAsState()
-    var checkButtonCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-    val tooltipText = "Usa el botón ✓ para marcar un capítulo como leído solo cuando lo hayas terminado completo. Si te quedas a la mitad, guarda un marcador en el último versículo que leíste."
-
-    LaunchedEffect(tooltipSeen, checkButtonCoordinates) {
-        if (!tooltipSeen && (checkButtonCoordinates != null)) {
-            delay(800.milliseconds)
-            viewModel.speakTooltip(tooltipText)
-        }
-    }
-
     val noteIndicatorColor = MaterialTheme.colorScheme.primary
 
     val context = LocalContext.current
     val density = LocalDensity.current
+    
+    val readerOnboarding = remember { 
+        val activity = context.findActivity()
+        if (activity != null) ReaderOnboarding(activity) else null
+    }
+
+    var onboardingActive by remember { mutableStateOf(readerOnboarding != null && !readerOnboarding.isShown()) }
+
+    var menuAnchor by remember { mutableStateOf<View?>(null) }
+    var translationAnchor by remember { mutableStateOf<View?>(null) }
+    var progressAnchor by remember { mutableStateOf<View?>(null) }
+    var audioAnchor by remember { mutableStateOf<View?>(null) }
+    var themeAnchor by remember { mutableStateOf<View?>(null) }
+    var verseAnchor by remember { mutableStateOf<View?>(null) }
+
+    LaunchedEffect(menuAnchor, translationAnchor, progressAnchor, audioAnchor, themeAnchor, verseAnchor) {
+        if (onboardingActive && menuAnchor != null && translationAnchor != null && progressAnchor != null && 
+            audioAnchor != null && themeAnchor != null && verseAnchor != null && 
+            readerOnboarding != null) {
+            
+            delay(1000) 
+            readerOnboarding.start(menuAnchor!!, translationAnchor!!, progressAnchor!!, audioAnchor!!, themeAnchor!!, verseAnchor!!) {
+                onboardingActive = false
+            }
+        }
+    }
+
     var showTranslationSelector by remember { mutableStateOf(value = false) }
 
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
-    var textBlockCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
     var tappedVerseOffset by remember { mutableStateOf(Offset.Zero) }
     
     var showColorPickerByVerse by remember { mutableStateOf<VerseEntity?>(null) }
@@ -232,91 +253,102 @@ fun ReaderScreen(
                                     )
                                 }
                             }
+                            if (onboardingActive) {
+                                AndroidView(
+                                    factory = { ctx ->
+                                        View(ctx).apply {
+                                            visibility = View.INVISIBLE
+                                            translationAnchor = this
+                                        }
+                                    },
+                                    modifier = Modifier.size(1.dp).align(Alignment.Center)
+                                )
+                            }
+                        }
 
-                            if (showTranslationSelector) {
-                                Popup(
-                                    alignment = Alignment.TopCenter,
-                                    onDismissRequest = { showTranslationSelector = false },
-                                    properties = PopupProperties(focusable = true)
+                        if (showTranslationSelector) {
+                            Popup(
+                                alignment = Alignment.TopCenter,
+                                onDismissRequest = { showTranslationSelector = false },
+                                properties = PopupProperties(focusable = true)
+                            ) {
+                                Surface(
+                                    modifier = Modifier
+                                        .padding(top = 32.dp)
+                                        .width(280.dp),
+                                    shape = RoundedCornerShape(16.dp),
+                                    color = MaterialTheme.colorScheme.surface,
+                                    tonalElevation = 8.dp,
+                                    shadowElevation = 8.dp,
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                                 ) {
-                                    Surface(
-                                        modifier = Modifier
-                                            .padding(top = 32.dp)
-                                            .width(280.dp),
-                                        shape = RoundedCornerShape(16.dp),
-                                        color = MaterialTheme.colorScheme.surface,
-                                        tonalElevation = 8.dp,
-                                        shadowElevation = 8.dp,
-                                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-                                    ) {
-                                        Column(modifier = Modifier.padding(8.dp)) {
-                                            Text(
-                                                text = "ELEGIR TRADUCCIÓN",
-                                                fontSize = 10.5.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                letterSpacing = 1.sp,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                modifier = Modifier.padding(10.dp)
-                                            )
+                                    Column(modifier = Modifier.padding(8.dp)) {
+                                        Text(
+                                            text = "ELEGIR TRADUCCIÓN",
+                                            fontSize = 10.5.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            letterSpacing = 1.sp,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.padding(10.dp)
+                                        )
 
-                                            translations.forEach { translation ->
-                                                val isSelected = translation.id == selectedTranslationId
-                                                val desc = when(translation.id) {
-                                                    "rv1909" -> "Revisión clásica"
-                                                    "vbl" -> "Lenguaje moderno"
-                                                    else -> "Traducción bíblica"
+                                        translations.forEach { translation ->
+                                            val isSelected = translation.id == selectedTranslationId
+                                            val desc = when(translation.id) {
+                                                "rv1909" -> "Revisión clásica"
+                                                "vbl" -> "Lenguaje moderno"
+                                                else -> "Traducción bíblica"
+                                            }
+
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .background(
+                                                        if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+                                                        RoundedCornerShape(10.dp)
+                                                    )
+                                                    .clickable {
+                                                        viewModel.selectTranslation(translation.id)
+                                                        showTranslationSelector = false
+                                                    }
+                                                    .padding(10.dp),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Column(modifier = Modifier.weight(1f)) {
+                                                    Text(
+                                                        text = translation.name,
+                                                        fontSize = 14.sp,
+                                                        fontWeight = FontWeight.SemiBold,
+                                                        color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurface
+                                                    )
+                                                    Text(
+                                                        text = "${translation.abbreviation} · $desc",
+                                                        fontSize = 11.sp,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
                                                 }
 
-                                                Row(
+                                                Box(
                                                     modifier = Modifier
-                                                        .fillMaxWidth()
+                                                        .size(18.dp)
+                                                        .border(
+                                                            1.5.dp,
+                                                            if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                                                            CircleShape
+                                                        )
                                                         .background(
-                                                            if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
-                                                            RoundedCornerShape(10.dp)
-                                                        )
-                                                        .clickable {
-                                                            viewModel.selectTranslation(translation.id)
-                                                            showTranslationSelector = false
-                                                        }
-                                                        .padding(10.dp),
-                                                    verticalAlignment = Alignment.CenterVertically
+                                                            if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                                            CircleShape
+                                                        ),
+                                                    contentAlignment = Alignment.Center
                                                 ) {
-                                                    Column(modifier = Modifier.weight(1f)) {
-                                                        Text(
-                                                            text = translation.name,
-                                                            fontSize = 14.sp,
-                                                            fontWeight = FontWeight.SemiBold,
-                                                            color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurface
+                                                    if (isSelected) {
+                                                        Icon(
+                                                            imageVector = Icons.Default.Check,
+                                                            contentDescription = null,
+                                                            modifier = Modifier.size(12.dp),
+                                                            tint = MaterialTheme.colorScheme.onPrimary
                                                         )
-                                                        Text(
-                                                            text = "${translation.abbreviation} · $desc",
-                                                            fontSize = 11.sp,
-                                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                        )
-                                                    }
-
-                                                    Box(
-                                                        modifier = Modifier
-                                                            .size(18.dp)
-                                                            .border(
-                                                                1.5.dp,
-                                                                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                                                                CircleShape
-                                                            )
-                                                            .background(
-                                                                if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                                CircleShape
-                                                            ),
-                                                        contentAlignment = Alignment.Center
-                                                    ) {
-                                                        if (isSelected) {
-                                                            Icon(
-                                                                imageVector = Icons.Default.Check,
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(12.dp),
-                                                                tint = MaterialTheme.colorScheme.onPrimary
-                                                            )
-                                                        }
                                                     }
                                                 }
                                             }
@@ -328,13 +360,26 @@ fun ReaderScreen(
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onOpenDrawer) {
-                        Icon(
-                            imageVector = LinoIcons.MenuAsymmetric,
-                            contentDescription = "Menú",
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
+                    Box {
+                        IconButton(onClick = onOpenDrawer) {
+                            Icon(
+                                imageVector = LinoIcons.MenuAsymmetric,
+                                contentDescription = "Menú",
+                                modifier = Modifier.size(24.dp),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        if (onboardingActive) {
+                            AndroidView(
+                                factory = { ctx ->
+                                    View(ctx).apply {
+                                        visibility = View.INVISIBLE
+                                        menuAnchor = this
+                                    }
+                                },
+                                modifier = Modifier.size(1.dp).align(Alignment.Center)
+                            )
+                        }
                     }
                 },
                 actions = {
@@ -344,28 +389,56 @@ fun ReaderScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(0.dp)
                     ) {
-                        IconButton(
-                            onClick = { viewModel.toggleCurrentChapterRead() },
-                            modifier = Modifier.onGloballyPositioned { checkButtonCoordinates = it }
-                        ) {
-                            Icon(
-                                imageVector = if (isRead) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
-                                contentDescription = if (isRead) "Marcar como no leído" else "Marcar como leído",
-                                tint = if (isRead) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                            )
+                        Box(contentAlignment = Alignment.Center) {
+                            IconButton(
+                                onClick = { viewModel.toggleCurrentChapterRead() }
+                            ) {
+                                Icon(
+                                    imageVector = if (isRead) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
+                                    contentDescription = if (isRead) "Marcar como no leído" else "Marcar como leído",
+                                    tint = if (isRead) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            if (onboardingActive) {
+                                AndroidView(
+                                    factory = { ctx ->
+                                        View(ctx).apply {
+                                            visibility = View.INVISIBLE
+                                            progressAnchor = this
+                                        }
+                                    },
+                                    modifier = Modifier.size(1.dp)
+                                )
+                            }
                         }
                         
-                        IconButton(onClick = { viewModel.toggleSpeaking(verses) }) {
-                            Icon(
-                                imageVector = if (isSpeaking) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
-                                contentDescription = "Escuchar",
-                                tint = if (isSpeaking) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                            )
+                        Box(contentAlignment = Alignment.Center) {
+                            IconButton(
+                                onClick = { viewModel.toggleSpeaking(verses) }
+                            ) {
+                                Icon(
+                                    imageVector = if (isSpeaking) Icons.AutoMirrored.Filled.VolumeUp else Icons.AutoMirrored.Filled.VolumeOff,
+                                    contentDescription = "Escuchar",
+                                    tint = if (isSpeaking) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            if (onboardingActive) {
+                                AndroidView(
+                                    factory = { ctx ->
+                                        View(ctx).apply {
+                                            visibility = View.INVISIBLE
+                                            audioAnchor = this
+                                        }
+                                    },
+                                    modifier = Modifier.size(1.dp)
+                                )
+                            }
                         }
 
                         // Envolver el botón de tema para que tenga el mismo "footprint" (48dp) que un IconButton
                         Box(
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier
+                                .size(48.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             ThemeToggleButton(
@@ -373,6 +446,18 @@ fun ReaderScreen(
                                 onClick = { viewModel.toggleDarkMode() },
                                 size = 30.dp
                             )
+                            // Hidden anchor for Onboarding (TapTargetView)
+                            if (onboardingActive) {
+                                AndroidView(
+                                    factory = { ctx ->
+                                        View(ctx).apply {
+                                            visibility = View.INVISIBLE
+                                            themeAnchor = this
+                                        }
+                                    },
+                                    modifier = Modifier.size(1.dp)
+                                )
+                            }
                         }
                     }
                 },
@@ -511,14 +596,29 @@ fun ReaderScreen(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(scrollState)
-                .padding(horizontal = 26.dp, vertical = 0.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (onboardingActive) {
+                // Anchor fijo para el paso de "Tocar versículo"
+                // Solo existe mientras el onboarding está activo
+                AndroidView(
+                    factory = { ctx ->
+                        View(ctx).apply {
+                            visibility = View.INVISIBLE
+                            verseAnchor = this
+                        }
+                    },
+                    modifier = Modifier.size(1.dp).align(Alignment.Center)
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = 26.dp, vertical = 0.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
             Text(
                 text = "Capítulo ${verses.firstOrNull()?.chapter ?: ""}",
                 style = MaterialTheme.typography.headlineLarge,
@@ -618,7 +718,6 @@ fun ReaderScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onGloballyPositioned { textBlockCoordinates = it }
             ) {
                 val speakingHighlightColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                 
@@ -913,36 +1012,10 @@ fun ReaderScreen(
                         onDismiss = notesViewModel::closeEditor
                     )
                 }
-
-                if (!tooltipSeen && checkButtonCoordinates != null) {
-                    ContextualTooltip(
-                        targetCoordinates = checkButtonCoordinates,
-                        text = tooltipText,
-                        onDismiss = { viewModel.dismissReaderTooltip() }
-                    )
-                }
-
-                // --- Tooltip Versículo (Tocar Texto) ---
-                val tooltipVerseSeen by viewModel.tooltipReaderVerse.collectAsState()
-                val tooltipVerseText = "Toca cualquier versículo para añadir una nota, un marcador de color o compartirlo con alguien."
-
-                LaunchedEffect(tooltipVerseSeen, textBlockCoordinates) {
-                    if (!tooltipVerseSeen && (textBlockCoordinates != null)) {
-                        delay(2000.milliseconds) 
-                        viewModel.speakTooltip(tooltipVerseText)
-                    }
-                }
-
-                if (tooltipSeen && !tooltipVerseSeen && (textBlockCoordinates != null)) {
-                    ContextualTooltip(
-                        targetCoordinates = textBlockCoordinates,
-                        text = tooltipVerseText,
-                        onDismiss = { viewModel.dismissReaderVerseTooltip() }
-                    )
-                }
             }
         }
     }
+}
 }
 
 @Composable

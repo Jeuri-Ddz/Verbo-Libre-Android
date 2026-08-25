@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,20 +27,33 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.BookEntity
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import android.view.View
+import android.app.Activity
+import android.content.Context
+import com.mi.bibliarv1960.R
 import com.mi.bibliarv1960.ui.components.ChapterSelectionDialog
-import com.mi.bibliarv1960.ui.components.ContextualTooltip
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
-import java.text.Normalizer
-import java.util.regex.Pattern
+import com.mi.bibliarv1960.ui.challenges.ChallengeViewModel
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.navigation.Screen
-
-import kotlin.time.Duration.Companion.milliseconds
+import com.mi.bibliarv1960.utils.findActivity
+import java.text.Normalizer
+import java.util.regex.Pattern
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.res.colorResource
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.platform.LocalConfiguration
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: BibleViewModel,
+    challengeViewModel: ChallengeViewModel,
     onChapterSelected: (bookId: Int, chapter: Int, verse: Int?) -> Unit,
     onNavigate: (String) -> Unit,
     onOpenDrawer: () -> Unit,
@@ -52,17 +67,23 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     var searchError by remember { mutableStateOf<String?>(null) }
 
-    // --- Tooltip Contextual ---
-    val tooltipSeen by viewModel.tooltipHomeSearch.collectAsState()
-    var searchBarCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-    val tooltipText = "Escribe un libro y capítulo aquí (ej. 'Juan 3') para saltar directamente al lector sin navegar por la lista."
-
-    LaunchedEffect(tooltipSeen, searchBarCoordinates) {
-        if (!tooltipSeen && (searchBarCoordinates != null)) {
-            kotlinx.coroutines.delay(1200.milliseconds)
-            viewModel.speakTooltip(tooltipText)
-        }
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    
+    val sharedPrefs = remember { context.getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE) }
+    var showHomeOnboarding by remember { 
+        mutableStateOf(!sharedPrefs.getBoolean("onboarding_home_shown", false)) 
     }
+    var onboardingStep by remember { mutableIntStateOf(1) }
+    
+    val isStatusLoaded by challengeViewModel.isStatusLoaded.collectAsState()
+    val triviaStepCompleted by challengeViewModel.triviaStepCompleted.collectAsState()
+    
+    var searchBarRect by remember { mutableStateOf(Rect.Zero) }
+    var dailyVerseRect by remember { mutableStateOf(Rect.Zero) }
+    var testamentSelectorRect by remember { mutableStateOf(Rect.Zero) }
 
     val filteredBooks = remember(allBooks, searchQuery, selectedTab) {
         val normalizedSearch = searchQuery.normalize()
@@ -96,175 +117,282 @@ fun HomeScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            "Verbo Libre", 
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        val selectedTranslationId by viewModel.selectedTranslationId.collectAsState()
-                        val translations by viewModel.allTranslations.collectAsState()
-                        val currentTranslation = translations.find { it.id == selectedTranslationId }
-                        currentTranslation?.let {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { 
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = it.abbreviation,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.primary,
+                                "Verbo Libre", 
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            val selectedTranslationId by viewModel.selectedTranslationId.collectAsState()
+                            val translations by viewModel.allTranslations.collectAsState()
+                            val currentTranslation = translations.find { it.id == selectedTranslationId }
+                            currentTranslation?.let {
+                                Text(
+                                    text = it.abbreviation,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary,
+                                )
+                            }
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onOpenDrawer) {
+                            Icon(
+                                imageVector = LinoIcons.MenuAsymmetric,
+                                contentDescription = "Menú",
+                                modifier = Modifier.size(24.dp),
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                    ),
+                    windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.background,
+            contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier.padding(
+                    top = innerPadding.calculateTopPadding(),
+                    start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = 0.dp
+                )
+            ) {
+                SearchBar(
+                    query = searchQuery,
+                    onValueChange = { 
+                        searchQuery = it
+                        searchError = null 
+                    },
+                    onSearchAction = { performSearch() },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .onGloballyPositioned { coordinates ->
+                            searchBarRect = coordinates.boundsInWindow()
+                        }
+                )
+
+                if (searchError != null) {
+                    Text(
+                        text = searchError!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(horizontal = 22.dp, vertical = 4.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Escribe un libro, capítulo o 'libro cap:versículo' para saltar directo",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                        modifier = Modifier.padding(horizontal = 22.dp, vertical = 4.dp)
+                    )
+                }
+
+                // Daily Verse Banner
+                todayVerse?.let { dv ->
+                    Surface(
+                        onClick = { onNavigate(Screen.DailyVerse.route) },
+                        shape = RoundedCornerShape(24.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .onGloballyPositioned { coordinates ->
+                                dailyVerseRect = coordinates.boundsInWindow()
+                            },
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
+                                    )
+                                )
+                                .padding(vertical = 14.dp, horizontal = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = "☀", fontSize = 18.sp, color = Color.White, modifier = Modifier.padding(end = 16.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "VERSÍCULO DE HOY",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White.copy(alpha = 0.7f),
+                                    letterSpacing = 1.2.sp
+                                )
+                                Text(
+                                    text = dv.verseText,
+                                    fontSize = 13.sp,
+                                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                                    color = Color.White,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.White.copy(alpha = 0.6f),
+                                modifier = Modifier.size(20.dp)
                             )
                         }
                     }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onOpenDrawer) {
-                        Icon(
-                            imageVector = LinoIcons.MenuAsymmetric,
-                            contentDescription = "Menú",
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                ),
-                windowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets(0.dp, 24.dp, 0.dp, 0.dp)
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(
-                top = innerPadding.calculateTopPadding(),
-                start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
-                bottom = 0.dp
-            )
-        ) {
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { 
-                    searchQuery = it
-                    searchError = null 
-                },
-                onSearchAction = { performSearch() },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .onGloballyPositioned { searchBarCoordinates = it }
-            )
+                }
 
-            if (searchError != null) {
-                Text(
-                    text = searchError!!,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(horizontal = 22.dp, vertical = 4.dp)
-                )
-            } else {
-                Text(
-                    text = "Escribe un libro, capítulo o 'libro cap:versículo' para saltar directo",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
-                    modifier = Modifier.padding(horizontal = 22.dp, vertical = 4.dp)
-                )
-            }
-
-            // Daily Verse Banner
-            todayVerse?.let { dv ->
+                // Segmented Control Tabs
                 Surface(
-                    onClick = { onNavigate(Screen.DailyVerse.route) },
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     shape = RoundedCornerShape(24.dp),
                     modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .onGloballyPositioned { coordinates ->
+                            testamentSelectorRect = coordinates.boundsInWindow()
+                        }
                 ) {
                     Row(
-                        modifier = Modifier
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
-                                )
-                            )
-                            .padding(vertical = 14.dp, horizontal = 20.dp),
+                        modifier = Modifier.padding(4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "☀", fontSize = 18.sp, color = Color.White, modifier = Modifier.padding(end = 16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "VERSÍCULO DE HOY",
-                                fontSize = 9.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White.copy(alpha = 0.7f),
-                                letterSpacing = 1.2.sp
-                            )
-                            Text(
-                                text = dv.verseText,
-                                fontSize = 13.sp,
-                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-                                color = Color.White,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = null,
-                            tint = Color.White.copy(alpha = 0.6f),
-                            modifier = Modifier.size(20.dp)
+                        SegmentedTab(
+                            text = "Antiguo Testamento",
+                            isSelected = selectedTab == 0,
+                            modifier = Modifier.weight(1f)
+                        ) { selectedTab = 0 }
+                        SegmentedTab(
+                            text = "Nuevo Testamento",
+                            isSelected = selectedTab == 1,
+                            modifier = Modifier.weight(1f)
+                        ) { selectedTab = 1 }
+                    }
+                }
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    items(filteredBooks, key = { it.id }) { book ->
+                        val progress = bookProgress[book.id] ?: Pair(0, book.chaptersCount)
+                        val onClick = remember(book.id, book) { { selectedBook = book } }
+                        
+                        BookRow(
+                            book = book,
+                            readChapters = progress.first,
+                            totalChapters = progress.second,
+                            onClick = onClick
+                        )
+
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 22.dp),
+                            thickness = 0.5.dp,
+                            color = MaterialTheme.colorScheme.surfaceVariant
                         )
                     }
                 }
             }
+        }
 
-            // Segmented Control Tabs
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    SegmentedTab(
-                        text = "Antiguo Testamento",
-                        isSelected = selectedTab == 0,
-                        modifier = Modifier.weight(1f)
-                    ) { selectedTab = 0 }
-                    SegmentedTab(
-                        text = "Nuevo Testamento",
-                        isSelected = selectedTab == 1,
-                        modifier = Modifier.weight(1f)
-                    ) { selectedTab = 1 }
-                }
+        // Custom Rectangular Onboarding Overlay
+        if (showHomeOnboarding && triviaStepCompleted && isStatusLoaded) {
+            val currentHighlightRect = when(onboardingStep) {
+                1 -> searchBarRect
+                2 -> dailyVerseRect
+                3 -> testamentSelectorRect
+                else -> Rect.Zero
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 16.dp)
-            ) {
-                items(filteredBooks, key = { it.id }) { book ->
-                    val progress = bookProgress[book.id] ?: Pair(0, book.chaptersCount)
-                    val onClick = remember(book.id, book) { { selectedBook = book } }
+            if (currentHighlightRect != Rect.Zero) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                        .clickable(enabled = true, onClick = { /* Consumir clicks */ })
+                ) {
+                    val tooltipBgColor = colorResource(id = R.color.tooltip_bg).copy(alpha = 0.90f)
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        // Fondo oscurecido
+                        drawRect(color = tooltipBgColor)
+                        
+                        // Recorte rectangular sobre el elemento
+                        drawRoundRect(
+                            color = Color.Transparent,
+                            topLeft = currentHighlightRect.topLeft.copy(
+                                x = currentHighlightRect.left - 4.dp.toPx(),
+                                y = currentHighlightRect.top - 4.dp.toPx()
+                            ),
+                            size = currentHighlightRect.size.copy(
+                                width = currentHighlightRect.width + 8.dp.toPx(),
+                                height = currentHighlightRect.height + 8.dp.toPx()
+                            ),
+                            cornerRadius = CornerRadius(if (onboardingStep == 3) 28.dp.toPx() else 16.dp.toPx()),
+                            blendMode = BlendMode.Clear
+                        )
+                    }
                     
-                    BookRow(
-                        book = book,
-                        readChapters = progress.first,
-                        totalChapters = progress.second,
-                        onClick = onClick
-                    )
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(horizontal = 32.dp)
+                            .padding(top = with(density) { (currentHighlightRect.bottom + 32.dp.toPx()).toDp() })
+                            .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
+                            .padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        val (title, description) = when(onboardingStep) {
+                            1 -> "Buscador" to "Escribe el libro y capítulo que buscas — no hace falta escribir el nombre completo, por ejemplo 'gen 1' también funciona."
+                            2 -> "Versículo del día" to "Aquí puedes ver el versículo del día, una palabra de aliento diferente cada mañana."
+                            3 -> "Testamentos" to "Toca cualquier libro para leer. Aquí arriba puedes filtrar entre Antiguo y Nuevo Testamento."
+                            else -> "" to ""
+                        }
 
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 22.dp),
-                        thickness = 0.5.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant
-                    )
+                        Text(
+                            text = title,
+                            color = Color.White,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = description,
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 22.sp
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Button(
+                            onClick = {
+                                if (onboardingStep < 3) {
+                                    onboardingStep++
+                                } else {
+                                    sharedPrefs.edit().putBoolean("onboarding_home_shown", true).apply()
+                                    showHomeOnboarding = false
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White.copy(alpha = 0.2f),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
+                            modifier = Modifier.height(40.dp)
+                        ) {
+                            Text(
+                                if (onboardingStep < 3) "Siguiente" else "Entendido", 
+                                fontSize = 14.sp, 
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -306,14 +434,6 @@ fun HomeScreen(
             }
         ) { selectedBook = null }
     }
-
-    if (!tooltipSeen && (searchBarCoordinates != null)) {
-        ContextualTooltip(
-            targetCoordinates = searchBarCoordinates,
-            text = tooltipText,
-            onDismiss = { viewModel.dismissHomeSearchTooltip() }
-        )
-    }
 }
 
 @Composable
@@ -342,10 +462,10 @@ fun SegmentedTab(
 }
 
 @Composable
-fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearchAction: () -> Unit, modifier: Modifier = Modifier) {
+fun SearchBar(query: String, onValueChange: (String) -> Unit, onSearchAction: () -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = query,
-        onValueChange = onQueryChange,
+        onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth(),
         placeholder = { Text("Buscar libro y capítulo, ej. génesis 1:2", fontSize = 14.sp) },
         leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null, modifier = Modifier.size(18.dp)) },

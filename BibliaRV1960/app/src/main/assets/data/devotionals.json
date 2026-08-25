@@ -31,9 +31,9 @@
   },
   {
     "id": 4,
-    "book_id": 23,
-    "chapter": 41,
-    "verse": 10,
+    "book_id": 19,
+    "chapter": 121,
+    "verse": 8,
     "reference": "Salmos 121:8",
     "verse_text": "Jehová guardará tu salida y tu entrada, Desde ahora y para siempre.",
     "topic": "Promesa",
@@ -181,13 +181,13 @@
   },
   {
     "id": 19,
-    "book_id": 19,
-    "chapter": 91,
-    "verse": 1,
-    "reference": "Salmos 91:1",
-    "verse_text": "El que habita al abrigo del Altísimo, Morará bajo la sombra del Omnipotente.",
-    "topic": "Protección",
-    "reflection": "Permanecer cerca de Dios es hacer de su presencia tu refugio, no solo buscarlo en la dificultad."
+    "book_id": 44,
+    "chapter": 1,
+    "verse": 8,
+    "reference": "Hechos 1:8",
+    "verse_text": "Recibiréis la virtud del Espíritu Santo sobre vosotros.",
+    "topic": "Poder",
+    "reflection": "El Espíritu Santo te da la fuerza para ser testigo de Cristo dondequiera que estés hoy."
   },
   {
     "id": 20,
@@ -331,13 +331,13 @@
   },
   {
     "id": 34,
-    "book_id": 52,
-    "chapter": 5,
-    "verse": 18,
-    "reference": "1 Tesalonicenses 5:18",
-    "verse_text": "Dad gracias en todo; porque esta es la voluntad de Dios para con vosotros en Cristo Jesús.",
-    "topic": "Gratitud",
-    "reflection": "Agradecer en todo transforma tu visión ante cualquier situación."
+    "book_id": 44,
+    "chapter": 3,
+    "verse": 19,
+    "reference": "Hechos 3:19",
+    "verse_text": "Arrepentíos y convertíos, y sean borrados vuestros pecados.",
+    "topic": "Renovación",
+    "reflection": "Dios no solo perdona: borra. Vuelve a Él hoy y deja atrás lo que ya no te define."
   },
   {
     "id": 35,
@@ -391,13 +391,13 @@
   },
   {
     "id": 40,
-    "book_id": 19,
-    "chapter": 34,
-    "verse": 8,
-    "reference": "Salmos 34:8",
-    "verse_text": "Gustad, y ved que es bueno Jehová: Dichoso el hombre que confiará en él.",
-    "topic": "Experiencia",
-    "reflection": "Atreverse a confiar permite comprobar su infinita bondad."
+    "book_id": 44,
+    "chapter": 4,
+    "verse": 12,
+    "reference": "Hechos 4:12",
+    "verse_text": "En ningún otro hay salud ni otro nombre para ser salvos.",
+    "topic": "Salvación",
+    "reflection": "Solo en Jesús encuentras la salvación completa. No hay otro camino ni otro nombre."
   },
   {
     "id": 41,
@@ -421,13 +421,13 @@
   },
   {
     "id": 43,
-    "book_id": 62,
-    "chapter": 4,
-    "verse": 18,
-    "reference": "1 Juan 4:18",
-    "verse_text": "En el amor no hay temor; mas el perfecto amor echa fuera el temor: porque el temor tiene pena. De donde el que teme, no está perfecto en el amor.",
-    "topic": "Libertad",
-    "reflection": "El amor perfecto expulsa toda ansiedad."
+    "book_id": 44,
+    "chapter": 16,
+    "verse": 31,
+    "reference": "Hechos 16:31",
+    "verse_text": "Cree en el Señor Jesucristo, y serás salvo tú, y tu casa.",
+    "topic": "Fe",
+    "reflection": "Tu fe puede abrir una puerta de salvación para toda tu familia. Cree hoy."
   },
   {
     "id": 44,
@@ -471,23 +471,23 @@
   },
   {
     "id": 48,
-    "book_id": 40,
-    "chapter": 5,
-    "verse": 16,
-    "reference": "Mateo 5:16",
-    "verse_text": "Así alumbre vuestra luz delante de los hombres, para que vean vuestras buenas obras, y glorifiquen á vuestro Padre que está en los cielos.",
-    "topic": "Testimonio",
-    "reflection": "Tus acciones reflejan la luz de Dios."
+    "book_id": 44,
+    "chapter": 20,
+    "verse": 35,
+    "reference": "Hechos 20:35",
+    "verse_text": "Más bienaventurada cosa es dar que recibir.",
+    "topic": "Generosidad",
+    "reflection": "Dar de corazón te llena más que recibir. Busca hoy a quién bendecir."
   },
   {
     "id": 49,
-    "book_id": 19,
-    "chapter": 118,
-    "verse": 24,
-    "reference": "Salmos 118:24",
-    "verse_text": "Este es el día que hizo Jehová; Nos gozaremos y alegraremos en él.",
-    "topic": "Presente",
-    "reflection": "El día de hoy es un regalo único para elegir la alegría."
+    "book_id": 41,
+    "chapter": 1,
+    "verse": 35,
+    "reference": "Marcos 1:35",
+    "verse_text": "Levantándose muy de mañana, salió y allí oraba.",
+    "topic": "Oración",
+    "reflection": "Antes de enfrentar el día, Jesús buscaba a solas al Padre. Empieza tu día igual."
   },
   {
     "id": 50,
@@ -521,33 +521,33 @@
   },
   {
     "id": 53,
-    "book_id": 59,
-    "chapter": 1,
-    "verse": 22,
-    "reference": "Santiago 1:22",
-    "verse_text": "Mas sed hacedores de la palabra, y no tan solamente oidores, engañándoos á vosotros mismos.",
-    "topic": "Acción",
-    "reflection": "Poner en práctica lo aprendido transforma la vida real."
+    "book_id": 41,
+    "chapter": 6,
+    "verse": 31,
+    "reference": "Marcos 6:31",
+    "verse_text": "Venid vosotros aparte al lugar desierto, y reposad un poco.",
+    "topic": "Descanso",
+    "reflection": "Jesús también invitó a descansar. Detente hoy y permite que Dios te renueve."
   },
   {
     "id": 54,
-    "book_id": 19,
-    "chapter": 27,
-    "verse": 1,
-    "reference": "Salmos 27:1",
-    "verse_text": "JEHOVÁ es mi luz y mi salvación: ¿de quién temeré? Jehová es la fortaleza de mi vida: ¿de quién he de atemorizarme?",
-    "topic": "Certeza",
-    "reflection": "Cuando Dios fortalece tu vida, el miedo pierde fuerza."
+    "book_id": 41,
+    "chapter": 9,
+    "verse": 23,
+    "reference": "Marcos 9:23",
+    "verse_text": "Si puedes creer, al que cree todo es posible.",
+    "topic": "Fe",
+    "reflection": "La duda limita, pero la fe abre puertas. Cree y verás lo que Dios puede hacer."
   },
   {
     "id": 55,
-    "book_id": 45,
-    "chapter": 8,
-    "verse": 31,
-    "reference": "Romanos 8:31",
-    "verse_text": "¿Pues qué diremos á esto? Si Dios por nosotros, ¿quién contra nosotros?",
-    "topic": "Respaldo",
-    "reflection": "Ninguna oposición supera el respaldo de Dios a tu lado."
+    "book_id": 41,
+    "chapter": 10,
+    "verse": 27,
+    "reference": "Marcos 10:27",
+    "verse_text": "Para los hombres es imposible; mas para Dios, no.",
+    "topic": "Confianza",
+    "reflection": "Lo que ves imposible, Dios ya lo tiene resuelto. Confía en su poder hoy."
   },
   {
     "id": 56,
@@ -561,23 +561,23 @@
   },
   {
     "id": 57,
-    "book_id": 33,
-    "chapter": 6,
-    "verse": 8,
-    "reference": "Miqueas 6:8",
-    "verse_text": "Oh hombre, él te ha declarado qué sea lo bueno, y qué pida de ti Jehová: solamente hacer juicio, y amar misericordia, y humillarte para caminar con tu Dios.",
-    "topic": "Humildad",
-    "reflection": "Actúa con justicia y camina humilde."
+    "book_id": 42,
+    "chapter": 1,
+    "verse": 37,
+    "reference": "Lucas 1:37",
+    "verse_text": "Porque ninguna cosa es imposible para Dios.",
+    "topic": "Esperanza",
+    "reflection": "Cuando todo parece cerrado, recuerda: para Dios no existen los imposibles."
   },
   {
     "id": 58,
-    "book_id": 40,
+    "book_id": 42,
     "chapter": 6,
-    "verse": 33,
-    "reference": "Mateo 6:33",
-    "verse_text": "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.",
-    "topic": "Prioridades",
-    "reflection": "Poner a Dios primero ordena todas las demás áreas de la vida."
+    "verse": 38,
+    "reference": "Lucas 6:38",
+    "verse_text": "Dad, y se os dará; medida buena, apretada, y rebosando.",
+    "topic": "Generosidad",
+    "reflection": "Lo que siembras con generosidad, Dios te lo devuelve multiplicado. Da con fe."
   },
   {
     "id": 59,
@@ -611,13 +611,13 @@
   },
   {
     "id": 62,
-    "book_id": 46,
-    "chapter": 10,
-    "verse": 13,
-    "reference": "1 Corintios 10:13",
-    "verse_text": "No os ha tomado tentación sino humana; mas fiel es Dios, que no os dejará ser tentados más de lo que podéis llevar; antes dará también juntamente con la tentación la salida, para que podáis aguantar.",
-    "topic": "Fidelidad Divina",
-    "reflection": "Dios siempre provee una vía de escape."
+    "book_id": 42,
+    "chapter": 11,
+    "verse": 9,
+    "reference": "Lucas 11:9",
+    "verse_text": "Pedid, y se os dará; buscad, y hallaréis; llamad.",
+    "topic": "Oración",
+    "reflection": "Dios escucha cuando pides, buscas y persistes. No dejes de acudir a Él hoy."
   },
   {
     "id": 63,
@@ -631,13 +631,13 @@
   },
   {
     "id": 64,
-    "book_id": 19,
-    "chapter": 40,
-    "verse": 1,
-    "reference": "Salmos 40:1",
-    "verse_text": "Pacientemente esperé á Jehová, Y se inclinó á mí, y oyó mi clamor.",
-    "topic": "Paciencia",
-    "reflection": "Esperar con confianza en Dios asegura escuchar su respuesta."
+    "book_id": 42,
+    "chapter": 12,
+    "verse": 34,
+    "reference": "Lucas 12:34",
+    "verse_text": "Donde está vuestro tesoro, allí estará vuestro corazón.",
+    "topic": "Prioridad",
+    "reflection": "Lo que más valoras revela dónde está tu corazón. Invierte en lo eterno."
   },
   {
     "id": 65,
@@ -651,13 +651,13 @@
   },
   {
     "id": 66,
-    "book_id": 47,
-    "chapter": 4,
+    "book_id": 43,
+    "chapter": 3,
     "verse": 16,
-    "reference": "2 Corintios 4:16",
-    "verse_text": "Por tanto, no desmayamos; antes aunque este nuestro hombre exterior se va desgastando, el interior empero se renueva de día en día.",
-    "topic": "Fuerza Interior",
-    "reflection": "Tu espíritu se renueva día tras día."
+    "reference": "Juan 3:16",
+    "verse_text": "De tal manera amó Dios al mundo, que dio á su Hijo.",
+    "topic": "Amor",
+    "reflection": "El amor de Dios no fue una idea, fue un sacrificio real. Recíbelo hoy con fe."
   },
   {
     "id": 67,
@@ -1801,13 +1801,13 @@
   },
   {
     "id": 181,
-    "book_id": 19,
-    "chapter": 103,
-    "verse": 2,
-    "reference": "Salmos 103:2",
-    "verse_text": "Bendice, alma mía, á Jehová, y no olvides ninguno de sus beneficios.",
-    "topic": "Memoria",
-    "reflection": "Recordar las bondades de Dios fortalece la fe en las pruebas."
+    "book_id": 48,
+    "chapter": 2,
+    "verse": 20,
+    "reference": "Gálatas 2:20",
+    "verse_text": "Con Cristo estoy juntamente crucificado, y vivo, no ya yo.",
+    "topic": "Identidad",
+    "reflection": "Tu vieja identidad murió con Cristo. Ahora es Él quien vive y actúa en ti."
   },
   {
     "id": 182,
@@ -1981,13 +1981,13 @@
   },
   {
     "id": 199,
-    "book_id": 19,
-    "chapter": 121,
-    "verse": 8,
-    "reference": "Salmos 121:8",
-    "verse_text": "Jehová guardará tu salida y tu entrada desde ahora para siempre.",
-    "topic": "Cuidado",
-    "reflection": "Cada paso de tu rutina diaria está bajo la custodia celestial."
+    "book_id": 49,
+    "chapter": 6,
+    "verse": 10,
+    "reference": "Efesios 6:10",
+    "verse_text": "Confortaos en el Señor, y en la potencia de su fortaleza.",
+    "topic": "Fortaleza",
+    "reflection": "Tu fuerza tiene límite, pero la de Dios no. Apóyate en su poder hoy."
   },
   {
     "id": 200,

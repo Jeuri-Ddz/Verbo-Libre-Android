@@ -350,6 +350,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Home.route) {
                             HomeScreen(
                                 viewModel = viewModel,
+                                challengeViewModel = challengeViewModel,
                                 onChapterSelected = { bookId, chapter, verse ->
                                     val route = Screen.Reader.createRoute(bookId, chapter, verse)
                                     if (navController.currentDestination?.route != route) {
@@ -436,6 +437,7 @@ class MainActivity : ComponentActivity() {
                             ChallengeScreen(
                                 viewModel = challengeViewModel,
                                 onClose = {
+                                    challengeViewModel.dismissTriviaStep()
                                     if (navController.previousBackStackEntry != null) {
                                         navController.popBackStack()
                                     } else {

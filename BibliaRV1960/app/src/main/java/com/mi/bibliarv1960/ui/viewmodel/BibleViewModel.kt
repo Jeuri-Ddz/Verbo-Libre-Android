@@ -124,13 +124,31 @@ class BibleViewModel @Inject constructor(
         initialValue = false,
     )
 
+    val tooltipReaderTts: StateFlow<Boolean> = dataStoreManager.tooltipReaderTts.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipReaderTranslation: StateFlow<Boolean> = dataStoreManager.tooltipReaderTranslation.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
     val tooltipReaderVerse: StateFlow<Boolean> = dataStoreManager.tooltipReaderVerse.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false,
     )
 
-    val tooltipHomeSearch: StateFlow<Boolean> = dataStoreManager.tooltipHomeSearch.stateIn(
+    val tooltipReaderTheme: StateFlow<Boolean> = dataStoreManager.tooltipReaderTheme.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipHomeWelcome: StateFlow<Boolean> = dataStoreManager.tooltipHomeWelcome.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false,
@@ -142,7 +160,19 @@ class BibleViewModel @Inject constructor(
         initialValue = false,
     )
 
-    val tooltipBookmarksFilter: StateFlow<Boolean> = dataStoreManager.tooltipBookmarksFilter.stateIn(
+    val tooltipBookmarksCategories: StateFlow<Boolean> = dataStoreManager.tooltipBookmarksCategories.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipBookmarksInfo: StateFlow<Boolean> = dataStoreManager.tooltipBookmarksInfo.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val tooltipBookmarksFab: StateFlow<Boolean> = dataStoreManager.tooltipBookmarksFab.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false,
@@ -233,15 +263,33 @@ class BibleViewModel @Inject constructor(
         }
     }
 
+    fun dismissReaderTtsTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipReaderTts(true)
+        }
+    }
+
+    fun dismissReaderTranslationTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipReaderTranslation(true)
+        }
+    }
+
     fun dismissReaderVerseTooltip() {
         viewModelScope.launch {
             dataStoreManager.saveTooltipReaderVerse(true)
         }
     }
 
-    fun dismissHomeSearchTooltip() {
+    fun dismissReaderThemeTooltip() {
         viewModelScope.launch {
-            dataStoreManager.saveTooltipHomeSearch(true)
+            dataStoreManager.saveTooltipReaderTheme(true)
+        }
+    }
+
+    fun dismissHomeWelcomeTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipHomeWelcome(true)
         }
     }
 
@@ -251,9 +299,21 @@ class BibleViewModel @Inject constructor(
         }
     }
 
-    fun dismissBookmarksFilterTooltip() {
+    fun dismissBookmarksCategoriesTooltip() {
         viewModelScope.launch {
-            dataStoreManager.saveTooltipBookmarksFilter(true)
+            dataStoreManager.saveTooltipBookmarksCategories(true)
+        }
+    }
+
+    fun dismissBookmarksInfoTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipBookmarksInfo(true)
+        }
+    }
+
+    fun dismissBookmarksFabTooltip() {
+        viewModelScope.launch {
+            dataStoreManager.saveTooltipBookmarksFab(true)
         }
     }
 

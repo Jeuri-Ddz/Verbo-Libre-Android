@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Reader Anchors -->
+    <item name="menu_anchor" type="id" />
+    <item name="translation_anchor" type="id" />
+    <item name="progress_anchor" type="id" />
+    <item name="audio_anchor" type="id" />
+    <item name="theme_anchor" type="id" />
+    <item name="verse_anchor" type="id" />
+
+    <!-- Home Anchors -->
+    <item name="home_tabs_anchor" type="id" />
+
+    <!-- Bookmarks Anchors -->
+    <item name="bookmarks_categories_anchor" type="id" />
+    <item name="bookmarks_fab_anchor" type="id" />
+    <item name="bookmarks_edit_anchor" type="id" />
+
+    <!-- Notes Anchors -->
+    <item name="notes_search_anchor" type="id" />
+</resources>
