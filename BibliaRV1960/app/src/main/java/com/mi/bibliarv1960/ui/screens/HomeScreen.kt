@@ -35,7 +35,6 @@ import android.content.Context
 import com.mi.bibliarv1960.R
 import com.mi.bibliarv1960.ui.components.ChapterSelectionDialog
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
-import com.mi.bibliarv1960.ui.challenges.ChallengeViewModel
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.navigation.Screen
 import com.mi.bibliarv1960.utils.findActivity
@@ -53,7 +52,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun HomeScreen(
     viewModel: BibleViewModel,
-    challengeViewModel: ChallengeViewModel,
     onChapterSelected: (bookId: Int, chapter: Int, verse: Int?) -> Unit,
     onNavigate: (String) -> Unit,
     onOpenDrawer: () -> Unit,
@@ -77,7 +75,15 @@ fun HomeScreen(
     }
     var onboardingStep by remember { mutableIntStateOf(1) }
     
-    val isStatusLoaded by challengeViewModel.isStatusLoaded.collectAsState()
+    
+    var delayFinished by remember { mutableStateOf(false) }
+
+    LaunchedEffect(allBooks.isNotEmpty()) {
+        if (allBooks.isNotEmpty() && showHomeOnboarding) {
+            delay(500)
+            delayFinished = true
+        }
+    }
     
     var searchBarRect by remember { mutableStateOf(Rect.Zero) }
     var dailyVerseRect by remember { mutableStateOf(Rect.Zero) }
@@ -300,8 +306,17 @@ fun HomeScreen(
             }
         }
 
+        // Capa transparente para bloquear interacción durante el segundo inicial
+        if (showHomeOnboarding && allBooks.isNotEmpty() && !delayFinished) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(enabled = true, onClick = { /* Bloquear toques */ })
+            )
+        }
+
         // Custom Rectangular Onboarding Overlay
-        if (showHomeOnboarding && isStatusLoaded) {
+        if (showHomeOnboarding && allBooks.isNotEmpty() && delayFinished) {
             val currentHighlightRect = when(onboardingStep) {
                 1 -> searchBarRect
                 2 -> if (showDevotionalSetting) dailyVerseRect else Rect.Zero

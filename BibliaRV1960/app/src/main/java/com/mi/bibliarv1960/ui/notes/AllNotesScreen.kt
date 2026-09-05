@@ -221,7 +221,7 @@ fun AllNotesScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Usa el buscador para filtrar tus notas por palabra clave.",
+                        text = "Usa el buscador para filtrar tus notas por palabra clave, libro o versículo.",
                         color = Color.White,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,

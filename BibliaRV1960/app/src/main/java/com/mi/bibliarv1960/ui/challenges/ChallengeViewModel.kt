@@ -54,6 +54,10 @@ class ChallengeViewModel @Inject constructor(
     val completedCount: StateFlow<Int> = dataStoreManager.challengeCompletedCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
+    val showChallengeDot: StateFlow<Boolean> = dataStoreManager.lastChallengeVisitDate.map { lastDate ->
+        lastDate != LocalDate.now().format(dateFormatter)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     init {
         loadChallengesAndStatus()
     }
@@ -104,10 +108,8 @@ class ChallengeViewModel @Inject constructor(
             } else {
                 _challengeStatus.value = null  // Nuevo día, limpiar estado
             }
-            _isStatusLoaded.value = true
         } catch (e: Exception) {
             e.printStackTrace()
-            _isStatusLoaded.value = true
         }
     }
 
@@ -162,6 +164,13 @@ class ChallengeViewModel @Inject constructor(
             previewIndex = (previewIndex + 1) % allChallengesList.size
             _currentChallenge.value = allChallengesList[previewIndex]
             _challengeStatus.value = null
+        }
+    }
+
+    fun markChallengeVisited() {
+        viewModelScope.launch {
+            val today = LocalDate.now().format(dateFormatter)
+            dataStoreManager.saveLastChallengeVisitDate(today)
         }
     }
 

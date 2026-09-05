@@ -56,6 +56,7 @@ fun DevotionalScreen(
     var showStreakInfo by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        viewModel.markDevotionalVisited()
         viewModel.streakLostEvent.collect {
             snackbarHostState.showSnackbar(
                 message = "¡Oh no! Has perdido tu racha. ¡Empieza una nueva hoy!",

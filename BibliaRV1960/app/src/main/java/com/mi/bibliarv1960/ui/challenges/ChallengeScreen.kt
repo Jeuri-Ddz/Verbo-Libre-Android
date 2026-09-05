@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,29 +33,35 @@ fun ChallengeScreen(
     viewModel: ChallengeViewModel,
     onClose: () -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.markChallengeVisited()
+    }
+
     val challenge by viewModel.currentChallenge.collectAsState()
     val status by viewModel.challengeStatus.collectAsState()
     val completedCount by viewModel.completedCount.collectAsState()
     val isStatusLoaded by viewModel.isStatusLoaded.collectAsState()
 
-    if (!isStatusLoaded || (challenge == null)) {
-        // Loading state (Solo cabecera mínima o Box vacío para evitar parpadeo)
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color(0xFFFDFBF5) // Fondo cremita suave
+    ) {
+        if (!isStatusLoaded || (challenge == null)) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                CircularProgressIndicator(color = Color(0xFFB9915A).copy(alpha = 0.5f))
             }
+        } else {
+            ChallengeScreenContent(
+                challenge = challenge,
+                status = status,
+                completedCount = completedCount,
+                onClose = onClose,
+                onCheckTrivia = { index ->
+                    val correct = index == challenge?.correctIndex
+                    viewModel.submitResult(ChallengeResult.Trivia(index), correct)
+                }
+            ) { viewModel.nextChallengePreview() }
         }
-    } else {
-        ChallengeScreenContent(
-            challenge = challenge,
-            status = status,
-            completedCount = completedCount,
-            onClose = onClose,
-            onCheckTrivia = { index ->
-                val correct = index == challenge?.correctIndex
-                viewModel.submitResult(ChallengeResult.Trivia(index), correct)
-            }
-        ) { viewModel.nextChallengePreview() }
     }
 }
 
@@ -69,73 +76,42 @@ private fun ChallengeScreenContent(
 ) {
     val initial = (status?.result as? ChallengeResult.Trivia)?.selectedIndex ?: -1
     var selectedTriviaIndex by remember(challenge) { mutableIntStateOf(initial) }
-
     val isLocked = status?.isCompleted == true
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp, vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        ChallengeHeader(
+            completedCount = completedCount,
+            onClose = onClose
+        )
+
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center
         ) {
-            // 1. Header (Fijo) - Ahora incluye el título del reto
-            ChallengeHeader(
-                challenge = challenge,
-                completedCount = completedCount,
-                onClose = onClose
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 2. Content (Flexible) - Únicamente el contenido variable
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                challenge?.let { ch ->
-                    TriviaLayout(
-                        challenge = ch,
-                        status = status,
-                        selectedIndex = selectedTriviaIndex,
-                    ) { index ->
+            challenge?.let { ch ->
+                TriviaLayout(
+                    challenge = ch,
+                    status = status,
+                    selectedIndex = selectedTriviaIndex,
+                    onCheckTrivia = onCheckTrivia,
+                    onSelect = { index ->
                         if (!isLocked) selectedTriviaIndex = index
                     }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 3. Footer (Banco + Botón + Branding)
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (!isLocked && (challenge != null)) {
-                    LinoButton(
-                        text = "Comprobar respuesta",
-                        onClick = { onCheckTrivia(selectedTriviaIndex) },
-                        variant = LinoButtonVariant.ACCENT,
-                        enabled = selectedTriviaIndex != -1,
-                        fixedHeight = 44.dp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-
-                BrandingFooter(onClick = onNextChallengePreview)
+                )
             }
         }
+
+        BrandingFooter(onClick = onNextChallengePreview)
     }
 }
 
 @Composable
 private fun ChallengeHeader(
-    challenge: ChallengeEntity?,
     completedCount: Int,
     onClose: () -> Unit,
 ) {
@@ -149,7 +125,7 @@ private fun ChallengeHeader(
                 Icon(
                     Icons.Default.Close,
                     contentDescription = "Cerrar",
-                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    tint = Color(0xFF2B4A5E).copy(alpha = 0.4f)
                 )
             }
 
@@ -158,45 +134,16 @@ private fun ChallengeHeader(
                     Icons.Default.EmojiEvents,
                     contentDescription = null,
                     tint = Color(0xFFB9915A),
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = "Retos acertados: $completedCount",
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    color = Color(0xFF2B4A5E).copy(alpha = 0.5f)
                 )
             }
-        }
-
-        if (challenge != null) {
-            Spacer(modifier = Modifier.height(16.dp))
-            // Indicador visual superior
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .background(Color(0xFFE4574C), CircleShape)
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Text(
-                text = "RETO DE HOY",
-                style = MaterialTheme.typography.labelLarge,
-                letterSpacing = 2.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "Trivia bíblica",
-                style = MaterialTheme.typography.headlineSmall,
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 8.dp),
-                textAlign = TextAlign.Center
-            )
         }
     }
 }
@@ -206,6 +153,7 @@ fun TriviaLayout(
     challenge: ChallengeEntity,
     status: DailyChallengeStatus?,
     selectedIndex: Int,
+    onCheckTrivia: (Int) -> Unit,
     onSelect: (Int) -> Unit
 ) {
     val isLocked = status?.isCompleted == true
@@ -219,15 +167,44 @@ fun TriviaLayout(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Títulos en el flujo centrado
+        Box(
+            modifier = Modifier
+                .size(6.dp)
+                .background(Color(0xFFB9915A), CircleShape)
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Text(
+            text = "RETO DE HOY",
+            style = MaterialTheme.typography.labelLarge,
+            letterSpacing = 2.sp,
+            color = Color(0xFFB9915A),
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            text = "Trivia bíblica",
+            style = MaterialTheme.typography.headlineMedium,
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF2B4A5E),
+            modifier = Modifier.padding(top = 4.dp),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(28.dp))
+
         Text(
             text = challenge.question ?: "",
             style = TextStyle(
-                fontSize = 20.sp,
+                fontSize = 22.sp,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 lineHeight = 1.4.em,
-                color = MaterialTheme.colorScheme.onBackground
+                color = Color(0xFF2B4A5E)
             ),
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -238,52 +215,66 @@ fun TriviaLayout(
             val isCorrect = isLocked && index == challenge.correctIndex
             val isWrong = isLocked && isSelected && !isCorrect
 
-            val triviaOptionFontSize = when (option.length) {
-                in 0..30 -> 16.sp
-                else -> 14.sp
-            }
+            val triviaOptionFontSize = if (option.length > 40) 15.sp else 16.sp
 
             Surface(
                 onClick = { if (!isLocked) onSelect(index) },
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(14.dp),
                 color = when {
                     isCorrect -> Color(0xFF3C9D6B).copy(alpha = 0.1f)
                     isWrong -> Color(0xFFE4574C).copy(alpha = 0.1f)
-                    isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-                    else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                    isSelected -> Color(0xFFB9915A).copy(alpha = 0.12f)
+                    else -> Color.White
                 },
                 border = BorderStroke(
                     width = 1.dp,
                     color = when {
                         isCorrect -> Color(0xFF3C9D6B)
                         isWrong -> Color(0xFFE4574C)
-                        isSelected -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                        isSelected -> Color(0xFFB9915A)
+                        else -> Color(0xFF2B4A5E).copy(alpha = 0.08f)
                     }
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 10.dp)
             ) {
                 Text(
                     text = option,
                     style = TextStyle(
                         fontSize = triviaOptionFontSize,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = if (isLocked && !isSelected && !isCorrect) Color(0xFF2B4A5E).copy(alpha = 0.4f) else Color(0xFF2B4A5E)
                     ),
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp),
                     textAlign = TextAlign.Start
                 )
             }
         }
 
         if (isLocked) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            HorizontalDivider(color = Color(0xFFB9915A).copy(alpha = 0.2f))
+            Spacer(modifier = Modifier.height(24.dp))
             ChallengeExplanation(
                 reference = challenge.reference,
                 explanation = challenge.explanation
             )
+        } else {
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(
+                onClick = { onCheckTrivia(selectedIndex) },
+                enabled = selectedIndex != -1,
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2B4A5E),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color(0xFF2B4A5E).copy(alpha = 0.3f)
+                )
+            ) {
+                Text("Comprobar respuesta", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            }
         }
     }
 }
@@ -294,27 +285,27 @@ fun ChallengeExplanation(
     explanation: String
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
-                RoundedCornerShape(12.dp)
-            )
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = reference,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
+            fontFamily = FontFamily.Serif,
+            fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFB9915A)
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = explanation,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
+            style = TextStyle(
+                fontSize = 17.sp,
+                fontFamily = FontFamily.Serif,
+                lineHeight = 1.5.em,
+                textAlign = TextAlign.Start,
+                color = Color(0xFF2B4A5E).copy(alpha = 0.8f)
+            )
         )
     }
 }
@@ -329,9 +320,9 @@ private fun BrandingFooter(onClick: () -> Unit) {
             text = "Verbo Libre",
             fontFamily = FontFamily.Serif,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+            color = Color(0xFF2B4A5E).copy(alpha = 0.3f),
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = 16.dp)
                 .clickable { onClick() }
         )
     }

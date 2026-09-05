@@ -161,6 +161,14 @@ class BibleViewModel @Inject constructor(
         initialValue = true,
     )
 
+    val showDevotionalDot: StateFlow<Boolean> = dataStoreManager.lastDevotionalVisitDate.map { lastDate ->
+        lastDate != LocalDate.now().format(dateFormatter)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val showDailyVerseDot: StateFlow<Boolean> = dataStoreManager.lastDailyVerseVisitDate.map { lastDate ->
+        lastDate != LocalDate.now().format(dateFormatter)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     init {
         initializeDailyData()
         speechManager.setOnVerseCompleteListener { _ ->
@@ -578,6 +586,20 @@ class BibleViewModel @Inject constructor(
     fun setShowDevocional(show: Boolean) {
         viewModelScope.launch {
             dataStoreManager.saveShowDevocional(show)
+        }
+    }
+
+    fun markDevotionalVisited() {
+        viewModelScope.launch {
+            val today = LocalDate.now().format(dateFormatter)
+            dataStoreManager.saveLastDevotionalVisitDate(today)
+        }
+    }
+
+    fun markDailyVerseVisited() {
+        viewModelScope.launch {
+            val today = LocalDate.now().format(dateFormatter)
+            dataStoreManager.saveLastDailyVerseVisitDate(today)
         }
     }
 

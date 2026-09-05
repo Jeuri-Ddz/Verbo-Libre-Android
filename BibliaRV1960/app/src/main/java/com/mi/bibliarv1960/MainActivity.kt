@@ -1,29 +1,28 @@
 package com.mi.bibliarv1960
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
-import androidx.compose.material.icons.outlined.AutoStories
-import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material.icons.outlined.Explore
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.WbSunny
-import androidx.compose.material.icons.outlined.EditNote
-import androidx.compose.material.icons.outlined.Extension
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -100,300 +99,330 @@ class MainActivity : ComponentActivity() {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
-                        ModalDrawerSheet {
-                            Column(modifier = Modifier.padding(top = 48.dp, start = 24.dp, end = 24.dp, bottom = 16.dp)) {
+                        val configuration = LocalConfiguration.current
+                        val screenWidthDp = configuration.screenWidthDp
+                        val drawerWidth = (screenWidthDp * 0.86f).dp.coerceIn(280.dp, 360.dp)
+
+                        ModalDrawerSheet(modifier = Modifier.width(drawerWidth)) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
+                            ) {
+                                // Header
+                                Column(modifier = Modifier.padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 12.dp)) {
+                                    Text(
+                                        "Verbo Libre",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.padding(bottom = 4.dp)
+                                    )
+                                    Text(
+                                        "Lectura y meditación diaria",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                
+                                Spacer(modifier = Modifier.height(4.dp))
+                                
+                                NavigationDrawerItem(
+                                    icon = { Icon(Icons.Outlined.Home, contentDescription = null) },
+                                    label = { Text("Inicio") },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        if (navController.currentDestination?.route != Screen.Home.route) {
+                                            safeNavigate(Screen.Home.route)
+                                        }
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+                                // --- SECCIÓN HOY ---
                                 Text(
-                                    "Verbo Libre",
-                                    style = MaterialTheme.typography.headlineSmall,
+                                    "HOY",
+                                    modifier = Modifier.padding(start = 28.dp, top = 12.dp, bottom = 6.dp),
+                                    style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                    letterSpacing = 1.sp
                                 )
-                                Text(
-                                    "Lectura y meditación diaria",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                
+                                NavigationDrawerItem(
+                                    icon = { 
+                                        Icon(
+                                            Icons.Outlined.AutoStories, 
+                                            contentDescription = null,
+                                            tint = if (showDevotionalSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
+                                        ) 
+                                    },
+                                    label = { 
+                                        Column {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    "Devocional",
+                                                    color = if (showDevotionalSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                                )
+                                                if (showDevotionalSetting) {
+                                                    val showDot by viewModel.showDevotionalDot.collectAsState()
+                                                    if (showDot) {
+                                                        Spacer(modifier = Modifier.weight(1f))
+                                                        BreathingNotificationDot()
+                                                    }
+                                                }
+                                            }
+                                            if (!showDevotionalSetting) {
+                                                Text(
+                                                    "Desactivado - Actívalo en Ajustes",
+                                                    fontSize = 9.sp,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                                )
+                                            }
+                                        }
+                                    },
+                                    selected = false,
+                                    onClick = {
+                                        if (showDevotionalSetting) {
+                                            viewModel.markDevotionalVisited()
+                                            scope.launch { drawerState.close() }
+                                            safeNavigate(Screen.Devotional.route)
+                                        }
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
                                 )
-                            }
-                            
-                            Spacer(modifier = Modifier.height(12.dp))
-                            
-                            NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.Home, contentDescription = null) },
-                                label = { Text("Inicio") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    if (navController.currentDestination?.route != Screen.Home.route) {
-                                        safeNavigate(Screen.Home.route)
-                                    }
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-                            
-                            NavigationDrawerItem(
-                                icon = { 
-                                    Icon(
-                                        Icons.Outlined.AutoStories, 
-                                        contentDescription = null,
-                                        tint = if (showDevotionalSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
-                                    ) 
-                                },
-                                label = { 
-                                    Column {
+
+                                NavigationDrawerItem(
+                                    icon = { 
+                                        Icon(
+                                            Icons.Outlined.WbSunny, 
+                                            contentDescription = null,
+                                            tint = LocalContentColor.current 
+                                        ) 
+                                    },
+                                    label = { 
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            Text(
-                                                "Devocional",
-                                                color = if (showDevotionalSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                                            )
-                                            if (showDevotionalSetting) {
+                                            Text("Versículo de hoy") 
+                                            val showDot by viewModel.showDailyVerseDot.collectAsState()
+                                            if (showDot) {
                                                 Spacer(modifier = Modifier.weight(1f))
-                                                Surface(
-                                                    color = MaterialTheme.colorScheme.secondary,
-                                                    shape = RoundedCornerShape(4.dp)
-                                                ) {
-                                                    Text(
-                                                        "Hoy",
-                                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                                        fontSize = 9.sp,
-                                                        color = MaterialTheme.colorScheme.onSecondary,
-                                                        fontWeight = FontWeight.Bold
-                                                    )
-                                                }
+                                                BreathingNotificationDot()
                                             }
                                         }
-                                        if (!showDevotionalSetting) {
-                                            Text(
-                                                "Desactivado - Actívalo en Ajustes",
-                                                fontSize = 9.sp,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                                            )
-                                        }
-                                    }
-                                },
-                                selected = false,
-                                onClick = {
-                                    if (showDevotionalSetting) {
+                                    },
+                                    selected = false,
+                                    onClick = {
+                                        viewModel.markDailyVerseVisited()
                                         scope.launch { drawerState.close() }
-                                        safeNavigate(Screen.Devotional.route)
-                                    }
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
+                                        safeNavigate(Screen.DailyVerse.route)
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
 
-                            NavigationDrawerItem(
-                                icon = { 
-                                    Icon(
-                                        Icons.Outlined.WbSunny, 
-                                        contentDescription = null,
-                                        tint = LocalContentColor.current 
-                                    ) 
-                                },
-                                label = { Text("Versículo de hoy") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate(Screen.DailyVerse.route)
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-                            
-                            NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.BookmarkBorder, contentDescription = null) },
-                                label = { Text("Marcadores") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate("bookmarks")
-                                },
-                                modifier = Modifier
-                                    .padding(horizontal = 12.dp)
-                            )
-
-                            NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.EditNote, contentDescription = null) },
-                                label = { Text("Mis Notas") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate("all_notes")
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-
-                            NavigationDrawerItem(
-                                icon = { 
-                                    Icon(
-                                        Icons.Outlined.Extension, 
-                                        contentDescription = null,
-                                        tint = if (showTriviaSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
-                                    ) 
-                                }, 
-                                label = { 
-                                    Column {
-                                        Text(
-                                            "Reto del día",
-                                            color = if (showTriviaSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                                        )
-                                        if (!showTriviaSetting) {
-                                            Text(
-                                                "Desactivado - Actívalo en Ajustes",
-                                                fontSize = 9.sp,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                                            )
-                                        }
-                                    }
-                                },
-                                selected = false,
-                                onClick = {
-                                    if (showTriviaSetting) {
-                                        scope.launch { drawerState.close() }
-                                        safeNavigate(Screen.Challenge.route)
-                                    }
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-
-                            NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.Explore, contentDescription = null) },
-                                label = { Text("Propósito") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate(Screen.Purpose.route)
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-
-                            NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
-                                label = { Text("Ajustes") },
-                                selected = false,
-                                onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate(Screen.Settings.route)
-                                },
-                                modifier = Modifier.padding(horizontal = 12.dp)
-                            )
-
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            // --- TARJETA DE PROGRESO GLOBAL ---
-                            val globalProgress by viewModel.globalProgressPercent.collectAsState()
-                            val allProgress by viewModel.allProgress.collectAsState()
-                            val totalChapters by viewModel.globalChapterCount.collectAsState()
-                            
-                            Surface(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(16.dp),
-                                border = androidx.compose.foundation.BorderStroke(
-                                    1.dp, 
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                ),
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            text = buildAnnotatedString {
-                                                append("Has leído ")
-                                                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                                                    append("${allProgress.size}")
+                                NavigationDrawerItem(
+                                    icon = { 
+                                        Icon(
+                                            Icons.Outlined.Extension, 
+                                            contentDescription = null,
+                                            tint = if (showTriviaSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
+                                        ) 
+                                    }, 
+                                    label = { 
+                                        Column {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    "Reto del día",
+                                                    color = if (showTriviaSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                                )
+                                                if (showTriviaSetting) {
+                                                    val showDot by challengeViewModel.showChallengeDot.collectAsState()
+                                                    if (showDot) {
+                                                        Spacer(modifier = Modifier.weight(1f))
+                                                        BreathingNotificationDot()
+                                                    }
                                                 }
-                                                append(" capítulos")
-                                            },
-                                            fontSize = 13.sp,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        Text(
-                                            text = "${(globalProgress * 100).toInt()}%",
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color(0xFF33506E)
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    // Barra de progreso personalizada sin decoraciones (puntos) en los extremos
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(6.dp)
-                                            .clip(RoundedCornerShape(3.dp))
-                                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    ) {
+                                            }
+                                            if (!showTriviaSetting) {
+                                                Text(
+                                                    "Desactivado - Actívalo en Ajustes",
+                                                    fontSize = 9.sp,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                                )
+                                            }
+                                        }
+                                    },
+                                    selected = false,
+                                    onClick = {
+                                        if (showTriviaSetting) {
+                                            challengeViewModel.markChallengeVisited()
+                                            scope.launch { drawerState.close() }
+                                            safeNavigate(Screen.Challenge.route)
+                                        }
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+
+                                // --- SECCIÓN TU ACTIVIDAD ---
+                                Text(
+                                    "TU ACTIVIDAD",
+                                    modifier = Modifier.padding(start = 28.dp, top = 12.dp, bottom = 6.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                    letterSpacing = 1.sp
+                                )
+                                
+                                NavigationDrawerItem(
+                                    icon = { Icon(Icons.Outlined.BookmarkBorder, contentDescription = null) },
+                                    label = { Text("Marcadores") },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate("bookmarks")
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+                                NavigationDrawerItem(
+                                    icon = { Icon(Icons.Outlined.EditNote, contentDescription = null) },
+                                    label = { Text("Mis Notas") },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate("all_notes")
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+
+                                // --- SECCIÓN MÁS ---
+                                Text(
+                                    "MÁS",
+                                    modifier = Modifier.padding(start = 28.dp, top = 12.dp, bottom = 6.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                    letterSpacing = 1.sp
+                                )
+
+                                NavigationDrawerItem(
+                                    icon = { Icon(Icons.Outlined.Explore, contentDescription = null) },
+                                    label = { Text("Propósito") },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate(Screen.Purpose.route)
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+                                NavigationDrawerItem(
+                                    icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
+                                    label = { Text("Ajustes") },
+                                    selected = false,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate(Screen.Settings.route)
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp).heightIn(min = 48.dp)
+                                )
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                // --- TARJETA DE PROGRESO GLOBAL ---
+                                val globalProgress by viewModel.globalProgressPercent.collectAsState()
+                                val allProgress by viewModel.allProgress.collectAsState()
+                                
+                                Surface(
+                                    color = MaterialTheme.colorScheme.surface,
+                                    shape = RoundedCornerShape(16.dp),
+                                    border = androidx.compose.foundation.BorderStroke(
+                                        1.dp, 
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                    ),
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp)
+                                        .fillMaxWidth()
+                                ) {
+                                    Column(modifier = Modifier.padding(12.dp)) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = buildAnnotatedString {
+                                                    append("Has leído ")
+                                                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                                        append("${allProgress.size}")
+                                                    }
+                                                    append(" capítulos")
+                                                },
+                                                fontSize = 13.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                            Text(
+                                                text = "${(globalProgress * 100).toInt()}%",
+                                                fontSize = 13.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFF33506E)
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(10.dp))
                                         Box(
                                             modifier = Modifier
-                                                .fillMaxWidth(globalProgress)
-                                                .fillMaxHeight()
-                                                .background(Color(0xFF33506E))
-                                        )
+                                                .fillMaxWidth()
+                                                .height(6.dp)
+                                                .clip(RoundedCornerShape(3.dp))
+                                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(globalProgress)
+                                                    .fillMaxHeight()
+                                                    .background(Color(0xFF33506E))
+                                            )
+                                        }
                                     }
                                 }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                Text(
+                                    text = "Verbo Libre · v1.0",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                    modifier = Modifier
+                                        .padding(top = 14.dp, bottom = 24.dp)
+                                        .align(Alignment.CenterHorizontally)
+                                )
                             }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // --- MODO OSCURO TOGGLE ---
-                            Surface(
-                                onClick = { viewModel.toggleDarkMode() },
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(14.dp),
-                                border = androidx.compose.foundation.BorderStroke(
-                                    1.dp, 
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                ),
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(16.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column {
-                                        Text(
-                                            "Modo oscuro",
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Text(
-                                            "Activa el tema nocturno",
-                                            fontSize = 11.sp,
-                                            color = Color.Gray
-                                        )
-                                    }
-                                    ThemeToggleButton(
-                                        isDark = isDarkMode,
-                                        onClick = { viewModel.toggleDarkMode() },
-                                        size = 38.dp
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-                            
-                            Text(
-                                text = "Verbo Libre · v1.0",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                modifier = Modifier
-                                    .padding(bottom = 24.dp)
-                                    .align(Alignment.CenterHorizontally)
-                            )
                         }
                     }
                 ) {
-                    NavHost(
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                LaunchedEffect(currentRoute) {
+                    requestedOrientation = if (currentRoute?.startsWith("reader") == true) {
+                        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                    } else {
+                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    }
+                }
+
+                NavHost(
                         navController = navController,
                         startDestination = Screen.Home.route,
                         modifier = Modifier.fillMaxSize()
@@ -401,7 +430,6 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Home.route) {
                             HomeScreen(
                                 viewModel = viewModel,
-                                challengeViewModel = challengeViewModel,
                                 onChapterSelected = { bookId, chapter, verse ->
                                     val route = Screen.Reader.createRoute(bookId, chapter, verse)
                                     if (navController.currentDestination?.route != route) {
@@ -510,6 +538,68 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun BreathingNotificationDot() {
+    val infiniteTransition = rememberInfiniteTransition(label = "breathing_dot")
+    
+    // Core animation: 1.0 to 1.25 pulse
+    val coreScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.25f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1200, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "core_scale"
+    )
+
+    // Halo animation: 1.0 to 2.8 expansion with fade out
+    val haloScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 2.8f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2400, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "halo_scale"
+    )
+    
+    val haloOpacity by infiniteTransition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2400, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "halo_opacity"
+    )
+
+    val dotColor = Color(0xFFE0764F)
+
+    Box(
+        modifier = Modifier
+            .padding(end = 12.dp)
+            .size(12.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        // Halo
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            drawCircle(
+                color = dotColor,
+                radius = (size.minDimension / 2) * haloScale,
+                alpha = haloOpacity
+            )
+        }
+        // Core
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            drawCircle(
+                color = dotColor,
+                radius = (size.minDimension / 2) * coreScale
+            )
         }
     }
 }

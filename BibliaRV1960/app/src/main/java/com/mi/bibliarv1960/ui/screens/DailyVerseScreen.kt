@@ -38,6 +38,10 @@ fun DailyVerseScreen(
     onNavigate: (String) -> Unit,
     onBack: () -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.markDailyVerseVisited()
+    }
+
     val dailyVerse by viewModel.displayDailyVerse.collectAsState()
     val dailyBgIndex by viewModel.displayVerseBgIndex.collectAsState()
     val context = LocalContext.current

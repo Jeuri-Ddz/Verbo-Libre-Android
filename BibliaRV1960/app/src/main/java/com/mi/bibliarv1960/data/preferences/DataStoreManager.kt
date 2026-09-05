@@ -41,6 +41,11 @@ class DataStoreManager(private val context: Context) {
         val SHOW_TRIVIA = booleanPreferencesKey("show_trivia")
         val SHOW_DEVOCIONAL = booleanPreferencesKey("show_devocional")
         val FIRST_LAUNCH_DATE = stringPreferencesKey("first_launch_date")
+
+        // Rastreo de visitas para puntos de notificación
+        val LAST_DEVOTIONAL_VISIT_DATE = stringPreferencesKey("last_devotional_visit_date")
+        val LAST_DAILY_VERSE_VISIT_DATE = stringPreferencesKey("last_daily_verse_visit_date")
+        val LAST_CHALLENGE_VISIT_DATE = stringPreferencesKey("last_challenge_visit_date")
     }
 
     val selectedTranslationId: Flow<String> = context.dataStore.data.map { preferences ->
@@ -75,6 +80,10 @@ class DataStoreManager(private val context: Context) {
     val challengeCompletedCount: Flow<Int> = context.dataStore.data.map { it[CHALLENGE_COMPLETED_COUNT] ?: 0 }
     val lastChallengeDate: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_DATE] }
     val lastChallengeResult: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_RESULT] }
+
+    val lastDevotionalVisitDate: Flow<String?> = context.dataStore.data.map { it[LAST_DEVOTIONAL_VISIT_DATE] }
+    val lastDailyVerseVisitDate: Flow<String?> = context.dataStore.data.map { it[LAST_DAILY_VERSE_VISIT_DATE] }
+    val lastChallengeVisitDate: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_VISIT_DATE] }
 
     suspend fun saveTranslationId(id: String) {
         context.dataStore.edit { it[SELECTED_TRANSLATION_ID] = id }
@@ -193,5 +202,17 @@ class DataStoreManager(private val context: Context) {
                 preferences[CHALLENGE_COMPLETED_COUNT] = current + 1
             }
         }
+    }
+
+    suspend fun saveLastDevotionalVisitDate(date: String) {
+        context.dataStore.edit { it[LAST_DEVOTIONAL_VISIT_DATE] = date }
+    }
+
+    suspend fun saveLastDailyVerseVisitDate(date: String) {
+        context.dataStore.edit { it[LAST_DAILY_VERSE_VISIT_DATE] = date }
+    }
+
+    suspend fun saveLastChallengeVisitDate(date: String) {
+        context.dataStore.edit { it[LAST_CHALLENGE_VISIT_DATE] = date }
     }
 }
