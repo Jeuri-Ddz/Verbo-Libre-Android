@@ -142,9 +142,9 @@
   {
     "id": 15,
     "book_id": 19,
-    "chapter": 118,
-    "verse": 24,
-    "reference": "Salmos 118:24",
+    "chapter": 37,
+    "verse": 5,
+    "reference": "Salmos 37:5",
     "verse_text": "Encomienda á Jehová tu camino, Y espera en él; y él hará.",
     "topic": "Tiempo",
     "reflection": "A veces Dios te pide actuar y otras veces esperar. En ambas, confía: sus tiempos son perfectos."
@@ -925,7 +925,7 @@
     "chapter": 41,
     "verse": 13,
     "reference": "Isaías 41:13",
-    "verse_text": "Yo soy tu Dios que te asusta de tu diestra.",
+    "verse_text": "Yo soy tu Dios que te sostiene de tu diestra.",
     "topic": "Sostén",
     "reflection": "Dios sostiene tu mano derecha; no enfrentas las batallas solo."
   },
@@ -1275,7 +1275,7 @@
     "chapter": 1,
     "verse": 8,
     "reference": "1 Pedro 1:8",
-    "verse_text": "Creando en él... os alegráis con gozo inefable.",
+    "verse_text": "Creyendo en él... os alegráis con gozo inefable.",
     "topic": "Gozo",
     "reflection": "La fe en Cristo llena el corazón con una alegría indescriptible."
   },
@@ -1406,7 +1406,7 @@
     "verse": 19,
     "reference": "1 Juan 4:19",
     "verse_text": "Nosotros le amamos á él, porque él nos amó primero.",
-    "topic": "Amor Divine",
+    "topic": "Amor Divino",
     "reflection": "Tu capacidad de amar nace al experimentar primero su amor entero."
   },
   {
@@ -1885,7 +1885,7 @@
     "chapter": 40,
     "verse": 1,
     "reference": "Salmos 40:1",
-    "verse_text": "Pacientemente esperé á Jehová, y se inclinó á mí.",
+    "verse_text": "Pacientemente esperé a Jehová, y se inclinó a mí, y oyó mi clamor",
     "topic": "Paciencia",
     "reflection": "La espera paciente en Dios siempre encuentra respuesta a su tiempo."
   },
@@ -1957,7 +1957,7 @@
     "reference": "Salmos 119:140",
     "verse_text": "Sumamente pura es tu palabra, y la ama tu siervo.",
     "topic": "Pureza",
-    "reflection": "La pureza de la Verdad trae limpieza y transparencia al caminar."
+    "reflection": "La pureza de la verdad trae limpieza y transparencia al caminar, permitiéndote vivir con un corazón sincero delante de Dios y de los demás."
   },
   {
     "id": 197,
@@ -1965,9 +1965,9 @@
     "chapter": 12,
     "verse": 10,
     "reference": "2 Corintios 12:10",
-    "verse_text": "Cuando soy flaco, entonces soy fuerte.",
+    "verse_text": "Cuando soy  débil, entonces soy fuerte.",
     "topic": "Fortaleza",
-    "reflection": "Tus flaquezas son la oportunidad para que brille el poder de Dios."
+    "reflection": "Reconoce tus limitaciones y preséntalas a Dios; ahí puede ser el escenario donde Dios muestre lo que solo Él puede hacer."
   },
   {
     "id": 198,

@@ -47,13 +47,22 @@ fun DevotionalScreen(
     val devotional by viewModel.displayDevotional.collectAsState()
     val dailyBgIndex by viewModel.todayDevotionalBgIndex.collectAsState()
     val currentStreak by viewModel.currentStreak.collectAsState()
-    val lastReadDate by viewModel.lastReadDate.collectAsState()
+    val isReadToday by viewModel.isReadToday.collectAsState()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val graphicsLayer = rememberGraphicsLayer()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    val todayStr = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()) }
-    val isReadToday = lastReadDate == todayStr
+    var showStreakInfo by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.streakLostEvent.collect {
+            snackbarHostState.showSnackbar(
+                message = "¡Oh no! Has perdido tu racha. ¡Empieza una nueva hoy!",
+                duration = SnackbarDuration.Long
+            )
+        }
+    }
 
     @Suppress("DiscouragedApi")
     val bgResourceId = remember(dailyBgIndex) {
@@ -140,6 +149,7 @@ fun DevotionalScreen(
                 }
 
                 Surface(
+                    onClick = { showStreakInfo = true },
                     color = Color.White.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(12.dp),
                 ) {
@@ -187,9 +197,10 @@ fun DevotionalScreen(
             ) {
                 devotional?.let { dev ->
                     LinoButton(
-                        text = "✓ Marcar como leído",
+                        text = if (isReadToday) "Leído hoy" else "✓ Marcar como leído",
                         variant = LinoButtonVariant.PRIMARY,
-                        onClick = { if (!isReadToday) viewModel.markAsRead() }
+                        enabled = !isReadToday,
+                        onClick = { viewModel.markAsRead() }
                     )
                     LinoButton(
                         text = "↗ Compartir",
@@ -212,9 +223,28 @@ fun DevotionalScreen(
                     color = Color.White.copy(alpha = 0.5f),
                     modifier = Modifier
                         .padding(bottom = 12.dp)
-                        .clickable { viewModel.nextDevotionalPreview() }
                 )
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 150.dp)
+        )
+    }
+
+    if (showStreakInfo) {
+        AlertDialog(
+            onDismissRequest = { showStreakInfo = false },
+            title = { Text("¿Qué son las rachas?") },
+            text = { 
+                Text("Tu racha aumenta cada día que marcas un devocional como leído. Si fallas un día, el contador vuelve a cero. ¡Mantén el hábito!") 
+            },
+            confirmButton = {
+                TextButton(onClick = { showStreakInfo = false }) {
+                    Text("Entendido")
+                }
+            }
+        )
     }
 }

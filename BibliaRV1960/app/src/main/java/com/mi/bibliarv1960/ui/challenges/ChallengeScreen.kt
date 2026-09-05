@@ -50,7 +50,7 @@ fun ChallengeScreen(
             status = status,
             completedCount = completedCount,
             onClose = onClose,
-            onCheckTrivia = { index -> 
+            onCheckTrivia = { index ->
                 val correct = index == challenge?.correctIndex
                 viewModel.submitResult(ChallengeResult.Trivia(index), correct)
             }

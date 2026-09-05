@@ -1,0 +1,51 @@
+ESTADO DEL PROYECTO: VERBO LIBRE (BIBLIA RV1960) - [2026-08-26]
+
+Este documento resume los avances y el estado técnico actual para que cualquier IA pueda continuar el desarrollo sin perder contexto.
+
+1. RESUMEN TÉCNICO Y ARQUITECTURA
+---------------------------------
+- Stack: Jetpack Compose (100%), Hilt, Room, DataStore, SharedPreferences.
+- Persistencia Híbrida:
+  * DataStore: Preferencias del sistema (Modo oscuro, tamaño/tipo fuente, velocidad TTS, visibilidad de módulos).
+  * SharedPreferences ("onboarding_prefs"): Flags de tutoriales/tooltips.
+
+2. LOGROS RECIENTES: FEATURE 12 (PANTALLA DE AJUSTES) - COMPLETADA
+-------------------------------------------------------------------
+Se ha transformado la pantalla de Ajustes en el centro de control con memoria persistente:
+
+- LECTURA:
+  * Tamaño de Fuente: Sincronizado bidireccionalmente entre Ajustes y Lector (A+/A-). El valor persiste al reiniciar.
+  * Tipo de Fuente: 3 opciones (Sistema, Serif Clásica, Moderna). Afecta al texto bíblico y notas.
+  * Traducción por defecto: Permite elegir la versión de arranque (RV1909 o VBL).
+  * Modo Descontinuo: Implementado con previsualización animada (imagen img_tutorial_discontinua) en Ajustes.
+
+- AUDIO (TTS):
+  * Velocidad Preferida: Sincronización reactiva. Cambiarla en Ajustes actualiza el Lector al instante y viceversa.
+  * Persistencia: Se carga el valor de DataStore en segundo plano durante el arranque para no bloquear el inicio (Fix ANR).
+
+- PERSONALIZACIÓN (HOME):
+  * Trivia y Devocional: Interruptores para ocultarlos en la pantalla de inicio.
+  * Comportamiento en Drawer: Si se desactivan, los ítems en el menú lateral aparecen grises/tenues con el mensaje "Desactivado - Actívalo en Ajustes" y pierden su función de click.
+
+- AYUDA:
+  * Reiniciar guías: Botón con diálogo de confirmación que limpia todos los tutoriales (Flags de SharedPreferences).
+
+3. ESTADO ACTUAL DE LA UI
+-------------------------
+- ReaderScreen: Funcional con modo continuo/descontinuo, notas inline en rojo y atajo rápido al editor.
+- HomeScreen: Limpia. Sincronizada con los nuevos ajustes de visibilidad.
+- MainActivity/Drawer: Actualizada para reflejar estados tenues de secciones desactivadas.
+
+4. PENDIENTES (SEGÚN EL ROADMAP)
+---------------------------------
+- FEATURE 7: Exportar notas (.txt vía share sheet).
+- FEATURE 8: UI Adaptativa para Tablets (WindowSizeClass).
+- FEATURE 11: Suite de pruebas automatizadas (Compose Testing).
+
+5. NOTA CRÍTICA PARA LA SIGUIENTE IA
+-------------------------------------
+- Sincronización TTS: Se ha movido a initializeDailyData() en BibleViewModel para evitar bloqueos en el constructor (init). No moverla de nuevo al init.
+- Buscador Home: Se renombró a BibleSearchBar para evitar colisiones de nombres con componentes de Material3.
+- Onboarding: Mantener la lógica 'if (onboardingActive)' en ReaderScreen para evitar que las anclas invisibles bloqueen los toques reales al terminar.
+
+PROYECTO COMPILA Y ARRANCA CORRECTAMENTE (BUILD SUCCESSFUL).

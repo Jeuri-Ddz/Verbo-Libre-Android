@@ -45,9 +45,11 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily as ComposeFontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
@@ -102,6 +104,7 @@ fun ReaderScreen(
     val bookmarks by viewModel.allBookmarks.collectAsState()
     val categories by viewModel.allCategories.collectAsState()
     val fontSize by viewModel.fontSize.collectAsState()
+    val fontFamilyName by viewModel.fontFamily.collectAsState()
     val translations by viewModel.allTranslations.collectAsState()
     val selectedTranslationId by viewModel.selectedTranslationId.collectAsState()
     val isDarkMode by viewModel.isDarkMode.collectAsState()
@@ -109,9 +112,12 @@ fun ReaderScreen(
     val isPaused by viewModel.isPaused.collectAsState()
     val playbackSpeed by viewModel.playbackSpeed.collectAsState()
     val currentSpeakingVerse by viewModel.currentSpeakingVerse.collectAsState()
+    val isDiscontinuousMode by viewModel.isDiscontinuousMode.collectAsState()
     val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
+    val allNotes by notesViewModel.allNotes.collectAsState()
 
     val noteIndicatorColor = MaterialTheme.colorScheme.primary
+    val noteTextColor = if (isDarkMode) Color(0xFFFF8A80) else Color(0xFFB8310F)
 
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -131,7 +137,7 @@ fun ReaderScreen(
     var verseAnchor by remember { mutableStateOf<View?>(null) }
 
     LaunchedEffect(menuAnchor, translationAnchor, progressAnchor, audioAnchor, themeAnchor, verseAnchor) {
-        if (onboardingActive && menuAnchor != null && translationAnchor != null && progressAnchor != null && 
+        if (onboardingActive && menuAnchor != null && translationAnchor != null && progressAnchor != null &&
             audioAnchor != null && themeAnchor != null && verseAnchor != null && 
             readerOnboarding != null) {
             
@@ -632,42 +638,86 @@ fun ReaderScreen(
 
             val primaryColor = MaterialTheme.colorScheme.primary
             val onBackgroundColor = MaterialTheme.colorScheme.onBackground
+            
+            val currentFontFamily = when(fontFamilyName) {
+                "SERIF" -> ComposeFontFamily.Serif
+                "MONOSPACE" -> ComposeFontFamily.Monospace
+                else -> ComposeFontFamily.SansSerif
+            }
 
-            val annotatedString = remember(verses, fontSize, notedVerseKeys, selectedTranslationId, primaryColor, onBackgroundColor) {
+            val annotatedString = remember(verses, fontSize, fontFamilyName, notedVerseKeys, selectedTranslationId, isDiscontinuousMode, allNotes, primaryColor, onBackgroundColor, noteTextColor) {
                 buildAnnotatedString {
                     verses.forEach { verse ->
-                        pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
-                        
                         val verseKey = buildVerseKey(verse.book_id, verse.chapter, verse.verse)
                         val hasNote = notedVerseKeys.contains(verseKey)
+                        val noteText = allNotes.find { it.verseKey == verseKey }?.text
 
+                        // 1. ANOTACIÓN DE VERSÍCULO (Texto Bíblico solamente para TTS y Marcadores)
+                        pushStringAnnotation(tag = "VERSE", annotation = verse.verse.toString())
+                        
                         withStyle(
                             style = SpanStyle(
                                 fontWeight = FontWeight.Bold,
                                 color = primaryColor,
                                 fontSize = (fontSize * 0.7f).sp,
-                                baselineShift = BaselineShift.Superscript
+                                baselineShift = BaselineShift.Superscript,
+                                fontFamily = currentFontFamily
                             )
                         ) {
                             append("${verse.verse} ")
                         }
+                        
                         val isDisputed = verse.text.contains("[No incluido en los manuscritos más antiguos]")
                         withStyle(
                             style = SpanStyle(
                                 fontSize = fontSize.sp,
                                 color = if (isDisputed) Color.Gray else onBackgroundColor,
                                 fontStyle = if (isDisputed) FontStyle.Italic else null,
-                                textDecoration = null
+                                textDecoration = null,
+                                fontFamily = currentFontFamily
                             )
                         ) {
-                            append("${verse.text} ")
+                            append(verse.text)
                         }
-                        if (hasNote) {
-                            pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
-                            appendInlineContent("note_icon", "[nota]")
-                            pop()
+                        pop() // Fin de VERSE
+
+                        // 2. LÓGICA DE NOTAS Y ESPACIADO
+                        if (isDiscontinuousMode) {
+                            if (!noteText.isNullOrBlank()) {
+                                pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
+                                withStyle(style = ParagraphStyle(lineHeight = (fontSize * 1.0f).sp)) {
+                                    // Salto de línea de 1sp dentro del bloque de la nota para eliminar el "aire" superior
+                                    withStyle(style = SpanStyle(fontSize = 1.sp)) {
+                                        append("\n")
+                                    }
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = noteTextColor,
+                                            fontSize = (fontSize * 0.9f).sp,
+                                            fontStyle = FontStyle.Italic,
+                                            fontFamily = currentFontFamily
+                                        )
+                                    ) {
+                                        append(noteText)
+                                    }
+                                }
+                                pop()
+
+                                // Salto de línea controlado para el espacio con el siguiente versículo
+                                withStyle(style = SpanStyle(fontSize = (fontSize * 0.6f).sp)) {
+                                    append("\n\n")
+                                }
+                            } else {
+                                append("\n\n")
+                            }
+                        } else {
+                            append(" ")
+                            if (hasNote) {
+                                pushStringAnnotation(tag = "NOTE_ACTION", annotation = verseKey)
+                                appendInlineContent("note_icon", "[nota]")
+                                pop()
+                            }
                         }
-                        pop()
                     }
                 }
             }
@@ -748,23 +798,25 @@ fun ReaderScreen(
                     }
 
                     // 2. Dibujar Subrayado de Notas
-                    verseGeometries.forEach { (verseNum, rects) ->
-                        val vKey = buildVerseKey(currentBookId, currentChapter, verseNum)
-                        if (vKey in notedVerseKeys) {
-                            val lineThickness = 1.dp.toPx()
-                            val spacing = 1.dp.toPx()
-                            rects.forEach { rect ->
-                                val bottom = rect.bottom - 2.dp.toPx()
-                                drawRect(
-                                    color = noteIndicatorColor,
-                                    topLeft = Offset(rect.left, bottom - lineThickness * 2 - spacing),
-                                    size = Size(rect.width, lineThickness)
-                                )
-                                drawRect(
-                                    color = noteIndicatorColor,
-                                    topLeft = Offset(rect.left, bottom - lineThickness),
-                                    size = Size(rect.width, lineThickness)
-                                )
+                    if (!isDiscontinuousMode) {
+                        verseGeometries.forEach { (verseNum, rects) ->
+                            val vKey = buildVerseKey(currentBookId, currentChapter, verseNum)
+                            if (vKey in notedVerseKeys) {
+                                val lineThickness = 1.dp.toPx()
+                                val spacing = 1.dp.toPx()
+                                rects.forEach { rect ->
+                                    val bottom = rect.bottom - 2.dp.toPx()
+                                    drawRect(
+                                        color = noteIndicatorColor,
+                                        topLeft = Offset(rect.left, bottom - lineThickness * 2 - spacing),
+                                        size = Size(rect.width, lineThickness)
+                                    )
+                                    drawRect(
+                                        color = noteIndicatorColor,
+                                        topLeft = Offset(rect.left, bottom - lineThickness),
+                                        size = Size(rect.width, lineThickness)
+                                    )
+                                }
                             }
                         }
                     }
@@ -806,26 +858,39 @@ fun ReaderScreen(
                                     textLayoutResult?.let { layout ->
                                         val charOffset = layout.getOffsetForPosition(offset)
                                         
-                                        // 1. Buscamos primero por proximidad al icono de nota (Hit Slop de 24dp)
-                                        // Esto resuelve el problema de que el Rect del versículo "secuestre" el toque cerca del icono.
-                                        val hitSlopPx = with(density) { 24.dp.toPx() }
+                                        // 1. Buscamos primero por proximidad a las notas (Hit Slop de 8dp)
                                         val noteAnnotations = annotatedString.getStringAnnotations(tag = "NOTE_ACTION", start = 0, end = annotatedString.length)
                                         
                                         var closestNote: String? = null
                                         var minDistance = Float.MAX_VALUE
 
                                         noteAnnotations.forEach { annotation ->
-                                            val rect = layout.getBoundingBox(annotation.start)
-                                            val centerX = rect.left + rect.width / 2f
-                                            val centerY = rect.top + rect.height / 2f
+                                            val firstLine = layout.getLineForOffset(annotation.start)
+                                            val lastLine = layout.getLineForOffset(annotation.end)
                                             
-                                            val dx = offset.x - centerX
-                                            val dy = offset.y - centerY
-                                            val distance = sqrt(dx * dx + dy * dy)
-                                            
-                                            if (distance <= hitSlopPx && distance < minDistance) {
-                                                minDistance = distance
-                                                closestNote = annotation.item
+                                            for (lineIndex in firstLine..lastLine) {
+                                                val left = if (lineIndex == firstLine) layout.getHorizontalPosition(annotation.start, true) else layout.getLineLeft(lineIndex)
+                                                val right = if (lineIndex == lastLine) layout.getHorizontalPosition(annotation.end, true) else layout.getLineRight(lineIndex)
+                                                val top = layout.getLineTop(lineIndex)
+                                                val bottom = layout.getLineBottom(lineIndex)
+                                                
+                                                // Extend hit area slightly for better UX (slop)
+                                                val slop = with(density) { 8.dp.toPx() }
+                                                if (offset.x >= left - slop && offset.x <= right + slop &&
+                                                    offset.y >= top - slop && offset.y <= bottom + slop) {
+                                                    
+                                                    // Calculate distance to center of this line segment for priority
+                                                    val centerX = (left + right) / 2f
+                                                    val centerY = (top + bottom) / 2f
+                                                    val dx = offset.x - centerX
+                                                    val dy = offset.y - centerY
+                                                    val dist = sqrt(dx * dx + dy * dy)
+                                                    
+                                                    if (dist < minDistance) {
+                                                        minDistance = dist
+                                                        closestNote = annotation.item
+                                                    }
+                                                }
                                             }
                                         }
 

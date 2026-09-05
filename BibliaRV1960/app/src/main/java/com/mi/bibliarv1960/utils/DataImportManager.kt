@@ -17,6 +17,7 @@ class DataImportManager(private val context: Context, private val dao: BibleCont
     }
 
     suspend fun importDevotionals() {
+        if (dao.getDevotionalsCount() > 0) return 
         try {
             context.assets.open("data/devotionals.json").use { inputStream ->
                 val reader = InputStreamReader(inputStream)
@@ -31,6 +32,7 @@ class DataImportManager(private val context: Context, private val dao: BibleCont
     }
 
     suspend fun importDailyVerses() {
+        if (dao.getDailyVersesCount() > 0) return
         try {
             context.assets.open("data/daily_verses.json").use { inputStream ->
                 val reader = InputStreamReader(inputStream)
@@ -45,6 +47,7 @@ class DataImportManager(private val context: Context, private val dao: BibleCont
     }
 
     suspend fun importChallenges() {
+        if (dao.getChallengesCount() > 0) return
         try {
             context.assets.open("data/challenges.json").use { inputStream ->
                 val reader = InputStreamReader(inputStream)

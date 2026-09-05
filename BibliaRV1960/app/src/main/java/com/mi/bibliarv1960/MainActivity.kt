@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.Extension
@@ -74,6 +75,9 @@ class MainActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
                 
+                val showTriviaSetting by viewModel.showTrivia.collectAsState()
+                val showDevotionalSetting by viewModel.showDevocional.collectAsState()
+                
                 // --- Gestión de Navegación Segura ---
                 var lastNavTime by remember { mutableLongStateOf(0L) }
                 
@@ -90,20 +94,6 @@ class MainActivity : ComponentActivity() {
                     if (now - lastNavTime > 400L && navController.previousBackStackEntry != null) {
                         lastNavTime = now
                         navController.popBackStack()
-                    }
-                }
-
-                // --- Onboarding & Challenge Logic ---
-                LaunchedEffect(Unit) {
-                    challengeViewModel.isStatusLoaded.first { it }
-                    kotlinx.coroutines.delay(150)
-                    
-                    val todayDate = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                    val status = challengeViewModel.challengeStatus.value
-                    val currentDestination = navController.currentBackStackEntry?.destination?.route
-                    
-                    if (currentDestination == Screen.Home.route && (status == null || status.date != todayDate)) {
-                        navController.navigate(Screen.Challenge.route)
                     }
                 }
 
@@ -141,38 +131,66 @@ class MainActivity : ComponentActivity() {
                             )
                             
                             NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.AutoStories, contentDescription = null) },
+                                icon = { 
+                                    Icon(
+                                        Icons.Outlined.AutoStories, 
+                                        contentDescription = null,
+                                        tint = if (showDevotionalSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
+                                    ) 
+                                },
                                 label = { 
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text("Devocional")
-                                        Spacer(modifier = Modifier.weight(1f))
-                                        Surface(
-                                            color = MaterialTheme.colorScheme.secondary,
-                                            shape = RoundedCornerShape(4.dp)
+                                    Column {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Text(
-                                                "Hoy",
-                                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                                "Devocional",
+                                                color = if (showDevotionalSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                            )
+                                            if (showDevotionalSetting) {
+                                                Spacer(modifier = Modifier.weight(1f))
+                                                Surface(
+                                                    color = MaterialTheme.colorScheme.secondary,
+                                                    shape = RoundedCornerShape(4.dp)
+                                                ) {
+                                                    Text(
+                                                        "Hoy",
+                                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                                        fontSize = 9.sp,
+                                                        color = MaterialTheme.colorScheme.onSecondary,
+                                                        fontWeight = FontWeight.Bold
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        if (!showDevotionalSetting) {
+                                            Text(
+                                                "Desactivado - Actívalo en Ajustes",
                                                 fontSize = 9.sp,
-                                                color = MaterialTheme.colorScheme.onSecondary,
-                                                fontWeight = FontWeight.Bold
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
                                             )
                                         }
                                     }
                                 },
                                 selected = false,
                                 onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate(Screen.Devotional.route)
+                                    if (showDevotionalSetting) {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate(Screen.Devotional.route)
+                                    }
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
 
                             NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.WbSunny, contentDescription = null) },
+                                icon = { 
+                                    Icon(
+                                        Icons.Outlined.WbSunny, 
+                                        contentDescription = null,
+                                        tint = LocalContentColor.current 
+                                    ) 
+                                },
                                 label = { Text("Versículo de hoy") },
                                 selected = false,
                                 onClick = {
@@ -206,12 +224,34 @@ class MainActivity : ComponentActivity() {
                             )
 
                             NavigationDrawerItem(
-                                icon = { Icon(Icons.Outlined.Extension, contentDescription = null) }, 
-                                label = { Text("Reto del día") },
+                                icon = { 
+                                    Icon(
+                                        Icons.Outlined.Extension, 
+                                        contentDescription = null,
+                                        tint = if (showTriviaSetting) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0.38f)
+                                    ) 
+                                }, 
+                                label = { 
+                                    Column {
+                                        Text(
+                                            "Reto del día",
+                                            color = if (showTriviaSetting) Color.Unspecified else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                        )
+                                        if (!showTriviaSetting) {
+                                            Text(
+                                                "Desactivado - Actívalo en Ajustes",
+                                                fontSize = 9.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                                            )
+                                        }
+                                    }
+                                },
                                 selected = false,
                                 onClick = {
-                                    scope.launch { drawerState.close() }
-                                    safeNavigate(Screen.Challenge.route)
+                                    if (showTriviaSetting) {
+                                        scope.launch { drawerState.close() }
+                                        safeNavigate(Screen.Challenge.route)
+                                    }
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
@@ -223,6 +263,17 @@ class MainActivity : ComponentActivity() {
                                 onClick = {
                                     scope.launch { drawerState.close() }
                                     safeNavigate(Screen.Purpose.route)
+                                },
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+
+                            NavigationDrawerItem(
+                                icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
+                                label = { Text("Ajustes") },
+                                selected = false,
+                                onClick = {
+                                    scope.launch { drawerState.close() }
+                                    safeNavigate(Screen.Settings.route)
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp)
                             )
@@ -437,7 +488,6 @@ class MainActivity : ComponentActivity() {
                             ChallengeScreen(
                                 viewModel = challengeViewModel,
                                 onClose = {
-                                    challengeViewModel.dismissTriviaStep()
                                     if (navController.previousBackStackEntry != null) {
                                         navController.popBackStack()
                                     } else {
@@ -450,6 +500,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.Search.route) {
                             SearchScreen()
+                        }
+                        composable(Screen.Settings.route) {
+                            SettingsScreen(
+                                viewModel = viewModel,
+                                onBack = { safePopBack() }
+                            )
                         }
                     }
                 }

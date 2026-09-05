@@ -1,21 +1,31 @@
 RESUMEN ACTUALIZADO DEL PROYECTO: VERBO LIBRE (Android)
-Fecha: 2026-08-21
+Fecha: 2026-08-26
 ----------------------------------------------------------------------
 
-1. HISTORIAL DE LECTURA (FEATURE RECIÉN IMPLEMENTADA)
-----------------------------------------------------
+1. SISTEMA DE CONTENIDO DIARIO (NUEVO)
+--------------------------------------
+- IMPLEMENTACIÓN 'MAZO BARAJADO' (Shuffled Deck):
+  * Se implementó un sistema determinista basado en ciclos para versículos y devocionales.
+  * Lógica: Se calcula la fecha de inicio del usuario, los días transcurridos y se baraja la lista usando una semilla fija por ciclo.
+  * Resultados: Cero repeticiones de contenido hasta completar la lista. Al terminar un ciclo, se re-baraja automáticamente con una nueva semilla derivada.
+  * Fondos: Los índices de fondo (1-5 para versículos, 6-10 para devocionales) ahora también son deterministas y consistentes durante el día.
+
+2. LIMPIEZA DE CÓDIGO Y DEBUG
+-----------------------------
+- ELIMINACIÓN DE 'DebugConfig':
+  * Se borró la infraestructura de forzado manual de IDs.
+  * Se eliminaron las funciones de 'Preview' (toque en título) para evitar cambios accidentales por el usuario.
+- OPTIMIZACIÓN DE IMPORTACIÓN:
+  * El 'DataImportManager' ahora verifica si las tablas están vacías antes de proceder con la carga de JSONs, evitando I/O innecesario en cada arranque.
+  * Se eliminaron archivos JSON residuales (`gpt.json`, `new.json`).
+
+3. HISTORIAL DE LECTURA Y PROGRESO
+----------------------------------
 - IMPLEMENTACIÓN 'lastReadChapter':
-  * Se implementó exitosamente. El botón "Continuar lectura" quedó ubicado como botón principal (confirmButton) en el 'ChapterSelectionDialog' (el diálogo que aparece al pulsar sobre un libro en el inicio).
-  * Lógica: Si el usuario ya leyó capítulos en ese libro, el botón le lleva automáticamente al siguiente capítulo pendiente. Si terminó el libro, le lleva al último.
-- COLORES DE PROGRESO (0%, Parcial, 100%):
-  * 0% / Parcial: Se utiliza 'Color(0xFF33506E)' (Navy Accent) para la barra de progreso.
-  * 100% (Completado): Se utiliza 'Color(0xFF3C9D6B)' (Verde Éxito) tanto para la barra como para el texto del porcentaje.
-  * Verificado en Modo Claro y Oscuro: En modo oscuro, las barras parciales usan una variante más suave para mantener el contraste, y los cuadros del selector de capítulos usan transparencias controladas para evitar el lag de renderizado.
-- MIGRACIÓN DE BASE DE DATOS (MIGRATION_2_3):
-  * Se implementó 'MIGRATION_2_3' en 'UserDataDatabase.kt' para añadir la tabla 'reading_progress' sin borrar los datos existentes.
-  * Resultado: Las notas ('notes') y marcadores ('bookmarks') previos quedaron intactos tras la actualización, ya que la migración es aditiva y no destructiva (siempre que se use el número de versión correcto).
-- ACTUALIZACIÓN EN TIEMPO REAL:
-  * El porcentaje de lectura (del libro y global en el Drawer) se actualiza instantáneamente sin recargar la pantalla gracias al uso de 'StateFlow' y la recolección de estados en los ViewModels. Al desmarcar un capítulo desde el lector, el cambio se refleja de inmediato en el Inicio.
+  * El botón "Continuar lectura" en 'ChapterSelectionDialog' permite saltar al siguiente capítulo pendiente con un toque.
+- COLORES DE PROGRESO:
+  * 0% / Parcial: Navy Accent (#33506E).
+  * 100% (Completado): Verde Éxito (#3C9D6B).
 
 2. CUALQUIER OTRO CAMBIO NO SOLICITADO EXPLÍCITAMENTE
 ------------------------------------------------------
@@ -33,17 +43,17 @@ Fecha: 2026-08-21
   * Se centró el título (Libro + Cap) y se ancló el selector de versión (RVA/VBL) justo al lado del nombre del libro.
   * Se corrigió el posicionamiento del popup de traducción para que aparezca centrado sobre su botón.
 
-3. ESTADO GENERAL DEL PROYECTO
+4. ARQUITECTURA Y RENDIMIENTO
 ------------------------------
-- ERRORES/WARNINGS:
-  * No hay errores de compilación ('Build successful').
-  * Existe un warning menor en 'ReaderScreen' sobre el parámetro 'onBack' que ya no se usa (por la eliminación del botón), pendiente de limpieza final.
-- DEPENDENCIAS NUEVAS:
-  * 'com.google.dagger:hilt-android'
-  * 'com.android.tools:desugar_jdk_libs' (para APIs de fecha).
-- ESTRUCTURA DE CARPETAS:
-  * Se añadió el paquete 'com.mi.bibliarv1960.di' para los módulos de Hilt.
-  * Se eliminó 'ic_launcher-playstore.png' y 'assets/data/gpt.json' (archivos pesados/vacíos) para optimizar el APK.
+- INYECCIÓN DE DEPENDENCIAS:
+  * Migración completa a Dagger Hilt.
+- ACTUALIZACIÓN DE SDK:
+  * Proyecto en Java 17 y compileSdk 37.
+- OPTIMIZACIÓN DE RENDIMIENTO:
+  * 'SpeechManager' Singleton inyectado por Hilt.
+  * 'ReaderScreen' utiliza geometrías pre-calculadas para evitar lag de scroll.
+- NAVEGACIÓN SEGURA:
+  * Implementación de 'safeNavigate' para evitar doble navegación y crashes por toques rápidos.
 
 4. BASE DE DATOS
 ----------------

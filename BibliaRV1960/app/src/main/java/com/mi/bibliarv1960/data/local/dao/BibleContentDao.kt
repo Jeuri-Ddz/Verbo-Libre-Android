@@ -51,6 +51,15 @@ interface BibleContentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChallenges(challenges: List<ChallengeEntity>)
 
+    @Query("SELECT COUNT(*) FROM devotionals")
+    suspend fun getDevotionalsCount(): Int
+
+    @Query("SELECT COUNT(*) FROM daily_verses")
+    suspend fun getDailyVersesCount(): Int
+
+    @Query("SELECT COUNT(*) FROM challenges")
+    suspend fun getChallengesCount(): Int
+
     @Query("SELECT COUNT(DISTINCT chapter) FROM verses WHERE book_id = :bookId AND translation_id = 'rv1909'")
     fun getChapterCountForBook(bookId: Int): Flow<Int>
 

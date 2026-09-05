@@ -30,6 +30,8 @@ import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import android.content.Context
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.text.Normalizer
+import java.util.regex.Pattern
 import java.util.Locale
 import kotlinx.coroutines.delay
 import androidx.compose.ui.platform.LocalDensity
@@ -66,9 +68,27 @@ fun AllNotesScreen(
     
     var searchBarRect by remember { mutableStateOf(Rect.Zero) }
 
-    val filtered = remember(notes, query) {
+    val filtered = remember(notes, query, books) {
+        val normalizedQuery = query.normalize().trim()
+        val queryTokens = normalizedQuery.split("[:\\s/]+".toRegex()).filter { it.isNotEmpty() }
+        
         notes.filter { note ->
-            if (query.isBlank()) true else note.text.contains(query, ignoreCase = true)
+            if (queryTokens.isEmpty()) true else {
+                val bookName = books.find { it.id == note.bookId }?.name ?: ""
+                val normalizedText = note.text.normalize()
+                val normalizedBookName = bookName.normalize()
+                val chapterStr = note.chapter.toString()
+                val verseStr = note.verseNumber.toString()
+                
+                // Cada palabra de la búsqueda debe estar en alguna de las partes de la nota
+                // Ahora incluimos el capítulo y tratamos ":" como un separador de palabras
+                queryTokens.all { token ->
+                    normalizedText.contains(token, ignoreCase = true) ||
+                    normalizedBookName.contains(token, ignoreCase = true) ||
+                    chapterStr == token || 
+                    verseStr == token
+                }
+            }
         }
     }
 
@@ -291,4 +311,11 @@ fun NoteListItemPreview() {
             onClick = {}
         )
     }
+}
+
+private val DIACRITICS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+
+private fun String.normalize(): String {
+    val normalized = Normalizer.normalize(this, Normalizer.Form.NFD)
+    return DIACRITICS_PATTERN.matcher(normalized).replaceAll("")
 }

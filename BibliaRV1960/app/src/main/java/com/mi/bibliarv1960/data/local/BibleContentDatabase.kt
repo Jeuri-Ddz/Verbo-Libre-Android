@@ -50,7 +50,6 @@ abstract class BibleContentDatabase : RoomDatabase() {
                             
                             override fun onOpen(db: SupportSQLiteDatabase) {
                                 super.onOpen(db)
-                                seedInitialData(context)
                             }
                         }
                     )

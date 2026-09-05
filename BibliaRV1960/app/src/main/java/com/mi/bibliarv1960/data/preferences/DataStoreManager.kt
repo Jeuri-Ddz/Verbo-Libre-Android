@@ -27,16 +27,33 @@ class DataStoreManager(private val context: Context) {
         val TOOLTIP_BOOKMARKS_CATEGORIES = booleanPreferencesKey("tooltip_seen_bookmarks_categories")
         val TOOLTIP_BOOKMARKS_INFO = booleanPreferencesKey("tooltip_seen_bookmarks_info")
         val TOOLTIP_BOOKMARKS_FAB = booleanPreferencesKey("tooltip_seen_bookmarks_fab")
+        val IS_DISCONTINUOUS_MODE = booleanPreferencesKey("is_discontinuous_mode")
 
         // Reto del día
         val CHALLENGE_COMPLETED_COUNT = intPreferencesKey("challenge_completed_count")
         val LAST_CHALLENGE_DATE = stringPreferencesKey("last_challenge_date")
         val LAST_CHALLENGE_RESULT = stringPreferencesKey("last_challenge_result")
+
+        // Ajustes de lectura y personalización
+        val FONT_SIZE = floatPreferencesKey("font_size")
+        val FONT_FAMILY = stringPreferencesKey("font_family")
+        val PREFERRED_TTS_SPEED = floatPreferencesKey("preferred_tts_speed")
+        val SHOW_TRIVIA = booleanPreferencesKey("show_trivia")
+        val SHOW_DEVOCIONAL = booleanPreferencesKey("show_devocional")
+        val FIRST_LAUNCH_DATE = stringPreferencesKey("first_launch_date")
     }
 
     val selectedTranslationId: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[SELECTED_TRANSLATION_ID] ?: "rv1909"
     }
+
+    val firstLaunchDate: Flow<String?> = context.dataStore.data.map { it[FIRST_LAUNCH_DATE] }
+
+    val fontSize: Flow<Float> = context.dataStore.data.map { it[FONT_SIZE] ?: 18f }
+    val fontFamily: Flow<String> = context.dataStore.data.map { it[FONT_FAMILY] ?: "SANS_SERIF" }
+    val preferredTtsSpeed: Flow<Float> = context.dataStore.data.map { it[PREFERRED_TTS_SPEED] ?: 1.0f }
+    val showTrivia: Flow<Boolean> = context.dataStore.data.map { it[SHOW_TRIVIA] ?: true }
+    val showDevocional: Flow<Boolean> = context.dataStore.data.map { it[SHOW_DEVOCIONAL] ?: true }
 
     val deviceSeed: Flow<String?> = context.dataStore.data.map { it[DEVICE_SEED] }
     val lastReadDate: Flow<String?> = context.dataStore.data.map { it[LAST_READ_DATE] }
@@ -53,6 +70,7 @@ class DataStoreManager(private val context: Context) {
     val tooltipBookmarksCategories: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_CATEGORIES] ?: false }
     val tooltipBookmarksInfo: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_INFO] ?: false }
     val tooltipBookmarksFab: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_FAB] ?: false }
+    val isDiscontinuousMode: Flow<Boolean> = context.dataStore.data.map { it[IS_DISCONTINUOUS_MODE] ?: false }
 
     val challengeCompletedCount: Flow<Int> = context.dataStore.data.map { it[CHALLENGE_COMPLETED_COUNT] ?: 0 }
     val lastChallengeDate: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_DATE] }
@@ -60,6 +78,10 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveTranslationId(id: String) {
         context.dataStore.edit { it[SELECTED_TRANSLATION_ID] = id }
+    }
+
+    suspend fun saveFirstLaunchDate(date: String) {
+        context.dataStore.edit { it[FIRST_LAUNCH_DATE] = date }
     }
 
     suspend fun saveDeviceSeed(seed: String) {
@@ -112,6 +134,47 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveTooltipBookmarksFab(seen: Boolean) {
         context.dataStore.edit { it[TOOLTIP_BOOKMARKS_FAB] = seen }
+    }
+
+    suspend fun saveDiscontinuousMode(isDiscontinuous: Boolean) {
+        context.dataStore.edit { it[IS_DISCONTINUOUS_MODE] = isDiscontinuous }
+    }
+
+    suspend fun saveFontSize(size: Float) {
+        context.dataStore.edit { it[FONT_SIZE] = size }
+    }
+
+    suspend fun saveFontFamily(family: String) {
+        context.dataStore.edit { it[FONT_FAMILY] = family }
+    }
+
+    suspend fun savePreferredTtsSpeed(speed: Float) {
+        context.dataStore.edit { it[PREFERRED_TTS_SPEED] = speed }
+    }
+
+    suspend fun saveShowTrivia(show: Boolean) {
+        context.dataStore.edit { it[SHOW_TRIVIA] = show }
+    }
+
+    suspend fun saveShowDevocional(show: Boolean) {
+        context.dataStore.edit { it[SHOW_DEVOCIONAL] = show }
+    }
+
+    suspend fun clearAllOnboarding() {
+        context.dataStore.edit { preferences ->
+            preferences[TOOLTIP_READER_READ] = false
+            preferences[TOOLTIP_READER_TTS] = false
+            preferences[TOOLTIP_READER_TRANSLATION] = false
+            preferences[TOOLTIP_READER_VERSE] = false
+            preferences[TOOLTIP_READER_THEME] = false
+            preferences[TOOLTIP_HOME_WELCOME] = false
+            preferences[TOOLTIP_NOTES_SEARCH] = false
+            preferences[TOOLTIP_BOOKMARKS_CATEGORIES] = false
+            preferences[TOOLTIP_BOOKMARKS_INFO] = false
+            preferences[TOOLTIP_BOOKMARKS_FAB] = false
+        }
+        val prefs = context.getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
     }
 
     suspend fun updateStreak(streak: Int, date: String) {

@@ -2,7 +2,6 @@ package com.mi.bibliarv1960.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mi.bibliarv1960.DebugConfig
 import com.mi.bibliarv1960.data.repository.BibleRepository
 import com.mi.bibliarv1960.data.local.entities.*
 import com.mi.bibliarv1960.data.preferences.DataStoreManager
@@ -10,7 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.math.abs
+import java.time.temporal.ChronoUnit
 
 import com.mi.bibliarv1960.utils.SpeechManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,73 +28,21 @@ class BibleViewModel @Inject constructor(
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     private val _todayDevotional = MutableStateFlow<DevotionalEntity?>(null)
+    val displayDevotional: StateFlow<DevotionalEntity?> = _todayDevotional.asStateFlow()
 
-    val allDevotionals: StateFlow<List<DevotionalEntity>> = repository.allDevotionals.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList(),
-    )
+    private val _isReadToday = MutableStateFlow(false)
+    val isReadToday: StateFlow<Boolean> = _isReadToday.asStateFlow()
 
-    private val _previewDevotionalIndex = MutableStateFlow<Int?>(null)
-    private val _previewDevotionalBgIndex = MutableStateFlow<Int?>(null)
-    
-    val displayDevotional: StateFlow<DevotionalEntity?> = combine(
-        _todayDevotional,
-        allDevotionals,
-        _previewDevotionalIndex
-    ) { today, all, previewIdx ->
-        if ((previewIdx != null) && (all.isNotEmpty())) {
-            all[previewIdx % all.size]
-        } else {
-            today
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null,
-    )
+    private val _streakLostEvent = MutableSharedFlow<Unit>()
+    val streakLostEvent: SharedFlow<Unit> = _streakLostEvent.asSharedFlow()
 
     private val _todayVerse = MutableStateFlow<DailyVerseEntity?>(null)
 
-    val allDailyVerses: StateFlow<List<DailyVerseEntity>> = repository.allDailyVerses.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList(),
-    )
-
-    private val _previewVerseIndex = MutableStateFlow<Int?>(null)
-    private val _previewVerseBgIndex = MutableStateFlow<Int?>(null)
-
-    val displayDailyVerse: StateFlow<DailyVerseEntity?> = combine(
-        _todayVerse,
-        allDailyVerses,
-        _previewVerseIndex
-    ) { today, all, previewIdx ->
-        if ((previewIdx != null) && (all.isNotEmpty())) {
-            all[previewIdx % all.size]
-        } else {
-            today
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null,
-    )
+    val displayDailyVerse: StateFlow<DailyVerseEntity?> = _todayVerse.asStateFlow()
 
     // Índices de fondo calculados centralmente
     private val _todayVerseBgIndex = MutableStateFlow(1)
-    val todayVerseBgIndex: StateFlow<Int> = _todayVerseBgIndex
-
-    val displayVerseBgIndex: StateFlow<Int> = combine(
-        _todayVerseBgIndex,
-        _previewVerseBgIndex
-    ) { todayBg, previewBg ->
-        previewBg ?: todayBg
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 1,
-    )
+    val displayVerseBgIndex: StateFlow<Int> = _todayVerseBgIndex.asStateFlow()
 
     private val _todayDevotionalBgIndex = MutableStateFlow(6)
     val todayDevotionalBgIndex: StateFlow<Int> = _todayDevotionalBgIndex
@@ -178,6 +125,42 @@ class BibleViewModel @Inject constructor(
         initialValue = false,
     )
 
+    val isDiscontinuousMode: StateFlow<Boolean> = dataStoreManager.isDiscontinuousMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val fontSize: StateFlow<Float> = dataStoreManager.fontSize.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 18f,
+    )
+
+    val fontFamily: StateFlow<String> = dataStoreManager.fontFamily.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = "SANS_SERIF",
+    )
+
+    val preferredTtsSpeed: StateFlow<Float> = dataStoreManager.preferredTtsSpeed.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 1.0f,
+    )
+
+    val showTrivia: StateFlow<Boolean> = dataStoreManager.showTrivia.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true,
+    )
+
+    val showDevocional: StateFlow<Boolean> = dataStoreManager.showDevocional.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true,
+    )
+
     init {
         initializeDailyData()
         speechManager.setOnVerseCompleteListener { _ ->
@@ -194,60 +177,102 @@ class BibleViewModel @Inject constructor(
                 newSeed
             }
 
-            val todayDate = LocalDate.now().format(dateFormatter)
+            val today = LocalDate.now()
+            val todayStr = today.format(dateFormatter)
+            
+            // 2. Obtener o guardar la fecha de primer inicio (Día 0)
+            val firstLaunchStr = dataStoreManager.firstLaunchDate.first() ?: run {
+                dataStoreManager.saveFirstLaunchDate(todayStr)
+                todayStr
+            }
+            val firstLaunchDate = LocalDate.parse(firstLaunchStr, dateFormatter)
+            val diasTranscurridos = ChronoUnit.DAYS.between(firstLaunchDate, today).toInt()
 
-            // 2. Sorteo de Contenido Devocional
-            launch {
-                repository.allDevotionals.collect { devotionals ->
-                    if (devotionals.isNotEmpty()) {
-                        val forcedId = DebugConfig.DEBUG_FORCE_DEVOTIONAL_ID
-                        if (forcedId != null) {
-                            _todayDevotional.value = devotionals.find { it.id == forcedId } ?: devotionals.first()
-                        } else {
-                            // Usamos un salt específico para devocionales
-                            val combined = "${seed}_devo_$todayDate"
-                            _todayDevotional.value = devotionals[abs(combined.hashCode()) % devotionals.size]
-                        }
+            // 2.5 Validación de racha y estado de lectura hoy
+            val lastRead = dataStoreManager.lastReadDate.first()
+            _isReadToday.value = (lastRead == todayStr)
+
+            if (lastRead != null && lastRead != todayStr) {
+                val yesterdayStr = today.minusDays(1).format(dateFormatter)
+                if (lastRead != yesterdayStr) {
+                    // Racha perdida: no leyó ayer ni hoy
+                    val currentStreakValue = dataStoreManager.currentStreak.first()
+                    if (currentStreakValue > 0) {
+                        dataStoreManager.updateStreak(0, lastRead)
+                        _streakLostEvent.emit(Unit)
                     }
                 }
             }
             
-            // 3. Sorteo de Contenido Versículo
+            // Sincronización reactiva de la velocidad de voz (TTS)
+            // Se lanza en un job separado dentro del scope para no bloquear el resto de la inicialización
             launch {
-                repository.allDailyVerses.collect { verses ->
-                    if (verses.isNotEmpty()) {
-                        // Usamos un salt específico para versículos
-                        val combined = "${seed}_verse_$todayDate"
-                        _todayVerse.value = verses[abs(combined.hashCode()) % verses.size]
+                preferredTtsSpeed.collect { speed ->
+                    _playbackSpeed.value = speed
+                    if (_isSpeaking.value) {
+                        speechManager.setSpeed(speed)
                     }
                 }
             }
 
-            // 4. Sorteo de Fondos (Determinístico con Salt único)
-            val bgVerseStr = "${seed}_bg_v_$todayDate"
-            _todayVerseBgIndex.value = (abs(bgVerseStr.hashCode()) % 5) + 1 // 1 al 5
+            // 3. Sorteo de Contenido Devocional (Mazo Barajado)
+            launch {
+                val devotionals = repository.allDevotionals.filter { it.isNotEmpty() }.first()
+                val n = devotionals.size
+                val ciclo = diasTranscurridos / n
+                val diaEnCiclo = diasTranscurridos % n
+                
+                // Seed determinista por ciclo
+                val random = Random(seed.hashCode().toLong() + ciclo)
+                val shuffledIndices = (0 until n).toList().shuffled(random)
+                
+                _todayDevotional.value = devotionals[shuffledIndices[diaEnCiclo]]
+            }
+            
+            // 4. Sorteo de Contenido Versículo (Mazo Barajado)
+            launch {
+                val verses = repository.allDailyVerses.filter { it.isNotEmpty() }.first()
+                val n = verses.size
+                val ciclo = diasTranscurridos / n
+                val diaEnCiclo = diasTranscurridos % n
+                
+                // Seed determinista por ciclo (usamos un offset diferente para variedad)
+                val random = Random(seed.hashCode().toLong() + ciclo + 1000)
+                val shuffledIndices = (0 until n).toList().shuffled(random)
+                
+                _todayVerse.value = verses[shuffledIndices[diaEnCiclo]]
+            }
 
-            val bgDevoStr = "${seed}_bg_d_$todayDate"
-            _todayDevotionalBgIndex.value = (abs(bgDevoStr.hashCode()) % 5) + 6 // 6 al 10
+            // 5. Sorteo de Fondos (Determinístico basado en el día)
+            // Versículo: 1 al 5, Devocional: 6 al 10
+            val randomBg = Random(seed.hashCode().toLong() + diasTranscurridos)
+            _todayVerseBgIndex.value = randomBg.nextInt(5) + 1
+            _todayDevotionalBgIndex.value = randomBg.nextInt(5) + 6
         }
     }
 
     fun markAsRead() {
         viewModelScope.launch {
-            val todayDate = LocalDate.now().format(dateFormatter)
+            val today = LocalDate.now()
+            val todayStr = today.format(dateFormatter)
             val lastRead = dataStoreManager.lastReadDate.first()
             
-            if (lastRead == todayDate) return@launch 
+            if (lastRead == todayStr) {
+                _isReadToday.value = true
+                return@launch 
+            }
 
-            val yesterdayDate = LocalDate.now().minusDays(1).format(dateFormatter)
-
-            val currentStreakValue = currentStreak.value
-            val newStreak = if (lastRead == yesterdayDate) {
+            val yesterdayStr = today.minusDays(1).format(dateFormatter)
+            val currentStreakValue = dataStoreManager.currentStreak.first()
+            
+            val newStreak = if (lastRead == yesterdayStr) {
                 currentStreakValue + 1
             } else {
                 1
             }
-            dataStoreManager.updateStreak(newStreak, todayDate)
+            
+            dataStoreManager.updateStreak(newStreak, todayStr)
+            _isReadToday.value = true
         }
     }
 
@@ -317,48 +342,10 @@ class BibleViewModel @Inject constructor(
         }
     }
 
-    fun nextDevotionalPreview() {
-        val currentList = allDevotionals.value
-        if (currentList.isEmpty()) return
-
-        val forcedId = DebugConfig.DEBUG_FORCE_DEVOTIONAL_ID
-        if (forcedId != null) {
-            // --- MODO DEBUG SECUENCIAL (1 al 200) ---
-            val currentDevo = displayDevotional.value
-            val currentId = currentDevo?.id ?: forcedId
-
-            // Avanzar al siguiente ID, volviendo al 1 después del 200
-            val nextId = if (currentId < 200) currentId + 1 else 1
-            val nextIndex = currentList.indexOfFirst { it.id == nextId }
-
-            if (nextIndex != -1) {
-                _previewDevotionalIndex.value = nextIndex
-            } else {
-                // Si el ID exacto no existe, usamos el siguiente índice disponible
-                val currentIndex = _previewDevotionalIndex.value ?: -1
-                _previewDevotionalIndex.value = (currentIndex + 1) % currentList.size
-            }
-        } else {
-            // --- COMPORTAMIENTO NORMAL ---
-            val currentIndex = _previewDevotionalIndex.value ?: -1
-            _previewDevotionalIndex.value = (currentIndex + 1) % currentList.size
+    fun toggleDiscontinuousMode() {
+        viewModelScope.launch {
+            dataStoreManager.saveDiscontinuousMode(!isDiscontinuousMode.value)
         }
-
-        val currentBgIndex = _previewDevotionalBgIndex.value ?: todayDevotionalBgIndex.value
-        // Fondos de devo son del 6 al 10. (6-1=5, 5%5=0, 0+6=6...)
-        // Lógica simple: si es 10 -> 6, si no -> +1
-        _previewDevotionalBgIndex.value = if (currentBgIndex >= 10) 6 else currentBgIndex + 1
-    }
-
-    fun nextDailyVersePreview() {
-        val currentList = allDailyVerses.value
-        if (currentList.isEmpty()) return
-
-        val currentIndex = _previewVerseIndex.value ?: -1
-        _previewVerseIndex.value = (currentIndex + 1) % currentList.size
-
-        val currentBgIndex = _previewVerseBgIndex.value ?: todayVerseBgIndex.value
-        _previewVerseBgIndex.value = (currentBgIndex % 5) + 1 // Ciclo 1-5
     }
 
     val allTranslations: StateFlow<List<TranslationEntity>> = repository.allTranslations.stateIn(
@@ -456,9 +443,6 @@ class BibleViewModel @Inject constructor(
         initialValue = emptyList(),
     )
 
-    private val _fontSize = MutableStateFlow(18f)
-    val fontSize: StateFlow<Float> = _fontSize
-
     // --- Audio Biblia (TTS) ---
     private val _isSpeaking = MutableStateFlow(value = false)
     val isSpeaking: StateFlow<Boolean> = _isSpeaking
@@ -500,6 +484,11 @@ class BibleViewModel @Inject constructor(
         val nextSpeed = speeds[nextIndex]
         _playbackSpeed.value = nextSpeed
         speechManager.setSpeed(nextSpeed)
+        
+        // Guardar como preferencia
+        viewModelScope.launch {
+            dataStoreManager.savePreferredTtsSpeed(nextSpeed)
+        }
     }
 
     fun openVoiceSettings() {
@@ -516,6 +505,12 @@ class BibleViewModel @Inject constructor(
         currentVerseIndex = 0
         _isSpeaking.value = true
         _isPaused.value = false
+        
+        // Aplicar velocidad preferida al iniciar
+        val speed = preferredTtsSpeed.value
+        _playbackSpeed.value = speed
+        speechManager.setSpeed(speed)
+        
         speakCurrent()
     }
 
@@ -555,7 +550,41 @@ class BibleViewModel @Inject constructor(
     }
 
     fun updateFontSize(delta: Float) {
-        _fontSize.value = (_fontSize.value + delta).coerceIn(12f, 40f)
+        viewModelScope.launch {
+            val current = fontSize.value
+            val newSize = (current + delta).coerceIn(12f, 40f)
+            dataStoreManager.saveFontSize(newSize)
+        }
+    }
+
+    fun setFontFamily(family: String) {
+        viewModelScope.launch {
+            dataStoreManager.saveFontFamily(family)
+        }
+    }
+
+    fun setPreferredTtsSpeed(speed: Float) {
+        viewModelScope.launch {
+            dataStoreManager.savePreferredTtsSpeed(speed)
+        }
+    }
+
+    fun setShowTrivia(show: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.saveShowTrivia(show)
+        }
+    }
+
+    fun setShowDevocional(show: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.saveShowDevocional(show)
+        }
+    }
+
+    fun resetOnboarding() {
+        viewModelScope.launch {
+            dataStoreManager.clearAllOnboarding()
+        }
     }
 
     fun toggleBookmark(verse: VerseEntity, categoryId: Int, bookName: String) {

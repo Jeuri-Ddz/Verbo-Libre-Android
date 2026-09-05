@@ -43,7 +43,7 @@ fun DailyVerseScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val graphicsLayer = rememberGraphicsLayer()
-    
+
     val bgResourceId = when (dailyBgIndex) {
         1 -> R.drawable.devotional_bg_1
         2 -> R.drawable.devotional_bg_2
@@ -126,7 +126,6 @@ fun DailyVerseScreen(
                     color = Color.White.copy(alpha = 0.8f),
                     modifier = Modifier
                         .padding(top = 64.dp)
-                        .clickable { viewModel.nextDailyVersePreview() }
                 )
 
                 Spacer(modifier = Modifier.weight(1f))

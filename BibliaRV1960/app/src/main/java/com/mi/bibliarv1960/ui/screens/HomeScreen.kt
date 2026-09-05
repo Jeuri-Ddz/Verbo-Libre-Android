@@ -61,6 +61,7 @@ fun HomeScreen(
     val allBooks by viewModel.allBooks.collectAsState()
     val todayVerse by viewModel.displayDailyVerse.collectAsState()
     val bookProgress by viewModel.bookProgress.collectAsState()
+    val showDevotionalSetting by viewModel.showDevocional.collectAsState()
     
     var selectedTab by remember { mutableIntStateOf(0) }
     var selectedBook by remember { mutableStateOf<BookEntity?>(null) }
@@ -69,8 +70,6 @@ fun HomeScreen(
 
     val context = LocalContext.current
     val density = LocalDensity.current
-    val configuration = LocalConfiguration.current
-    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
     
     val sharedPrefs = remember { context.getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE) }
     var showHomeOnboarding by remember { 
@@ -79,7 +78,6 @@ fun HomeScreen(
     var onboardingStep by remember { mutableIntStateOf(1) }
     
     val isStatusLoaded by challengeViewModel.isStatusLoaded.collectAsState()
-    val triviaStepCompleted by challengeViewModel.triviaStepCompleted.collectAsState()
     
     var searchBarRect by remember { mutableStateOf(Rect.Zero) }
     var dailyVerseRect by remember { mutableStateOf(Rect.Zero) }
@@ -167,9 +165,9 @@ fun HomeScreen(
                     bottom = 0.dp
                 )
             ) {
-                SearchBar(
+                BibleSearchBar(
                     query = searchQuery,
-                    onValueChange = { 
+                    onQueryChange = { 
                         searchQuery = it
                         searchError = null 
                     },
@@ -198,51 +196,53 @@ fun HomeScreen(
                 }
 
                 // Daily Verse Banner
-                todayVerse?.let { dv ->
-                    Surface(
-                        onClick = { onNavigate(Screen.DailyVerse.route) },
-                        shape = RoundedCornerShape(24.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                dailyVerseRect = coordinates.boundsInWindow()
-                            },
-                    ) {
-                        Row(
+                if (showDevotionalSetting) {
+                    todayVerse?.let { dv ->
+                        Surface(
+                            onClick = { onNavigate(Screen.DailyVerse.route) },
+                            shape = RoundedCornerShape(24.dp),
                             modifier = Modifier
-                                .background(
-                                    brush = Brush.linearGradient(
-                                        colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
-                                    )
-                                )
-                                .padding(vertical = 14.dp, horizontal = 20.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 4.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    dailyVerseRect = coordinates.boundsInWindow()
+                                },
                         ) {
-                            Text(text = "☀", fontSize = 18.sp, color = Color.White, modifier = Modifier.padding(end = 16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "VERSÍCULO DE HOY",
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White.copy(alpha = 0.7f),
-                                    letterSpacing = 1.2.sp
-                                )
-                                Text(
-                                    text = dv.verseText,
-                                    fontSize = 13.sp,
-                                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-                                    color = Color.White,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                            Row(
+                                modifier = Modifier
+                                    .background(
+                                        brush = Brush.linearGradient(
+                                            colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
+                                        )
+                                    )
+                                    .padding(vertical = 14.dp, horizontal = 20.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(text = "☀", fontSize = 18.sp, color = Color.White, modifier = Modifier.padding(end = 16.dp))
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "VERSÍCULO DE HOY",
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White.copy(alpha = 0.7f),
+                                        letterSpacing = 1.2.sp
+                                    )
+                                    Text(
+                                        text = dv.verseText,
+                                        fontSize = 13.sp,
+                                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.6f),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = null,
-                                tint = Color.White.copy(alpha = 0.6f),
-                                modifier = Modifier.size(20.dp)
-                            )
                         }
                     }
                 }
@@ -301,96 +301,97 @@ fun HomeScreen(
         }
 
         // Custom Rectangular Onboarding Overlay
-        if (showHomeOnboarding && triviaStepCompleted && isStatusLoaded) {
+        if (showHomeOnboarding && isStatusLoaded) {
             val currentHighlightRect = when(onboardingStep) {
                 1 -> searchBarRect
-                2 -> dailyVerseRect
+                2 -> if (showDevotionalSetting) dailyVerseRect else Rect.Zero
                 3 -> testamentSelectorRect
                 else -> Rect.Zero
             }
 
-            if (currentHighlightRect != Rect.Zero) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-                        .clickable(enabled = true, onClick = { /* Consumir clicks */ })
-                ) {
-                    val tooltipBgColor = colorResource(id = R.color.tooltip_bg).copy(alpha = 0.90f)
-                    Canvas(modifier = Modifier.fillMaxSize()) {
-                        // Fondo oscurecido
-                        drawRect(color = tooltipBgColor)
-                        
-                        // Recorte rectangular sobre el elemento
-                        drawRoundRect(
-                            color = Color.Transparent,
-                            topLeft = currentHighlightRect.topLeft.copy(
-                                x = currentHighlightRect.left - 4.dp.toPx(),
-                                y = currentHighlightRect.top - 4.dp.toPx()
-                            ),
-                            size = currentHighlightRect.size.copy(
-                                width = currentHighlightRect.width + 8.dp.toPx(),
-                                height = currentHighlightRect.height + 8.dp.toPx()
-                            ),
-                            cornerRadius = CornerRadius(if (onboardingStep == 3) 28.dp.toPx() else 16.dp.toPx()),
-                            blendMode = BlendMode.Clear
-                        )
-                    }
-                    
-                    Column(
+            if (currentHighlightRect != Rect.Zero || (onboardingStep == 2 && !showDevotionalSetting)) {
+                if (onboardingStep == 2 && !showDevotionalSetting) {
+                    onboardingStep = 3
+                } else {
+                    Box(
                         modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(horizontal = 32.dp)
-                            .padding(top = with(density) { (currentHighlightRect.bottom + 32.dp.toPx()).toDp() })
-                            .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
-                            .padding(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxSize()
+                            .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                            .clickable(enabled = true, onClick = { /* Consumir clicks */ })
                     ) {
-                        val (title, description) = when(onboardingStep) {
-                            1 -> "Buscador" to "Escribe el libro y capítulo que buscas — no hace falta escribir el nombre completo, por ejemplo 'gen 1' también funciona."
-                            2 -> "Versículo del día" to "Aquí puedes ver el versículo del día, una palabra de aliento diferente cada mañana."
-                            3 -> "Testamentos" to "Toca cualquier libro para leer. Aquí arriba puedes filtrar entre Antiguo y Nuevo Testamento."
-                            else -> "" to ""
-                        }
-
-                        Text(
-                            text = title,
-                            color = Color.White,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = description,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            lineHeight = 22.sp
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Button(
-                            onClick = {
-                                if (onboardingStep < 3) {
-                                    onboardingStep++
-                                } else {
-                                    sharedPrefs.edit().putBoolean("onboarding_home_shown", true).apply()
-                                    showHomeOnboarding = false
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.White.copy(alpha = 0.2f),
-                                contentColor = Color.White
-                            ),
-                            shape = RoundedCornerShape(10.dp),
-                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-                            modifier = Modifier.height(40.dp)
-                        ) {
-                            Text(
-                                if (onboardingStep < 3) "Siguiente" else "Entendido", 
-                                fontSize = 14.sp, 
-                                fontWeight = FontWeight.Bold
+                        val tooltipBgColor = colorResource(id = R.color.tooltip_bg).copy(alpha = 0.90f)
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            drawRect(color = tooltipBgColor)
+                            drawRoundRect(
+                                color = Color.Transparent,
+                                topLeft = currentHighlightRect.topLeft.copy(
+                                    x = currentHighlightRect.left - 4.dp.toPx(),
+                                    y = currentHighlightRect.top - 4.dp.toPx()
+                                ),
+                                size = currentHighlightRect.size.copy(
+                                    width = currentHighlightRect.width + 8.dp.toPx(),
+                                    height = currentHighlightRect.height + 8.dp.toPx()
+                                ),
+                                cornerRadius = CornerRadius(if (onboardingStep == 3) 28.dp.toPx() else 16.dp.toPx()),
+                                blendMode = BlendMode.Clear
                             )
+                        }
+                        
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(horizontal = 32.dp)
+                                .padding(top = with(density) { (currentHighlightRect.bottom + 32.dp.toPx()).toDp() })
+                                .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
+                                .padding(20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            val (title, description) = when(onboardingStep) {
+                                1 -> "Buscador" to "Escribe el libro y capítulo que buscas — no hace falta escribir el nombre completo, por ejemplo 'gen 1' también funciona."
+                                2 -> "Versículo del día" to "Aquí puedes ver el versículo del día, una palabra de aliento diferente cada mañana."
+                                3 -> "Testamentos" to "Toca cualquier libro para leer. Aquí arriba puedes filtrar entre Antiguo y Nuevo Testamento."
+                                else -> "" to ""
+                            }
+
+                            Text(
+                                text = title,
+                                color = Color.White,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = description,
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                lineHeight = 22.sp
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Button(
+                                onClick = {
+                                    if (onboardingStep < 3) {
+                                        onboardingStep++
+                                    } else {
+                                        sharedPrefs.edit().putBoolean("onboarding_home_shown", true).apply()
+                                        showHomeOnboarding = false
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.White.copy(alpha = 0.2f),
+                                    contentColor = Color.White
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
+                                modifier = Modifier.height(40.dp)
+                            ) {
+                                Text(
+                                    if (onboardingStep < 3) "Siguiente" else "Entendido", 
+                                    fontSize = 14.sp, 
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
                 }
@@ -462,10 +463,10 @@ fun SegmentedTab(
 }
 
 @Composable
-fun SearchBar(query: String, onValueChange: (String) -> Unit, onSearchAction: () -> Unit, modifier: Modifier = Modifier) {
+fun BibleSearchBar(query: String, onQueryChange: (String) -> Unit, onSearchAction: () -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = query,
-        onValueChange = onValueChange,
+        onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
         placeholder = { Text("Buscar libro y capítulo, ej. génesis 1:2", fontSize = 14.sp) },
         leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null, modifier = Modifier.size(18.dp)) },

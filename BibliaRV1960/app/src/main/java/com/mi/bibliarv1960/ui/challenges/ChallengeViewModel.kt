@@ -13,6 +13,8 @@ import kotlinx.serialization.json.Json
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Random
 import javax.inject.Inject
 
 @Serializable
@@ -46,9 +48,6 @@ class ChallengeViewModel @Inject constructor(
     private val _isStatusLoaded = MutableStateFlow(false)
     val isStatusLoaded: StateFlow<Boolean> = _isStatusLoaded.asStateFlow()
 
-    private val _triviaStepCompleted = MutableStateFlow(false)
-    val triviaStepCompleted: StateFlow<Boolean> = _triviaStepCompleted.asStateFlow()
-
     private var allChallengesList: List<ChallengeEntity> = emptyList()
     private var isInitialized = false
 
@@ -65,48 +64,20 @@ class ChallengeViewModel @Inject constructor(
         
         viewModelScope.launch {
             try {
+                // 1. Cargar el estado guardado primero
+                loadChallengeStatus()
+                
+                // 2. Observar retos y seleccionar el del día
                 repository.allChallenges
                     .catch { e -> e.printStackTrace() }
                     .collect { challenges ->
                         allChallengesList = challenges
-                        if (challenges.isNotEmpty() && _currentChallenge.value == null) {
+                        if (challenges.isNotEmpty()) {
                             selectDailyChallenge(challenges)
                         }
-                        if (challenges.isNotEmpty()) {
-                            loadChallengeStatus()
-                        }
+                        // Marcar como cargado si no se hizo en loadChallengeStatus
+                        _isStatusLoaded.value = true
                     }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun loadChallengeStatus() {
-        viewModelScope.launch {
-            try {
-                val todayDate = LocalDate.now().format(dateFormatter)
-                val lastDate = dataStoreManager.lastChallengeDate.firstOrNull()
-                
-                if (lastDate == todayDate) {
-                    val resultJson = dataStoreManager.lastChallengeResult.firstOrNull()
-                    if (!resultJson.isNullOrBlank()) {
-                        try {
-                            val status = Json.decodeFromString<DailyChallengeStatus>(resultJson)
-                            _challengeStatus.value = status
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            _challengeStatus.value = null  // Reset si falla el parsing
-                        }
-                    }
-                } else {
-                    _challengeStatus.value = null  // Nuevo día, limpiar estado
-                }
-                _isStatusLoaded.value = true
-                // Si la trivia ya está hecha, marcamos el paso como completado
-                if (lastDate == todayDate) {
-                    _triviaStepCompleted.value = true
-                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _isStatusLoaded.value = true
@@ -114,22 +85,59 @@ class ChallengeViewModel @Inject constructor(
         }
     }
 
-    private fun selectDailyChallenge(challenges: List<ChallengeEntity>) {
-        val todayDate = LocalDate.now().format(dateFormatter)
-        
-        // Verificar si ya tenemos un reto para hoy
-        val savedDate = _challengeStatus.value?.date
-        if (savedDate == todayDate && _currentChallenge.value != null) {
-            return  // Ya tenemos reto para hoy, no recalcular
+    private suspend fun loadChallengeStatus() {
+        try {
+            val todayDate = LocalDate.now().format(dateFormatter)
+            val lastDate = dataStoreManager.lastChallengeDate.firstOrNull()
+            
+            if (lastDate == todayDate) {
+                val resultJson = dataStoreManager.lastChallengeResult.firstOrNull()
+                if (!resultJson.isNullOrBlank()) {
+                    try {
+                        val status = Json.decodeFromString<DailyChallengeStatus>(resultJson)
+                        _challengeStatus.value = status
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        _challengeStatus.value = null  // Reset si falla el parsing
+                    }
+                }
+            } else {
+                _challengeStatus.value = null  // Nuevo día, limpiar estado
+            }
+            _isStatusLoaded.value = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            _isStatusLoaded.value = true
         }
+    }
+
+    private suspend fun selectDailyChallenge(challenges: List<ChallengeEntity>) {
+        val today = LocalDate.now()
         
+        // 1. Obtener o generar la semilla y fecha de inicio
+        val seed = dataStoreManager.deviceSeed.first() ?: "global"
+        val firstLaunchStr = dataStoreManager.firstLaunchDate.first() ?: run {
+            val current = today.format(dateFormatter)
+            dataStoreManager.saveFirstLaunchDate(current)
+            current
+        }
+        val firstLaunchDate = LocalDate.parse(firstLaunchStr, dateFormatter)
+        val diasTranscurridos = ChronoUnit.DAYS.between(firstLaunchDate, today).toInt()
+
+        // 2. Filtrar y preparar pool
         val filteredChallenges = challenges.filter { it.type == "TRIVIA" }
         val pool = if (filteredChallenges.isNotEmpty()) filteredChallenges else challenges
         
         if (pool.isNotEmpty()) {
-            val combinedSeed = "global_challenge_$todayDate"
-            val index = kotlin.math.abs(combinedSeed.hashCode()) % pool.size
-            _currentChallenge.value = pool[index]
+            val n = pool.size
+            val ciclo = diasTranscurridos / n
+            val diaEnCiclo = diasTranscurridos % n
+            
+            // 3. Shuffle determinista (offset 2000)
+            val random = Random(seed.hashCode().toLong() + ciclo + 2000)
+            val shuffledIndices = (0 until n).toList().shuffled(random)
+            
+            _currentChallenge.value = pool[shuffledIndices[diaEnCiclo]]
         }
     }
 
@@ -145,12 +153,7 @@ class ChallengeViewModel @Inject constructor(
             val resultJson = Json.encodeToString(status)
             dataStoreManager.saveChallengeResult(todayDate, resultJson, isCorrect)
             _challengeStatus.value = status
-            _triviaStepCompleted.value = true
         }
-    }
-
-    fun dismissTriviaStep() {
-        _triviaStepCompleted.value = true
     }
 
     private var previewIndex = -1
