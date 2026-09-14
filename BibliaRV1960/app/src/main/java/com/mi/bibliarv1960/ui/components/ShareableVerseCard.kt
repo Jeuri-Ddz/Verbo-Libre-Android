@@ -11,13 +11,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.ui.theme.BibliaRV1960Theme
+import com.mi.bibliarv1960.ui.theme.CormorantFamily
+import com.mi.bibliarv1960.ui.theme.VigiliaDarkPalette
 
 @Composable
 fun ShareableVerseCard(
@@ -28,11 +29,12 @@ fun ShareableVerseCard(
     title: String? = null,
     reflection: String? = null
 ) {
+    val vigiliaColors = VigiliaDarkPalette
     BibliaRV1960Theme {
         Box(
             modifier = modifier
                 .size(width = 360.dp, height = 640.dp) // Proporción 9:16 (1080x1920 / 3)
-                .background(Color.Black)
+                .background(vigiliaColors.void)
         ) {
             // 1. Fondo de Paisaje
             if (bgResourceId != 0) {
@@ -44,16 +46,16 @@ fun ShareableVerseCard(
                 )
             }
             
-            // 2. Overlay Oscuro
+            // 2. Overlay Oscuro (Vigilia Style)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Black.copy(alpha = 0.3f),
-                                Color.Black.copy(alpha = 0.7f)
-                            )
+                            0.00f to vigiliaColors.scrim0,
+                            0.24f to vigiliaColors.scrim24,
+                            0.62f to vigiliaColors.scrim62,
+                            1.00f to vigiliaColors.scrim100
                         )
                     )
             )
@@ -69,7 +71,8 @@ fun ShareableVerseCard(
                 Text(
                     text = "Verbo Libre",
                     fontSize = 18.sp,
-                    fontFamily = FontFamily.Serif,
+                    fontFamily = CormorantFamily,
+                    fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Medium,
                     color = Color.White.copy(alpha = 0.8f),
                     modifier = Modifier.padding(top = 10.dp)
@@ -97,22 +100,24 @@ fun ShareableVerseCard(
                         ) {
                             Text(
                                 text = "\"$verseText\"",
-                                fontSize = 24.sp,
+                                fontSize = 28.sp,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
-                                lineHeight = 34.sp,
-                                fontFamily = FontFamily.Serif,
+                                lineHeight = 38.sp,
+                                fontFamily = CormorantFamily,
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.SemiBold,
                             )
 
                             Spacer(modifier = Modifier.height(20.dp))
 
                             Text(
                                 text = reference.uppercase(),
-                                fontSize = 12.sp,
+                                fontSize = 14.sp,
                                 color = Color.White.copy(alpha = 0.7f),
                                 letterSpacing = 3.sp,
+                                fontFamily = CormorantFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Italic,
                                 textAlign = TextAlign.Center
                             )
                         }

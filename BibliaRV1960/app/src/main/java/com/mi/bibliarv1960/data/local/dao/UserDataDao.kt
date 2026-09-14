@@ -13,6 +13,9 @@ interface UserDataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: BookmarkCategoryEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllCategories(categories: List<BookmarkCategoryEntity>)
+
     @Query("SELECT * FROM bookmark_categories ORDER BY isDefault DESC, id ASC")
     fun getAllCategories(): Flow<List<BookmarkCategoryEntity>>
 
@@ -24,6 +27,9 @@ interface UserDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBookmark(bookmark: BookmarkEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllBookmarks(bookmarks: List<BookmarkEntity>)
 
     @Query("DELETE FROM bookmarks WHERE bookId = :bookId AND chapter = :chapter AND verse = :verse")
     suspend fun deleteBookmark(bookId: Int, chapter: Int, verse: Int)

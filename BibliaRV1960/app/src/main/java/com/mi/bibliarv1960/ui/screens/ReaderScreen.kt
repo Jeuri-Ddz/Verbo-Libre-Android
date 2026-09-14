@@ -116,6 +116,13 @@ fun ReaderScreen(
     val notedVerseKeys by notesViewModel.notedVerseKeys.collectAsState()
     val allNotes by notesViewModel.allNotes.collectAsState()
 
+    DisposableEffect(Unit) {
+        viewModel.setDndActive(true)
+        onDispose {
+            viewModel.setDndActive(false)
+        }
+    }
+
     val noteIndicatorColor = MaterialTheme.colorScheme.primary
     val noteTextColor = if (isDarkMode) Color(0xFFFF8A80) else Color(0xFFB8310F)
 

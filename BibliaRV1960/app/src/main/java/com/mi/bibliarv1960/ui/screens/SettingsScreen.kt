@@ -12,7 +12,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,13 +23,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import android.content.Intent
+import android.content.ContentValues
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.FileOutputStream
+import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.R
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +66,79 @@ fun SettingsScreen(
     val ttsSpeed by viewModel.preferredTtsSpeed.collectAsState()
     val showTrivia by viewModel.showTrivia.collectAsState()
     val showDevotional by viewModel.showDevocional.collectAsState()
+    val autoDnd by viewModel.autoDndOnReading.collectAsState()
+    val isDarkMode by viewModel.isDarkMode.collectAsState()
     
+    val context = LocalContext.current
+    
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            try {
+                context.contentResolver.openInputStream(it)?.use { inputStream ->
+                    val json = inputStream.bufferedReader().use { reader -> reader.readText() }
+                    viewModel.importData(json)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(context, "Error al abrir el archivo", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.exportEvent.collect { json ->
+            val success = withContext(Dispatchers.IO) {
+                try {
+                    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                    val fileName = "respaldo_verbo_libre_$timestamp.json"
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        val contentValues = ContentValues().apply {
+                            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                            put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+                            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                        }
+
+                        val resolver = context.contentResolver
+                        val contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+                        val uri = resolver.insert(contentUri, contentValues)
+
+                        uri?.let {
+                            resolver.openOutputStream(it)?.use { outputStream ->
+                                outputStream.write(json.toByteArray())
+                            }
+                            true
+                        } ?: false
+                    } else {
+                        // Fallback para versiones anteriores a Android 10
+                        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        if (!downloadsDir.exists()) downloadsDir.mkdirs()
+                        val file = File(downloadsDir, fileName)
+                        FileOutputStream(file).use { it.write(json.toByteArray()) }
+                        true
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    false
+                }
+            }
+
+            if (success) {
+                Toast.makeText(context, "Respaldo guardado en la carpeta de Descargas", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Error al guardar el respaldo", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.messageEvent.collect { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+    }
+
     var showResetDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -130,7 +227,7 @@ fun SettingsScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Lectura descontinua
+                // Modo Lectura Continua
                 Surface(
                     onClick = { viewModel.toggleDiscontinuousMode() },
                     color = MaterialTheme.colorScheme.surface,
@@ -149,13 +246,13 @@ fun SettingsScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    "Lectura descontinua",
+                                    "Lectura continua",
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    "Organiza los versículos en párrafos independientes y muestra tus notas personales en color rojo.",
+                                    "Agrupa los versículos en bloques de texto fluido y oculta las notas del flujo principal.",
                                     fontSize = 12.sp,
                                     color = Color.Gray,
                                     lineHeight = 16.sp
@@ -163,7 +260,7 @@ fun SettingsScreen(
                             }
                             Spacer(modifier = Modifier.width(16.dp))
                             Switch(
-                                checked = isDiscontinuous,
+                                checked = !isDiscontinuous,
                                 onCheckedChange = { viewModel.toggleDiscontinuousMode() },
                                 colors = SwitchDefaults.colors(
                                     checkedThumbColor = MaterialTheme.colorScheme.primary,
@@ -172,33 +269,84 @@ fun SettingsScreen(
                             )
                         }
 
-                        AnimatedVisibility(
-                            visible = isDiscontinuous,
-                            enter = expandVertically(),
-                            exit = shrinkVertically()
-                        ) {
-                            Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-                                HorizontalDivider(
-                                    modifier = Modifier.padding(bottom = 16.dp),
-                                    thickness = 0.5.dp,
-                                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-                                )
-                                Image(
-                                    painter = painterResource(id = R.drawable.img_tutorial_discontinua),
-                                    contentDescription = "Ejemplo de lectura descontinua",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clip(RoundedCornerShape(8.dp)),
-                                    contentScale = ContentScale.FillWidth
-                                )
-                                Spacer(modifier = Modifier.height(12.dp))
+                        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(bottom = 16.dp),
+                                thickness = 0.5.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                            )
+                            
+                            // Vista previa interactiva
+                            val primaryColor = MaterialTheme.colorScheme.primary
+                            val noteTextColor = if (isDarkMode) Color(0xFFFF8A80) else Color(0xFFB8310F)
+                            
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                                    .padding(16.dp)
+                            ) {
                                 Text(
-                                    text = "Este modo facilita el estudio y la meditación al separar cada versículo y mostrar tus reflexiones directamente bajo el texto bíblico.",
-                                    fontSize = 11.sp,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                    lineHeight = 15.sp
+                                    text = "VISTA PREVIA",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    letterSpacing = 1.sp,
+                                    modifier = Modifier.padding(bottom = 12.dp)
                                 )
+                                
+                                if (isDiscontinuous) {
+                                    // Modo Versículos (Default)
+                                    Column {
+                                        Text(buildAnnotatedString {
+                                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = primaryColor, fontSize = 12.sp)) {
+                                                append("1 ")
+                                            }
+                                            append("En el principio creó Dios los cielos y la tierra.")
+                                        }, fontSize = 14.sp)
+                                        
+                                        Text(
+                                            text = "Dios es el creador de todo lo que existe.",
+                                            color = noteTextColor,
+                                            fontSize = 13.sp,
+                                            fontStyle = FontStyle.Italic,
+                                            modifier = Modifier.padding(vertical = 4.dp)
+                                        )
+                                        
+                                        Text(buildAnnotatedString {
+                                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = primaryColor, fontSize = 12.sp)) {
+                                                append("2 ")
+                                            }
+                                            append("Y la tierra estaba desordenada y vacía...")
+                                        }, fontSize = 14.sp)
+                                    }
+                                } else {
+                                    // Modo Continuo
+                                    Text(buildAnnotatedString {
+                                        withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = primaryColor, fontSize = 12.sp)) {
+                                            append("1 ")
+                                        }
+                                        withStyle(SpanStyle(textDecoration = TextDecoration.Underline)) {
+                                            append("En el principio creó Dios los cielos y la tierra.")
+                                        }
+                                        append(" ")
+                                        withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = primaryColor, fontSize = 12.sp)) {
+                                            append("2 ")
+                                        }
+                                        append("Y la tierra estaba desordenada y vacía, y las tinieblas estaban sobre la faz del abismo...")
+                                    }, fontSize = 14.sp, lineHeight = 20.sp)
+                                }
                             }
+                            
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = if (isDiscontinuous) 
+                                    "Este modo facilita el estudio al mostrar tus notas directamente bajo cada versículo." 
+                                    else "Este modo ofrece una experiencia de lectura fluida. Las notas se indican con un subrayado.",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                                lineHeight = 15.sp
+                            )
                         }
                     }
                 }
@@ -244,6 +392,61 @@ fun SettingsScreen(
                     checked = showDevotional,
                     onCheckedChange = { viewModel.setShowDevocional(it) }
                 )
+                Spacer(modifier = Modifier.height(12.dp))
+                SettingsSwitch(
+                    label = "Silenciar notificaciones al leer",
+                    description = "Activa automáticamente el modo 'No molestar' mientras estés en el lector bíblico.",
+                    checked = autoDnd,
+                    onCheckedChange = { enabled ->
+                        if (enabled && !viewModel.hasNotificationPolicyAccess()) {
+                            // Abrir configuración si no tiene permiso
+                            val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                            context.startActivity(intent)
+                        } else {
+                            viewModel.setAutoDndOnReading(enabled)
+                        }
+                    }
+                )
+            }
+
+            SettingsSection(title = "DATOS Y RESPALDO") {
+                SettingsCard(onClick = { viewModel.exportData() }) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share, 
+                            contentDescription = null, 
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text("Exportar mis datos", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Text("Crea una copia de seguridad de tus notas y marcadores.", fontSize = 12.sp, color = Color.Gray)
+                        }
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                SettingsCard(onClick = { importLauncher.launch("application/json") }) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info, 
+                            contentDescription = null, 
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text("Importar datos", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Text("Restaura tus notas y marcadores desde un archivo de respaldo.", fontSize = 12.sp, color = Color.Gray)
+                        }
+                    }
+                }
             }
 
             SettingsSection(title = "AYUDA Y SOPORTE") {

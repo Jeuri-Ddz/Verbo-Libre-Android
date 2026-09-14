@@ -1,8 +1,10 @@
 package com.mi.bibliarv1960.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -11,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mi.bibliarv1960.data.local.entities.BookmarkCategoryEntity
+import com.mi.bibliarv1960.data.local.entities.BookmarkEntity
 import com.mi.bibliarv1960.ui.theme.LinoIcons
 import com.mi.bibliarv1960.ui.viewmodel.BibleViewModel
 import androidx.compose.ui.viewinterop.AndroidView
@@ -68,6 +72,8 @@ fun BookmarksScreen(
     var isEditMode by remember { mutableStateOf(false) }
     var categoryToEdit by remember { mutableStateOf<BookmarkCategoryEntity?>(null) }
     var showAddCategory by remember { mutableStateOf(false) }
+    var bookmarkToDelete by remember { mutableStateOf<BookmarkEntity?>(null) }
+    var categoryToDelete by remember { mutableStateOf<BookmarkCategoryEntity?>(null) }
 
     Scaffold(
         topBar = {
@@ -202,7 +208,8 @@ fun BookmarksScreen(
                         BookmarkRow(
                             bookmark = bookmark,
                             category = category,
-                            onClick = { onBookmarkClick(bookmark.bookId, bookmark.chapter, bookmark.verse) }
+                            onClick = { onBookmarkClick(bookmark.bookId, bookmark.chapter, bookmark.verse) },
+                            onLongClick = { bookmarkToDelete = bookmark }
                         )
                         HorizontalDivider(
                             modifier = Modifier.padding(horizontal = 22.dp),
@@ -223,6 +230,60 @@ fun BookmarksScreen(
             onConfirm = { newName ->
                 viewModel.renameCategory(category.id, newName)
                 categoryToEdit = null
+            },
+            onDelete = {
+                categoryToDelete = category
+                categoryToEdit = null
+            }
+        )
+    }
+
+    categoryToDelete?.let { category ->
+        AlertDialog(
+            onDismissRequest = { categoryToDelete = null },
+            title = { Text("Eliminar categoría") },
+            text = { 
+                Text("¿Estás seguro de que quieres eliminar la categoría '${category.name}'?\n\nEsta acción borrará también todos los versículos marcados en ella.") 
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.removeCategory(category.id)
+                        categoryToDelete = null
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { categoryToDelete = null }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
+    bookmarkToDelete?.let { bookmark ->
+        AlertDialog(
+            onDismissRequest = { bookmarkToDelete = null },
+            title = { Text("Eliminar marcador") },
+            text = { Text("¿Deseas eliminar este versículo de tus marcadores?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteBookmark(bookmark)
+                        bookmarkToDelete = null
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { bookmarkToDelete = null }) {
+                    Text("Cancelar")
+                }
             }
         )
     }
@@ -284,18 +345,23 @@ fun CategoryChip(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BookmarkRow(
     bookmark: com.mi.bibliarv1960.data.local.entities.BookmarkEntity,
     category: BookmarkCategoryEntity?,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
 ) {
     val categoryColor = category?.let { Color(android.graphics.Color.parseColor(it.colorHex)) } ?: MaterialTheme.colorScheme.primary
     
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .padding(horizontal = 22.dp, vertical = 16.dp),
         verticalAlignment = Alignment.Top
     ) {
@@ -328,19 +394,36 @@ fun BookmarkRow(
 fun EditCategoryDialog(
     category: BookmarkCategoryEntity,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
+    onDelete: () -> Unit
 ) {
     var name by remember { mutableStateOf(category.name) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Renombrar categoría") },
         text = {
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nombre") },
-                singleLine = true
-            )
+            Column {
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nombre") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                
+                if (category.id > 5) { // Evitar borrar las 5 categorías por defecto
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextButton(
+                        onClick = onDelete,
+                        modifier = Modifier.align(Alignment.End),
+                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                    ) {
+                        Icon(Icons.Default.Delete, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Eliminar categoría")
+                    }
+                }
+            }
         },
         confirmButton = {
             TextButton(onClick = { if (name.isNotBlank()) onConfirm(name) }) {

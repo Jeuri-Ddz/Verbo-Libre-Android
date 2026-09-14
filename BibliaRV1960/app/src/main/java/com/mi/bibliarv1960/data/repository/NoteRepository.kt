@@ -50,4 +50,8 @@ class NoteRepository(private val noteDao: NoteDao) {
     suspend fun deleteNote(verseKey: String) {
         noteDao.deleteByVerseKey(verseKey)
     }
+
+    suspend fun insertAllNotes(notes: List<NoteEntity>) {
+        noteDao.upsertAll(notes)
+    }
 }

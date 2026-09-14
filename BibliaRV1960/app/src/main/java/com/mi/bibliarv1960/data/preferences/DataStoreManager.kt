@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.mi.bibliarv1960.data.local.entities.SettingsBackup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -28,6 +29,7 @@ class DataStoreManager(private val context: Context) {
         val TOOLTIP_BOOKMARKS_INFO = booleanPreferencesKey("tooltip_seen_bookmarks_info")
         val TOOLTIP_BOOKMARKS_FAB = booleanPreferencesKey("tooltip_seen_bookmarks_fab")
         val IS_DISCONTINUOUS_MODE = booleanPreferencesKey("is_discontinuous_mode")
+        val AUTO_DND_ON_READING = booleanPreferencesKey("auto_dnd_on_reading")
 
         // Reto del día
         val CHALLENGE_COMPLETED_COUNT = intPreferencesKey("challenge_completed_count")
@@ -49,7 +51,7 @@ class DataStoreManager(private val context: Context) {
     }
 
     val selectedTranslationId: Flow<String> = context.dataStore.data.map { preferences ->
-        preferences[SELECTED_TRANSLATION_ID] ?: "rv1909"
+        preferences[SELECTED_TRANSLATION_ID] ?: "vbl"
     }
 
     val firstLaunchDate: Flow<String?> = context.dataStore.data.map { it[FIRST_LAUNCH_DATE] }
@@ -75,7 +77,8 @@ class DataStoreManager(private val context: Context) {
     val tooltipBookmarksCategories: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_CATEGORIES] ?: false }
     val tooltipBookmarksInfo: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_INFO] ?: false }
     val tooltipBookmarksFab: Flow<Boolean> = context.dataStore.data.map { it[TOOLTIP_BOOKMARKS_FAB] ?: false }
-    val isDiscontinuousMode: Flow<Boolean> = context.dataStore.data.map { it[IS_DISCONTINUOUS_MODE] ?: false }
+    val isDiscontinuousMode: Flow<Boolean> = context.dataStore.data.map { it[IS_DISCONTINUOUS_MODE] ?: true }
+    val autoDndOnReading: Flow<Boolean> = context.dataStore.data.map { it[AUTO_DND_ON_READING] ?: false }
 
     val challengeCompletedCount: Flow<Int> = context.dataStore.data.map { it[CHALLENGE_COMPLETED_COUNT] ?: 0 }
     val lastChallengeDate: Flow<String?> = context.dataStore.data.map { it[LAST_CHALLENGE_DATE] }
@@ -149,6 +152,10 @@ class DataStoreManager(private val context: Context) {
         context.dataStore.edit { it[IS_DISCONTINUOUS_MODE] = isDiscontinuous }
     }
 
+    suspend fun saveAutoDndOnReading(enabled: Boolean) {
+        context.dataStore.edit { it[AUTO_DND_ON_READING] = enabled }
+    }
+
     suspend fun saveFontSize(size: Float) {
         context.dataStore.edit { it[FONT_SIZE] = size }
     }
@@ -214,5 +221,23 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveLastChallengeVisitDate(date: String) {
         context.dataStore.edit { it[LAST_CHALLENGE_VISIT_DATE] = date }
+    }
+
+    suspend fun importSettings(backup: SettingsBackup) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_DARK_MODE] = backup.isDarkMode
+            preferences[FONT_SIZE] = backup.fontSize
+            preferences[FONT_FAMILY] = backup.fontFamily
+            preferences[SELECTED_TRANSLATION_ID] = backup.selectedTranslationId
+            preferences[PREFERRED_TTS_SPEED] = backup.preferredTtsSpeed
+            preferences[SHOW_TRIVIA] = backup.showTrivia
+            preferences[SHOW_DEVOCIONAL] = backup.showDevocional
+            preferences[CURRENT_STREAK] = backup.currentStreak
+            backup.lastReadDate?.let { preferences[LAST_READ_DATE] = it }
+            preferences[IS_DISCONTINUOUS_MODE] = backup.isDiscontinuousMode
+            preferences[AUTO_DND_ON_READING] = backup.autoDndOnReading
+            backup.firstLaunchDate?.let { preferences[FIRST_LAUNCH_DATE] = it }
+            backup.deviceSeed?.let { preferences[DEVICE_SEED] = it }
+        }
     }
 }

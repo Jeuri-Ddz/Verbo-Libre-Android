@@ -12,6 +12,9 @@ interface ReadingProgressDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertProgress(entity: ReadingProgressEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAllProgress(entities: List<ReadingProgressEntity>)
+
     @Query("SELECT * FROM reading_progress WHERE bookId = :bookId AND isRead = 1")
     fun getProgressForBook(bookId: Int): Flow<List<ReadingProgressEntity>>
 

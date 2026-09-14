@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.mi.bibliarv1960.ui.components.TooltipView
+        android:id="@+id/tooltipBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="26dp"
+        android:paddingBottom="18dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tooltipMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:lineSpacingExtra="4dp"
+            android:textAlignment="center"
+            android:textStyle="normal" />
+
+        <Button
+            android:id="@+id/btnDismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:text="Entendido"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:backgroundTint="#33FFFFFF"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>

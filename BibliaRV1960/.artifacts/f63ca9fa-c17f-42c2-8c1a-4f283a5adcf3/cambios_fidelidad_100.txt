@@ -1,0 +1,25 @@
+CAMBIOS PUNTUALES PARA FIDELIDAD 100% (DEVOTIONALSCREEN.KT)
+
+1. REFINE: MoteParticles (Añadir animación de opacidad y deriva natural)
+----------------------------------------------------------------------
+En el bloque de MoteParticles, añade:
+- Animación de alpha: de 0f -> mote.peakAlpha (al 8% del tiempo) -> 0f (al 100%).
+- Usar un desplazamiento horizontal que sea `xOffset + (yOffsetProgress * drift)`.
+
+2. REFINE: GrainOverlay (Optimización para gama baja)
+------------------------------------------------------
+En lugar de 1500 círculos aleatorios:
+- Crear un patrón de puntos fijo (o una textura pequeña) y dibujarla una sola vez en un búfer o usar un dibujo estático más ligero para evitar carga de CPU/GPU innecesaria.
+
+3. FIX: Botones de Acción (Color dinámico "Leído")
+--------------------------------------------------
+Asegurar que el botón "Marcar" cambie a color `vigiliaColors.candle` exactamente cuando `isReadToday` sea true, tal como el mockup hace con la clase `.done`.
+
+4. FIX: DropCapText (Margen exacto)
+-----------------------------------
+Ajustar el padding de la capitular de `8.dp` a `6.dp` para que el texto envuelva la letra con la misma densidad que el CSS `padding: 4px 8px 0 0`.
+
+----------------------------------------------------------------------
+ESTADO DE LAS FUENTES LOCALES: Confirmado 100% Offline.
+ESTADO DE LOS COLORES: Confirmado Hexadecimales exactos.
+ESTADO DE LOS TIERS: Confirmado Umbrales exactos.

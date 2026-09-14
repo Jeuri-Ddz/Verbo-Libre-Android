@@ -43,6 +43,8 @@ class BibleRepository(
     
     suspend fun insertCategory(category: BookmarkCategoryEntity) = userDataDao.insertCategory(category)
     
+    suspend fun insertAllCategories(categories: List<BookmarkCategoryEntity>) = userDataDao.insertAllCategories(categories)
+
     suspend fun updateCategoryName(id: Int, newName: String) = userDataDao.updateCategoryName(id, newName)
     
     suspend fun deleteCategory(id: Int) = userDataDao.deleteCategory(id)
@@ -50,6 +52,8 @@ class BibleRepository(
     val allBookmarks: Flow<List<BookmarkEntity>> = userDataDao.getAllBookmarks()
 
     suspend fun insertBookmark(bookmark: BookmarkEntity) = userDataDao.insertBookmark(bookmark)
+
+    suspend fun insertAllBookmarks(bookmarks: List<BookmarkEntity>) = userDataDao.insertAllBookmarks(bookmarks)
 
     suspend fun deleteBookmark(bookId: Int, chapter: Int, verse: Int) =
         userDataDao.deleteBookmark(bookId, chapter, verse)
@@ -79,6 +83,9 @@ class BibleRepository(
         )
         readingProgressDao.upsertProgress(progress)
     }
+
+    suspend fun insertAllProgress(entities: List<ReadingProgressEntity>) = 
+        readingProgressDao.upsertAllProgress(entities)
 
     suspend fun unmarkChapter(bookId: Int, chapter: Int) {
         readingProgressDao.deleteProgress(bookId, chapter)

@@ -3,13 +3,21 @@ package com.mi.bibliarv1960.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mi.bibliarv1960.data.repository.BibleRepository
+import com.mi.bibliarv1960.data.repository.NoteRepository
 import com.mi.bibliarv1960.data.local.entities.*
 import com.mi.bibliarv1960.data.preferences.DataStoreManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.util.*
 import java.time.temporal.ChronoUnit
+import android.app.NotificationManager
+import android.content.Context
+import android.provider.Settings
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 import com.mi.bibliarv1960.utils.SpeechManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,20 +29,51 @@ import javax.inject.Inject
 @HiltViewModel
 class BibleViewModel @Inject constructor(
     private val repository: BibleRepository,
+    private val noteRepository: NoteRepository,
     private val dataStoreManager: DataStoreManager,
-    private val speechManager: SpeechManager
+    private val speechManager: SpeechManager,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-    private val _todayDevotional = MutableStateFlow<DevotionalEntity?>(null)
-    val displayDevotional: StateFlow<DevotionalEntity?> = _todayDevotional.asStateFlow()
+    private val _debugOffset = MutableStateFlow(0)
+
+    val displayDevotional: StateFlow<DevotionalEntity?> = combine(
+        repository.allDevotionals.filter { it.isNotEmpty() },
+        _debugOffset
+    ) { devotionals, offset ->
+        // Obtenemos los datos necesarios para el cálculo determinista
+        val seed = dataStoreManager.deviceSeed.first() ?: "default"
+        val firstLaunchStr = dataStoreManager.firstLaunchDate.first() ?: LocalDate.now().format(dateFormatter)
+        val firstLaunchDate = LocalDate.parse(firstLaunchStr, dateFormatter)
+        val today = LocalDate.now()
+        val totalDays = ChronoUnit.DAYS.between(firstLaunchDate, today).toInt() + offset
+
+        val n = devotionals.size
+        val ciclo = totalDays / n
+        val diaEnCiclo = totalDays % n
+
+        val random = Random(seed.hashCode().toLong() + ciclo)
+        val shuffledIndices = (0 until n).toList().shuffled(random)
+        devotionals[shuffledIndices[diaEnCiclo]]
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    fun showNextDevotionalDebug() {
+        _debugOffset.value += 1
+    }
 
     private val _isReadToday = MutableStateFlow(false)
     val isReadToday: StateFlow<Boolean> = _isReadToday.asStateFlow()
 
     private val _streakLostEvent = MutableSharedFlow<Unit>()
     val streakLostEvent: SharedFlow<Unit> = _streakLostEvent.asSharedFlow()
+
+    private val _exportEvent = MutableSharedFlow<String>()
+    val exportEvent: SharedFlow<String> = _exportEvent.asSharedFlow()
+
+    private val _messageEvent = MutableSharedFlow<String>()
+    val messageEvent: SharedFlow<String> = _messageEvent.asSharedFlow()
 
     private val _todayVerse = MutableStateFlow<DailyVerseEntity?>(null)
 
@@ -44,8 +83,12 @@ class BibleViewModel @Inject constructor(
     private val _todayVerseBgIndex = MutableStateFlow(1)
     val displayVerseBgIndex: StateFlow<Int> = _todayVerseBgIndex.asStateFlow()
 
-    private val _todayDevotionalBgIndex = MutableStateFlow(6)
-    val todayDevotionalBgIndex: StateFlow<Int> = _todayDevotionalBgIndex
+    private val _todayDevotionalBgIndex = MutableStateFlow(3)
+    val todayDevotionalBgIndex: StateFlow<Int> = combine(_todayDevotionalBgIndex, _debugOffset) { index, offset ->
+        // Si el offset es 0, usamos el fondo fijo 3 solicitado.
+        // Si el usuario presiona "Verbo Libre", rotamos para permitir auditoría.
+        if (offset == 0) 3 else (3 + offset - 1) % 10 + 1
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 3)
 
     val currentStreak: StateFlow<Int> = dataStoreManager.currentStreak.stateIn(
         scope = viewModelScope,
@@ -126,6 +169,12 @@ class BibleViewModel @Inject constructor(
     )
 
     val isDiscontinuousMode: StateFlow<Boolean> = dataStoreManager.isDiscontinuousMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false,
+    )
+
+    val autoDndOnReading: StateFlow<Boolean> = dataStoreManager.autoDndOnReading.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false,
@@ -224,19 +273,8 @@ class BibleViewModel @Inject constructor(
             }
 
             // 3. Sorteo de Contenido Devocional (Mazo Barajado)
-            launch {
-                val devotionals = repository.allDevotionals.filter { it.isNotEmpty() }.first()
-                val n = devotionals.size
-                val ciclo = diasTranscurridos / n
-                val diaEnCiclo = diasTranscurridos % n
-                
-                // Seed determinista por ciclo
-                val random = Random(seed.hashCode().toLong() + ciclo)
-                val shuffledIndices = (0 until n).toList().shuffled(random)
-                
-                _todayDevotional.value = devotionals[shuffledIndices[diaEnCiclo]]
-            }
-            
+            // Ya no es necesario asignar _todayDevotional.value aquí porque ahora es reactivo a través de displayDevotional
+
             // 4. Sorteo de Contenido Versículo (Mazo Barajado)
             launch {
                 val verses = repository.allDailyVerses.filter { it.isNotEmpty() }.first()
@@ -252,10 +290,11 @@ class BibleViewModel @Inject constructor(
             }
 
             // 5. Sorteo de Fondos (Determinístico basado en el día)
-            // Versículo: 1 al 5, Devocional: 6 al 10
+            // Versículo: 1 al 5
             val randomBg = Random(seed.hashCode().toLong() + diasTranscurridos)
             _todayVerseBgIndex.value = randomBg.nextInt(5) + 1
-            _todayDevotionalBgIndex.value = randomBg.nextInt(5) + 6
+            // Devocional: se inicializa en 3 según solicitud por ahora
+            _todayDevotionalBgIndex.value = 3
         }
     }
 
@@ -356,6 +395,41 @@ class BibleViewModel @Inject constructor(
         }
     }
 
+    fun setAutoDndOnReading(enabled: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.saveAutoDndOnReading(enabled)
+        }
+    }
+
+    fun toggleAutoDnd() {
+        setAutoDndOnReading(!autoDndOnReading.value)
+    }
+
+    private var originalDndFilter: Int = NotificationManager.INTERRUPTION_FILTER_ALL
+
+    fun hasNotificationPolicyAccess(): Boolean {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        return notificationManager.isNotificationPolicyAccessGranted
+    }
+
+    fun setDndActive(active: Boolean) {
+        if (!autoDndOnReading.value || !hasNotificationPolicyAccess()) return
+        
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        try {
+            if (active) {
+                originalDndFilter = notificationManager.currentInterruptionFilter
+                // Cambiamos de NONE (Silencio total) a PRIORITY (Prioridad)
+                // Esto permite que el audio de medios (TTS) siga funcionando mientras se bloquean notificaciones
+                notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
+            } else {
+                notificationManager.setInterruptionFilter(originalDndFilter)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     val allTranslations: StateFlow<List<TranslationEntity>> = repository.allTranslations.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -365,7 +439,7 @@ class BibleViewModel @Inject constructor(
     private val _selectedTranslationId = dataStoreManager.selectedTranslationId.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = "rv1909",
+        initialValue = "vbl",
     )
     val selectedTranslationId: StateFlow<String> = _selectedTranslationId
 
@@ -632,6 +706,12 @@ class BibleViewModel @Inject constructor(
         }
     }
 
+    fun deleteBookmark(bookmark: BookmarkEntity) {
+        viewModelScope.launch {
+            repository.deleteBookmark(bookmark.bookId, bookmark.chapter, bookmark.verse)
+        }
+    }
+
     fun addCategory(name: String, colorHex: String) {
         viewModelScope.launch {
             repository.insertCategory(BookmarkCategoryEntity(name = name, colorHex = colorHex))
@@ -644,7 +724,6 @@ class BibleViewModel @Inject constructor(
         }
     }
 
-    @Suppress("unused")
     fun removeCategory(id: Int) {
         viewModelScope.launch {
             repository.deleteCategory(id)
@@ -751,6 +830,77 @@ class BibleViewModel @Inject constructor(
             unmarkChapter(bookId, chapter)
         } else {
             markChapterAsRead(bookId, chapter)
+        }
+    }
+
+    fun exportData() {
+        viewModelScope.launch {
+            val notes = noteRepository.observeAllNotes().first()
+            val bookmarks = repository.allBookmarks.first()
+            val categories = repository.allCategories.first()
+            val progress = repository.getAllProgress().first()
+            
+            val settings = SettingsBackup(
+                isDarkMode = isDarkMode.value,
+                fontSize = fontSize.value,
+                fontFamily = fontFamily.value,
+                selectedTranslationId = selectedTranslationId.value,
+                preferredTtsSpeed = preferredTtsSpeed.value,
+                showTrivia = showTrivia.value,
+                showDevocional = showDevocional.value,
+                currentStreak = currentStreak.value,
+                lastReadDate = lastReadDate.value,
+                isDiscontinuousMode = isDiscontinuousMode.value,
+                autoDndOnReading = autoDndOnReading.value,
+                firstLaunchDate = dataStoreManager.firstLaunchDate.first(),
+                deviceSeed = dataStoreManager.deviceSeed.first()
+            )
+            
+            val backup = BackupData(
+                notes = notes,
+                bookmarks = bookmarks,
+                categories = categories,
+                progress = progress,
+                settings = settings
+            )
+            
+            val json = Json { prettyPrint = true }.encodeToString(backup)
+            _exportEvent.emit(json)
+        }
+    }
+
+    fun importData(json: String) {
+        viewModelScope.launch {
+            try {
+                val backup = Json { 
+                    ignoreUnknownKeys = true 
+                    coerceInputValues = true
+                }.decodeFromString<BackupData>(json)
+                
+                // Importar en orden de dependencias
+                if (backup.categories.isNotEmpty()) {
+                    repository.insertAllCategories(backup.categories)
+                }
+                if (backup.bookmarks.isNotEmpty()) {
+                    repository.insertAllBookmarks(backup.bookmarks)
+                }
+                if (backup.notes.isNotEmpty()) {
+                    noteRepository.insertAllNotes(backup.notes)
+                }
+                if (backup.progress.isNotEmpty()) {
+                    repository.insertAllProgress(backup.progress)
+                }
+                
+                // Restaurar ajustes
+                backup.settings?.let { settings ->
+                    dataStoreManager.importSettings(settings)
+                }
+                
+                _messageEvent.emit("Importación completada con éxito")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _messageEvent.emit("Error al importar: ${e.localizedMessage}")
+            }
         }
     }
 }

@@ -47,6 +47,10 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.platform.LocalConfiguration
 import kotlinx.coroutines.delay
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.NotificationsOff
+import android.provider.Settings
+import android.content.Intent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +64,7 @@ fun HomeScreen(
     val todayVerse by viewModel.displayDailyVerse.collectAsState()
     val bookProgress by viewModel.bookProgress.collectAsState()
     val showDevotionalSetting by viewModel.showDevocional.collectAsState()
+    val autoDnd by viewModel.autoDndOnReading.collectAsState()
     
     var selectedTab by remember { mutableIntStateOf(0) }
     var selectedBook by remember { mutableStateOf<BookEntity?>(null) }
@@ -88,6 +93,9 @@ fun HomeScreen(
     var searchBarRect by remember { mutableStateOf(Rect.Zero) }
     var dailyVerseRect by remember { mutableStateOf(Rect.Zero) }
     var testamentSelectorRect by remember { mutableStateOf(Rect.Zero) }
+    var dndButtonRect by remember { mutableStateOf(Rect.Zero) }
+    
+    var showDndPermissionDialog by remember { mutableStateOf(false) }
 
     val filteredBooks = remember(allBooks, searchQuery, selectedTab) {
         val normalizedSearch = searchQuery.normalize()
@@ -142,6 +150,30 @@ fun HomeScreen(
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                             }
+                        }
+                    },
+                    actions = {
+                        IconButton(
+                            modifier = Modifier.onGloballyPositioned { coordinates ->
+                                dndButtonRect = coordinates.boundsInWindow()
+                            },
+                            onClick = {
+                                if (!autoDnd) {
+                                    if (viewModel.hasNotificationPolicyAccess()) {
+                                        viewModel.toggleAutoDnd()
+                                    } else {
+                                        showDndPermissionDialog = true
+                                    }
+                                } else {
+                                    viewModel.toggleAutoDnd()
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (autoDnd) Icons.Default.NotificationsOff else Icons.Default.NotificationsActive,
+                                contentDescription = "Modo Concentración",
+                                tint = if (autoDnd) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                            )
                         }
                     },
                     navigationIcon = {
@@ -237,6 +269,7 @@ fun HomeScreen(
                                         text = dv.verseText,
                                         fontSize = 13.sp,
                                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                                        fontWeight = FontWeight.Medium,
                                         color = Color.White,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
@@ -321,6 +354,7 @@ fun HomeScreen(
                 1 -> searchBarRect
                 2 -> if (showDevotionalSetting) dailyVerseRect else Rect.Zero
                 3 -> testamentSelectorRect
+                4 -> dndButtonRect
                 else -> Rect.Zero
             }
 
@@ -356,7 +390,10 @@ fun HomeScreen(
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .padding(horizontal = 32.dp)
-                                .padding(top = with(density) { (currentHighlightRect.bottom + 32.dp.toPx()).toDp() })
+                                .padding(top = with(density) { 
+                                    if (onboardingStep == 4) (currentHighlightRect.bottom + 16.dp.toPx()).toDp()
+                                    else (currentHighlightRect.bottom + 32.dp.toPx()).toDp() 
+                                })
                                 .background(Color.Black.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
                                 .padding(20.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -365,6 +402,7 @@ fun HomeScreen(
                                 1 -> "Buscador" to "Escribe el libro y capítulo que buscas — no hace falta escribir el nombre completo, por ejemplo 'gen 1' también funciona."
                                 2 -> "Versículo del día" to "Aquí puedes ver el versículo del día, una palabra de aliento diferente cada mañana."
                                 3 -> "Testamentos" to "Toca cualquier libro para leer. Aquí arriba puedes filtrar entre Antiguo y Nuevo Testamento."
+                                4 -> "Modo Concentración" to "Silencia automáticamente las notificaciones al leer. Al activarlo, el sistema te pedirá permiso; busca 'Verbo Libre' y acéptalo."
                                 else -> "" to ""
                             }
 
@@ -386,7 +424,7 @@ fun HomeScreen(
                             Spacer(modifier = Modifier.height(24.dp))
                             Button(
                                 onClick = {
-                                    if (onboardingStep < 3) {
+                                    if (onboardingStep < 4) {
                                         onboardingStep++
                                     } else {
                                         sharedPrefs.edit().putBoolean("onboarding_home_shown", true).apply()
@@ -402,7 +440,7 @@ fun HomeScreen(
                                 modifier = Modifier.height(40.dp)
                             ) {
                                 Text(
-                                    if (onboardingStep < 3) "Siguiente" else "Entendido", 
+                                    if (onboardingStep < 4) "Siguiente" else "Entendido", 
                                     fontSize = 14.sp, 
                                     fontWeight = FontWeight.Bold
                                 )
@@ -412,6 +450,30 @@ fun HomeScreen(
                 }
             }
         }
+    }
+
+    if (showDndPermissionDialog) {
+        AlertDialog(
+            onDismissRequest = { showDndPermissionDialog = false },
+            title = { Text("Modo Concentración") },
+            text = { 
+                Text("Para silenciar las notificaciones automáticamente, necesitamos acceso al modo 'No molestar'.\n\nAl presionar 'Configurar', busca 'Verbo Libre' y activa el interruptor.") 
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDndPermissionDialog = false
+                    val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    context.startActivity(intent)
+                }) {
+                    Text("Configurar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDndPermissionDialog = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 
     selectedBook?.let { book ->

@@ -3,6 +3,7 @@ package com.mi.bibliarv1960.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Index
+import kotlinx.serialization.Serializable
 
 /**
  * Nota personal ligada a un versículo específico.
@@ -11,6 +12,7 @@ import androidx.room.Index
  * Se eliminó el translationId de la clave para que la nota sea universal
  * al versículo, independientemente de la traducción que se esté leyendo.
  */
+@Serializable
 @Entity(
     tableName = "notes",
     indices = [Index(value = ["verseKey"], unique = true)]
