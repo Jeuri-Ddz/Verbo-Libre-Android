@@ -1,15 +1,28 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Android Studio temporary files
+*.temp
+*.tmp
+
+# Unit test reports
+**/build/reports/
+**/build/test-results/
+
+# Log files
+*.log
+
+# Keystore files (VERY IMPORTANT: Never upload your signing keys)
+*.jks
+*.keystore
+
+# Google Services configuration (if you use Firebase, usually ignored in public repos)
+# google-services.json
